@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "store": "المتجر",
+    "search": "بحث",
+    "account": "الحساب",
+    "cart": "السلة"
+  },
+  "footer": {
+    "company": "الشركة",
+    "about": "من نحن",
+    "contact": "تواصل معنا",
+    "legal": "قانوني",
+    "privacy": "سياسة الخصوصية",
+    "terms": "الشروط والأحكام"
+  },
+  "product": {
+    "addToCart": "أضف إلى السلة",
+    "outOfStock": "غير متوفر",
+    "price": "السعر",
+    "size": "المقاس",
+    "color": "اللون",
+    "quantity": "الكمية",
+    "relatedProducts": "منتجات ذات صلة"
+  },
+  "cart": {
+    "title": "سلة التسوق",
+    "empty": "سلتك فارغة",
+    "subtotal": "المجموع الجزئي",
+    "checkout": "إتمام الشراء",
+    "remove": "حذف"
+  },
+  "checkout": {
+    "title": "إتمام الطلب",
+    "shipping": "الشحن",
+    "payment": "الدفع",
+    "review": "مراجعة",
+    "placeOrder": "تأكيد الطلب",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "address": "العنوان",
+    "city": "المدينة",
+    "country": "الدولة",
+    "postalCode": "الرمز البريدي"
+  },
+  "account": {
+    "signIn": "تسجيل الدخول",
+    "signOut": "تسجيل الخروج",
+    "register": "إنشاء حساب",
+    "orders": "الطلبات",
+    "profile": "الملف الشخصي",
+    "welcome": "مرحباً بعودتك"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ ما",
+    "viewAll": "عرض الكل",
+    "back": "رجوع",
+    "next": "التالي",
+    "confirm": "تأكيد",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "search": "البحث في المنتجات..."
+  }
+}
