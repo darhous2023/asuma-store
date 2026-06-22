@@ -52,6 +52,19 @@ module.exports = defineConfig({
           }
         ]
       }
-    }
+    },
+    // File storage — activates only when Supabase S3 credentials are present
+    ...(process.env.S3_ACCESS_KEY_ID ? [{
+      resolve: "@medusajs/file-s3",
+      options: {
+        s3_url: `https://${process.env.S3_ENDPOINT_HOST}/storage/v1/s3`,
+        bucket: process.env.S3_BUCKET || "asuma-products",
+        region: process.env.S3_REGION || "eu-central-1",
+        access_key_id: process.env.S3_ACCESS_KEY_ID,
+        secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
+        // Supabase Storage public URL prefix for serving files
+        file_url: `https://${process.env.S3_ENDPOINT_HOST}/storage/v1/object/public/${process.env.S3_BUCKET || "asuma-products"}`,
+      }
+    }] as any : [])
   ]
 })
