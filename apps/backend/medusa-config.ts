@@ -52,21 +52,6 @@ module.exports = defineConfig({
           }
         ]
       }
-    },
-    // File storage — Supabase Storage via S3-compatible API
-    ...(process.env.S3_ACCESS_KEY_ID ? [{
-      resolve: "@medusajs/file-s3",
-      options: {
-        file_url: `https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/${process.env.S3_BUCKET || "asuma-products"}`,
-        bucket: process.env.S3_BUCKET || "asuma-products",
-        region: process.env.S3_REGION || "eu-central-1",
-        access_key_id: process.env.S3_ACCESS_KEY_ID,
-        secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
-        endpoint: "https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/s3",
-        additional_client_config: {
-          forcePathStyle: true,
-        },
-      }
-    }] as any : [])
+    }
   ]
 })
