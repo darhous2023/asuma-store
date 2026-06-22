@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.16.0",
+    "@medusajs/file-s3": "2.16.0",
     "@medusajs/admin-shared": "2.16.0",
     "@medusajs/caching": "2.16.0",
     "@medusajs/caching-redis": "2.16.0",
