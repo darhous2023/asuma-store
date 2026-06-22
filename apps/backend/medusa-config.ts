@@ -33,7 +33,9 @@ module.exports = defineConfig({
     {
       resolve: "@medusajs/medusa/workflow-engine-redis",
       options: {
-        redisUrl: process.env.REDIS_URL,
+        redis: {
+          redisUrl: process.env.REDIS_URL,
+        }
       }
     },
     {
@@ -42,6 +44,7 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: "@medusajs/medusa/locking-redis",
+            id: "locking-redis",
             options: {
               redisUrl: process.env.REDIS_URL,
               waitLockingTimeout: 10,
