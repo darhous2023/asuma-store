@@ -6,7 +6,7 @@ import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
 export const metadata: Metadata = {
-  title: "Asuma Store | متجر عصومة",
+  title: "أسومة ستور | Asuma Store",
   description:
     "إكسسوارات · شعر · مكياج · عطور · هدايا فاخرة — القاهرة، مصر | Luxury beauty & accessories, Cairo Egypt.",
 }

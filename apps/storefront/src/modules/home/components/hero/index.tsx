@@ -52,7 +52,7 @@ const Hero = () => {
             letterSpacing: "-0.01em",
           }}
         >
-          متجر عصومة
+          أسومة ستور
         </h1>
 
         {/* English headline */}

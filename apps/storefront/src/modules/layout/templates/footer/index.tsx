@@ -183,15 +183,18 @@ export default async function Footer() {
             © {new Date().getFullYear()} Asuma Store · جميع الحقوق محفوظة
           </p>
 
-          <p className="font-sans text-xs text-ivory-muted">
+          <p
+            className="font-sans text-ivory-muted"
+            style={{ fontSize: "9px", letterSpacing: "0.12em", opacity: 0.38, textTransform: "uppercase" }}
+          >
             designed by{" "}
             <a
               href="mailto:ahmeddarhous@gmail.com"
-              className="text-gold-dark hover:text-gold transition-colors duration-200"
+              className="hover:opacity-70 transition-opacity duration-200"
+              style={{ color: "inherit" }}
             >
               Ahmed Darhous
-            </a>{" "}
-            ©
+            </a>
           </p>
         </div>
       </div>

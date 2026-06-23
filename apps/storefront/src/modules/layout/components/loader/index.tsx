@@ -4,13 +4,13 @@ import { useEffect, useRef, useState } from "react"
 
 export default function Loader() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [done, setDone] = useState(false)
+  const [phase, setPhase] = useState<"canvas" | "text" | "done">("canvas")
   const [progress, setProgress] = useState(0)
+  const [textVisible, setTextVisible] = useState(false)
 
   useEffect(() => {
-    // Skip if already shown this session
     if (sessionStorage.getItem("asuma_loader_done")) {
-      setDone(true)
+      setPhase("done")
       return
     }
 
@@ -24,132 +24,101 @@ export default function Loader() {
     const GOLD_BRIGHT = "#E5C882"
     const OBSIDIAN = "#060606"
 
-    // ─── "A" monogram target positions ───
-    const A_POINTS: Array<{ x: number; y: number }> = []
-    const cx = W / 2, cy = H / 2
-    const scale = Math.min(W, H) * 0.18
-
-    // left leg of A
-    for (let t = 0; t <= 1; t += 0.045) {
-      A_POINTS.push({ x: cx - scale * 0.5 + scale * 0.5 * t, y: cy + scale * 0.5 - scale * t })
-    }
-    // right leg of A
-    for (let t = 0; t <= 1; t += 0.045) {
-      A_POINTS.push({ x: cx + scale * 0.5 * t, y: cy - scale * 0.5 * t + scale * 0.5 })
-    }
-    // crossbar
-    for (let t = 0; t <= 1; t += 0.06) {
-      A_POINTS.push({ x: cx - scale * 0.25 + scale * 0.5 * t, y: cy + scale * 0.06 })
+    // ── Ring target points ──
+    const RING: Array<{ x: number; y: number }> = []
+    const cx = W / 2, cy = H / 2 - 40
+    const r = Math.min(W, H) * 0.12
+    for (let i = 0; i < 80; i++) {
+      const a = (i / 80) * Math.PI * 2
+      RING.push({ x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r })
     }
 
-    // ─── Particles ───
-    const N = A_POINTS.length + 30
-    interface Particle {
-      x: number; y: number; tx: number; ty: number
-      vx: number; vy: number; alpha: number; size: number
-      color: string; inA: boolean
-    }
-    const particles: Particle[] = []
+    // ── Particles ──
+    interface P { x: number; y: number; tx: number; ty: number; vx: number; vy: number; alpha: number; size: number; color: string }
+    const particles: P[] = []
+    const N = RING.length + 40
 
     for (let i = 0; i < N; i++) {
-      const inA = i < A_POINTS.length
+      const inRing = i < RING.length
       particles.push({
         x: Math.random() * W,
-        y: -20 - Math.random() * H * 0.5,
-        tx: inA ? A_POINTS[i].x : cx + (Math.random() - 0.5) * scale * 2.4,
-        ty: inA ? A_POINTS[i].y : cy + (Math.random() - 0.5) * scale * 2.4,
-        vx: (Math.random() - 0.5) * 1.2,
-        vy: Math.random() * 2 + 0.8,
-        alpha: Math.random() * 0.6 + 0.3,
+        y: -30 - Math.random() * H * 0.6,
+        tx: inRing ? RING[i].x : cx + (Math.random() - 0.5) * r * 3,
+        ty: inRing ? RING[i].y : cy + (Math.random() - 0.5) * r * 3,
+        vx: (Math.random() - 0.5) * 1.5,
+        vy: Math.random() * 2.5 + 0.8,
+        alpha: Math.random() * 0.5 + 0.4,
         size: Math.random() * 2 + 0.8,
-        color: Math.random() > 0.5 ? GOLD : GOLD_BRIGHT,
-        inA,
+        color: Math.random() > 0.4 ? GOLD : GOLD_BRIGHT,
       })
     }
 
-    let prog = 0
     let rafId: number
-    let phase: "rain" | "coalesce" | "hold" | "exit" = "rain"
-    let phaseTimer = 0
+    let animPhase: "rain" | "coalesce" | "hold" = "rain"
+    let timer = 0
+
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t
+    const ease = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
 
     const draw = () => {
       ctx.fillStyle = OBSIDIAN
       ctx.fillRect(0, 0, W, H)
 
-      const lerp = (a: number, b: number, t: number) => a + (b - a) * t
-      const ease = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
-
-      if (phase === "rain") {
-        phaseTimer++
-        prog = Math.min(phaseTimer / 80, 0.38)
-        particles.forEach((p) => {
-          p.y += p.vy
-          p.x += p.vx
+      if (animPhase === "rain") {
+        timer++
+        setProgress(Math.round((timer / 70) * 38))
+        particles.forEach(p => {
+          p.y += p.vy; p.x += p.vx
           if (p.y > H + 20) { p.y = -20; p.x = Math.random() * W }
-          ctx.globalAlpha = p.alpha * 0.7
+          ctx.globalAlpha = p.alpha * 0.65
           ctx.fillStyle = p.color
-          ctx.beginPath()
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-          ctx.fill()
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill()
         })
-        if (phaseTimer >= 80) { phase = "coalesce"; phaseTimer = 0 }
-      } else if (phase === "coalesce") {
-        phaseTimer++
-        const t = Math.min(phaseTimer / 90, 1)
-        prog = 0.38 + t * 0.52
-        particles.forEach((p) => {
-          p.x = lerp(p.x, p.tx, ease(t) * 0.08)
-          p.y = lerp(p.y, p.ty, ease(t) * 0.08)
+        if (timer >= 70) { animPhase = "coalesce"; timer = 0 }
+
+      } else if (animPhase === "coalesce") {
+        timer++
+        const t = Math.min(timer / 80, 1)
+        setProgress(Math.round(38 + t * 52))
+        particles.forEach(p => {
+          p.x = lerp(p.x, p.tx, ease(t) * 0.1)
+          p.y = lerp(p.y, p.ty, ease(t) * 0.1)
           ctx.globalAlpha = p.alpha
           ctx.fillStyle = p.color
-          ctx.beginPath()
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-          ctx.fill()
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill()
         })
-        // Draw gold ring that appears at 70%+
-        if (t > 0.6) {
-          const ringAlpha = (t - 0.6) / 0.4
-          ctx.globalAlpha = ringAlpha * 0.6
-          ctx.strokeStyle = GOLD
-          ctx.lineWidth = 1
-          ctx.beginPath()
-          ctx.arc(cx, cy, scale * 0.72, 0, Math.PI * 2)
-          ctx.stroke()
+        if (t > 0.55) {
+          ctx.globalAlpha = ((t - 0.55) / 0.45) * 0.5
+          ctx.strokeStyle = GOLD; ctx.lineWidth = 1
+          ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke()
         }
-        if (phaseTimer >= 90) { phase = "hold"; phaseTimer = 0 }
-      } else if (phase === "hold") {
-        phaseTimer++
-        prog = 0.9 + (phaseTimer / 30) * 0.1
-        particles.forEach((p) => {
+        if (timer >= 80) { animPhase = "hold"; timer = 0 }
+
+      } else {
+        timer++
+        setProgress(90 + Math.round((timer / 25) * 10))
+        particles.forEach(p => {
           ctx.globalAlpha = p.alpha
           ctx.fillStyle = p.color
-          ctx.beginPath()
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-          ctx.fill()
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill()
         })
-        ctx.globalAlpha = 0.6
-        ctx.strokeStyle = GOLD
-        ctx.lineWidth = 1
-        ctx.beginPath()
-        ctx.arc(cx, cy, scale * 0.72, 0, Math.PI * 2)
-        ctx.stroke()
-        if (phaseTimer >= 30) { phase = "exit"; phaseTimer = 0 }
-      } else if (phase === "exit") {
-        phaseTimer++
-        const t = Math.min(phaseTimer / 20, 1)
-        ctx.globalAlpha = 1 - t
-        ctx.fillStyle = OBSIDIAN
-        ctx.fillRect(0, 0, W, H)
-        if (t >= 1) {
+        ctx.globalAlpha = 0.5; ctx.strokeStyle = GOLD; ctx.lineWidth = 1
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke()
+
+        if (timer >= 25) {
+          ctx.globalAlpha = 1
           cancelAnimationFrame(rafId)
-          sessionStorage.setItem("asuma_loader_done", "1")
-          setDone(true)
+          setPhase("text")
+          setTimeout(() => setTextVisible(true), 80)
+          setTimeout(() => {
+            sessionStorage.setItem("asuma_loader_done", "1")
+            setPhase("done")
+          }, 2200)
           return
         }
       }
 
       ctx.globalAlpha = 1
-      setProgress(Math.round(prog * 100))
       rafId = requestAnimationFrame(draw)
     }
 
@@ -157,56 +126,94 @@ export default function Loader() {
     return () => cancelAnimationFrame(rafId)
   }, [])
 
-  if (done) return null
+  if (phase === "done") return null
 
   return (
     <div
       style={{
-        position: "fixed",
-        inset: 0,
-        backgroundColor: "var(--obsidian)",
-        zIndex: 9998,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        position: "fixed", inset: 0, zIndex: 9999,
+        backgroundColor: "var(--obsidian, #060606)",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
         overflow: "hidden",
       }}
     >
-      <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%" }} />
+      {/* Canvas phase */}
+      {phase === "canvas" && (
+        <canvas
+          ref={canvasRef}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+        />
+      )}
+
+      {/* Text phase */}
+      {phase === "text" && (
+        <div
+          style={{
+            display: "flex", flexDirection: "column", alignItems: "center",
+            textAlign: "center", gap: "16px",
+            opacity: textVisible ? 1 : 0,
+            transition: "opacity 0.6s cubic-bezier(0.16,1,0.3,1)",
+          }}
+        >
+          {/* Gold ring decoration */}
+          <div style={{
+            width: "56px", height: "1px",
+            background: "linear-gradient(90deg, transparent, var(--gold, #C9A96E), transparent)",
+            marginBottom: "8px",
+          }} />
+
+          {/* Store name */}
+          <h1 style={{
+            fontFamily: "var(--font-cormorant), serif",
+            fontSize: "clamp(2.8rem, 8vw, 5.5rem)",
+            fontWeight: 300, fontStyle: "italic",
+            letterSpacing: "0.18em", textTransform: "uppercase",
+            color: "var(--ivory, #F5F0E8)",
+            lineHeight: 1, margin: 0,
+          }}>
+            Asuma Store
+          </h1>
+
+          {/* Owner name */}
+          <p style={{
+            fontFamily: "var(--font-space-grotesk), sans-serif",
+            fontSize: "clamp(0.85rem, 2vw, 1.1rem)",
+            fontWeight: 300, letterSpacing: "0.22em",
+            color: "var(--gold, #C9A96E)",
+            textTransform: "uppercase",
+            opacity: 0.85, margin: 0,
+          }}>
+            By Asmaa Farouk
+          </p>
+
+          {/* Bottom divider */}
+          <div style={{
+            width: "56px", height: "1px",
+            background: "linear-gradient(90deg, transparent, var(--gold-border, rgba(201,169,110,0.25)), transparent)",
+            marginTop: "4px",
+          }} />
+        </div>
+      )}
 
       {/* Progress bar */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          height: "2px",
-          width: `${progress}%`,
-          background: "linear-gradient(90deg, var(--gold-dark), var(--gold-bright))",
-          transition: "width 0.1s linear",
-        }}
-      />
+      <div style={{
+        position: "absolute", bottom: 0, left: 0,
+        height: "2px", width: `${progress}%`,
+        background: "linear-gradient(90deg, var(--gold-dark, #8B7040), var(--gold-bright, #E5C882))",
+        transition: "width 0.12s linear",
+      }} />
 
-      {/* Signature */}
-      <p
-        style={{
-          position: "absolute",
-          bottom: "24px",
-          fontFamily: "var(--font-space-grotesk), sans-serif",
-          fontSize: "10px",
-          letterSpacing: "0.2em",
-          color: "var(--gold-dark, #8B7040)",
-          textTransform: "uppercase",
-        }}
-      >
-        designed by{" "}
-        <a
-          href="mailto:ahmeddarhous@gmail.com"
-          style={{ color: "var(--gold, #C9A96E)", textDecoration: "none" }}
-        >
-          Ahmed Darhous
-        </a>
+      {/* Developer credit — absolute bottom, very small */}
+      <p style={{
+        position: "absolute", bottom: "18px",
+        fontFamily: "var(--font-space-grotesk), sans-serif",
+        fontSize: "9px", letterSpacing: "0.18em",
+        color: "var(--ivory-muted, #7A6A5A)",
+        opacity: 0.38, textTransform: "uppercase",
+        userSelect: "none",
+      }}>
+        designed by Ahmed Darhous
       </p>
     </div>
   )
