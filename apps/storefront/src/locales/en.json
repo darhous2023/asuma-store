@@ -1,17 +1,31 @@
 {
+  "storeName": "Asuma Store",
+  "storeTagline": "Luxury beauty & accessories · Cairo, Egypt",
   "nav": {
+    "menu": "Menu",
     "store": "Store",
     "search": "Search",
     "account": "Account",
     "cart": "Cart"
   },
+  "hero": {
+    "eyebrow": "Cairo · Egypt · Est. 2024",
+    "headlineAr": "متجر عصومة",
+    "headlineEn": "Asuma Store",
+    "tagline": "Accessories · Hair · Makeup · Perfumes · Gifts",
+    "ctaPrimary": "Shop Now",
+    "ctaSecondary": "Explore Collection"
+  },
   "footer": {
-    "company": "Company",
-    "about": "About",
+    "categories": "Categories",
+    "info": "Info",
     "contact": "Contact",
-    "legal": "Legal",
+    "about": "About Us",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "shipping": "Shipping & Returns",
+    "rights": "All rights reserved",
+    "designedBy": "designed by"
   },
   "product": {
     "addToCart": "Add to Cart",
@@ -31,6 +45,7 @@
   },
   "checkout": {
     "title": "Checkout",
+    "backToCart": "Back to cart",
     "shipping": "Shipping",
     "payment": "Payment",
     "review": "Review",
@@ -50,7 +65,10 @@
     "register": "Register",
     "orders": "Orders",
     "profile": "Profile",
-    "welcome": "Welcome back"
+    "welcome": "Welcome back",
+    "joinTitle": "Join Asuma Store",
+    "joinSubtitle": "Create your account and get access to an enhanced shopping experience.",
+    "agreeText": "By creating an account, you agree to Asuma Store's"
   },
   "common": {
     "loading": "Loading...",

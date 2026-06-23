@@ -2,6 +2,49 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* ─── Golden Noir Cinema Design System ─── */
+:root {
+  --obsidian: #060606;
+  --carbon: #0D0B08;
+  --carbon-2: #141210;
+  --carbon-3: #1C1917;
+  --gold: #C9A96E;
+  --gold-bright: #E5C882;
+  --gold-dark: #8B7040;
+  --gold-muted: rgba(201, 169, 110, 0.12);
+  --gold-border: rgba(201, 169, 110, 0.25);
+  --ivory: #F5F0E8;
+  --ivory-dim: #B8A898;
+  --ivory-muted: #7A6A5A;
+  --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body {
+  background-color: var(--obsidian);
+  color: var(--ivory);
+}
+
+/* ─── Luxury link transitions ─── */
+a {
+  transition: color 0.2s var(--ease-luxury), opacity 0.2s var(--ease-luxury);
+}
+
+/* ─── Gold shimmer keyframe ─── */
+@keyframes gold-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0);   }
+  50%       { transform: translateY(6px); }
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {

@@ -1,157 +1,232 @@
-import { listCategories } from "@lib/data/categories";
-import { listCollections } from "@lib/data/collections";
-import { Text, clx } from "@modules/common/components/ui";
+import { listCategories } from "@lib/data/categories"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import AsumaLogo from "@modules/common/components/asuma-logo"
 
-import LocalizedClientLink from "@modules/common/components/localized-client-link";
-import MedusaCTA from "@modules/layout/components/medusa-cta";
+const SOCIAL_LINKS = [
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/darhous/",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="5"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+    ),
+  },
+  {
+    name: "Facebook",
+    href: "https://www.facebook.com/ahmed.darhous",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+      </svg>
+    ),
+  },
+  {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/in/darhous/",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+        <rect x="2" y="9" width="4" height="12"/>
+        <circle cx="4" cy="4" r="2"/>
+      </svg>
+    ),
+  },
+  {
+    name: "WhatsApp",
+    href: "https://wa.me/201030002331",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+      </svg>
+    ),
+  },
+]
+
+const INFO_LINKS = [
+  { labelAr: "من نحن",                    labelEn: "About Us",           href: "/content/about" },
+  { labelAr: "تواصل معنا",               labelEn: "Contact",             href: "/content/contact" },
+  { labelAr: "سياسة الخصوصية",          labelEn: "Privacy Policy",      href: "/content/privacy-policy" },
+  { labelAr: "الشروط والأحكام",         labelEn: "Terms of Service",    href: "/content/terms-of-use" },
+  { labelAr: "الشحن والاستبدال والإرجاع", labelEn: "Shipping & Returns", href: "/content/shipping-policy" },
+]
 
 export default async function Footer() {
-  const { collections } = await listCollections({
-    fields: "*products",
-  });
-  const productCategories = await listCategories();
+  const productCategories = await listCategories()
+
+  const mainCategories = productCategories?.filter((c) => !c.parent_category) ?? []
 
   return (
-    <footer className="border-t border-ui-border-base w-full">
-      <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
-          <div>
-            <LocalizedClientLink
-              href="/"
-              className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
-            >
-              Medusa Store
+    <footer
+      style={{
+        backgroundColor: "var(--carbon)",
+        borderTop: "1px solid var(--gold-border)",
+      }}
+    >
+      <div className="content-container py-16">
+        {/* ── Main grid ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+
+          {/* Col 1 — Brand */}
+          <div className="flex flex-col gap-6">
+            <LocalizedClientLink href="/">
+              <AsumaLogo size={40} showText={true} />
             </LocalizedClientLink>
-          </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-            {productCategories && productCategories?.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Categories
-                </span>
-                <ul
-                  className="grid grid-cols-1 gap-2"
-                  data-testid="footer-categories"
-                >
-                  {productCategories?.slice(0, 6).map((c) => {
-                    if (c.parent_category) {
-                      return;
-                    }
+            <p
+              className="font-sans leading-relaxed text-sm"
+              style={{ color: "var(--ivory-muted)", maxWidth: "220px" }}
+            >
+              متجر إكسسوارات ومستحضرات تجميل فاخر · القاهرة، مصر
+            </p>
+            <p
+              className="font-sans text-xs"
+              style={{ color: "var(--ivory-muted)" }}
+            >
+              Luxury beauty &amp; accessories · Cairo, Egypt
+            </p>
 
-                    const children =
-                      c.category_children?.map((child) => ({
-                        name: child.name,
-                        handle: child.handle,
-                        id: child.id,
-                      })) || null;
-
-                    return (
-                      <li
-                        className="flex flex-col gap-2 text-ui-fg-subtle txt-small"
-                        key={c.id}
-                      >
-                        <LocalizedClientLink
-                          className={clx(
-                            "hover:text-ui-fg-base",
-                            children && "txt-small-plus"
-                          )}
-                          href={`/categories/${c.handle}`}
-                          data-testid="category-link"
-                        >
-                          {c.name}
-                        </LocalizedClientLink>
-                        {children && (
-                          <ul className="grid grid-cols-1 ml-3 gap-2">
-                            {children &&
-                              children.map((child) => (
-                                <li key={child.id}>
-                                  <LocalizedClientLink
-                                    className="hover:text-ui-fg-base"
-                                    href={`/categories/${child.handle}`}
-                                    data-testid="category-link"
-                                  >
-                                    {child.name}
-                                  </LocalizedClientLink>
-                                </li>
-                              ))}
-                          </ul>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            )}
-            {collections && collections.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Collections
-                </span>
-                <ul
-                  className={clx(
-                    "grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small",
-                    {
-                      "grid-cols-2": (collections?.length || 0) > 3,
-                    }
-                  )}
+            {/* Social icons */}
+            <div className="flex items-center gap-4 mt-2">
+              {SOCIAL_LINKS.map((s) => (
+                <a
+                  key={s.name}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.name}
+                  className="transition-colors duration-200"
+                  style={{ color: "var(--ivory-muted)" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ivory-muted)")}
                 >
-                  {collections?.slice(0, 6).map((c) => (
-                    <li key={c.id}>
-                      <LocalizedClientLink
-                        className="hover:text-ui-fg-base"
-                        href={`/collections/${c.handle}`}
-                      >
-                        {c.title}
-                      </LocalizedClientLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Medusa</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
-                <li>
-                  <a
-                    href="https://github.com/medusajs"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://docs.medusajs.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Documentation
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/medusajs/dtc-starter"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Source code
-                  </a>
-                </li>
-              </ul>
+                  {s.icon}
+                </a>
+              ))}
             </div>
           </div>
+
+          {/* Col 2 — Categories */}
+          <div className="flex flex-col gap-4">
+            <h3
+              className="font-sans text-xs uppercase tracking-[0.2em]"
+              style={{ color: "var(--gold)" }}
+            >
+              الأقسام
+            </h3>
+            <ul className="flex flex-col gap-3">
+              {mainCategories.slice(0, 6).map((c) => (
+                <li key={c.id}>
+                  <LocalizedClientLink
+                    href={`/categories/${c.handle}`}
+                    className="font-sans text-sm transition-colors duration-200"
+                    style={{ color: "var(--ivory-dim)" }}
+                    data-testid="footer-category-link"
+                  >
+                    {c.name}
+                  </LocalizedClientLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 3 — Info links */}
+          <div className="flex flex-col gap-4">
+            <h3
+              className="font-sans text-xs uppercase tracking-[0.2em]"
+              style={{ color: "var(--gold)" }}
+            >
+              معلومات
+            </h3>
+            <ul className="flex flex-col gap-3">
+              {INFO_LINKS.map((link) => (
+                <li key={link.href}>
+                  <LocalizedClientLink
+                    href={link.href}
+                    className="font-sans text-sm transition-colors duration-200"
+                    style={{ color: "var(--ivory-dim)" }}
+                  >
+                    {link.labelAr}
+                  </LocalizedClientLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 4 — Contact info */}
+          <div className="flex flex-col gap-4">
+            <h3
+              className="font-sans text-xs uppercase tracking-[0.2em]"
+              style={{ color: "var(--gold)" }}
+            >
+              تواصل معنا
+            </h3>
+            <ul className="flex flex-col gap-3">
+              <li>
+                <a
+                  href="https://wa.me/201030002331"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-sans text-sm transition-colors duration-200"
+                  style={{ color: "var(--ivory-dim)" }}
+                >
+                  WhatsApp: +20 103 000 2331
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:ahmeddarhous@gmail.com"
+                  className="font-sans text-sm transition-colors duration-200"
+                  style={{ color: "var(--ivory-dim)" }}
+                >
+                  ahmeddarhous@gmail.com
+                </a>
+              </li>
+              <li
+                className="font-sans text-sm"
+                style={{ color: "var(--ivory-muted)" }}
+              >
+                القاهرة، مصر
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
-          <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Medusa Store. All rights reserved.
-          </Text>
-          <MedusaCTA />
+
+        {/* ── Divider ── */}
+        <div
+          aria-hidden="true"
+          style={{
+            height: "1px",
+            background: "linear-gradient(90deg, transparent, var(--gold-border), transparent)",
+            marginBottom: "1.5rem",
+          }}
+        />
+
+        {/* ── Bottom bar ── */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p
+            className="font-sans text-xs"
+            style={{ color: "var(--ivory-muted)", letterSpacing: "0.05em" }}
+          >
+            © {new Date().getFullYear()} Asuma Store · جميع الحقوق محفوظة
+          </p>
+
+          <p className="font-sans text-xs" style={{ color: "var(--ivory-muted)" }}>
+            designed by{" "}
+            <a
+              href="mailto:ahmeddarhous@gmail.com"
+              className="transition-colors duration-200"
+              style={{ color: "var(--gold-dark)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--gold-dark)")}
+            >
+              Ahmed Darhous
+            </a>{" "}
+            ©
+          </p>
         </div>
       </div>
     </footer>
-  );
+  )
 }

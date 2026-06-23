@@ -126,9 +126,8 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                           )}
                         />
                       </div>
-                      <Text className="flex justify-between txt-compact-small">
-                        © {new Date().getFullYear()} Medusa Store. All rights
-                        reserved.
+                      <Text className="flex justify-between txt-compact-small" style={{ color: "var(--ivory-muted)" }}>
+                        © {new Date().getFullYear()} Asuma Store
                       </Text>
                     </div>
                   </div>

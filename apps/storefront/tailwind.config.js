@@ -33,6 +33,17 @@ module.exports = {
           80: "#1F2937",
           90: "#111827",
         },
+        /* Golden Noir Cinema palette */
+        obsidian:  "#060606",
+        carbon:    "#0D0B08",
+        "carbon-2": "#141210",
+        "carbon-3": "#1C1917",
+        gold:      "#C9A96E",
+        "gold-bright": "#E5C882",
+        "gold-dark":   "#8B7040",
+        ivory:     "#F5F0E8",
+        "ivory-dim":   "#B8A898",
+        "ivory-muted": "#7A6A5A",
       },
       borderRadius: {
         none: "0px",
@@ -59,13 +70,18 @@ module.exports = {
       },
       fontFamily: {
         sans: [
-          "Inter",
+          "var(--font-space-grotesk)",
+          "system-ui",
           "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Roboto",
-          "Helvetica Neue",
-          "Ubuntu",
+          "sans-serif",
+        ],
+        display: [
+          "var(--font-cormorant)",
+          "Georgia",
+          "serif",
+        ],
+        arabic: [
+          "var(--font-arabic)",
           "sans-serif",
         ],
       },

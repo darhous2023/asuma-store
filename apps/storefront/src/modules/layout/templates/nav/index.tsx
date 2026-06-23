@@ -8,6 +8,7 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import LanguageSwitcher from "@modules/layout/components/language-switcher"
+import AsumaLogo from "@modules/common/components/asuma-logo"
 
 export default async function Nav() {
   const [regions, locales, currentLocale] = await Promise.all([
@@ -17,44 +18,49 @@ export default async function Nav() {
   ])
 
   return (
-    <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base">
-        <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
+    <div className="sticky top-0 inset-x-0 z-50">
+      <header
+        className="relative h-16 mx-auto duration-200"
+        style={{
+          backgroundColor: "var(--obsidian)",
+          borderBottom: "1px solid var(--gold-border)",
+        }}
+      >
+        <nav className="content-container flex items-center justify-between w-full h-full">
+          {/* Left — hamburger menu */}
           <div className="flex-1 basis-0 h-full flex items-center">
             <div className="h-full">
               <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} />
             </div>
           </div>
 
+          {/* Center — Asuma logo */}
           <div className="flex items-center h-full">
-            <LocalizedClientLink
-              href="/"
-              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
-              data-testid="nav-store-link"
-            >
-              Medusa Store
+            <LocalizedClientLink href="/" data-testid="nav-store-link">
+              <AsumaLogo size={32} showText={true} />
             </LocalizedClientLink>
           </div>
 
+          {/* Right — lang + account + cart */}
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
             <div className="hidden small:flex items-center gap-x-6 h-full">
               <LanguageSwitcher />
               <LocalizedClientLink
-                className="hover:text-ui-fg-base"
+                className="text-ivory-dim hover:text-gold transition-colors duration-200 text-sm tracking-wide"
                 href="/account"
                 data-testid="nav-account-link"
               >
-                Account
+                {currentLocale === "ar" ? "حسابي" : "Account"}
               </LocalizedClientLink>
             </div>
             <Suspense
               fallback={
                 <LocalizedClientLink
-                  className="hover:text-ui-fg-base flex gap-2"
+                  className="text-ivory-dim hover:text-gold transition-colors duration-200 text-sm flex gap-2"
                   href="/cart"
                   data-testid="nav-cart-link"
                 >
-                  Cart (0)
+                  {currentLocale === "ar" ? "السلة (0)" : "Cart (0)"}
                 </LocalizedClientLink>
               }
             >

@@ -6,9 +6,9 @@ import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
+  title: "Asuma Store | متجر عصومة",
   description:
-    "A performant frontend ecommerce starter template with Next.js 15 and Medusa.",
+    "إكسسوارات · شعر · مكياج · عطور · هدايا فاخرة — القاهرة، مصر | Luxury beauty & accessories, Cairo Egypt.",
 }
 
 export default async function Home(props: {
