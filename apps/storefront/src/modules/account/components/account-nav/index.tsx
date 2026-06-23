@@ -26,78 +26,61 @@ const AccountNav = ({
 
   return (
     <div>
+      {/* Mobile nav */}
       <div className="small:hidden" data-testid="mobile-account-nav">
         {route !== `/${countryCode}/account` ? (
           <LocalizedClientLink
             href="/account"
-            className="flex items-center gap-x-2 text-small-regular py-2"
+            className="flex items-center gap-x-2 text-sm py-2 transition-colors duration-200"
+            style={{ color: "var(--gold)" }}
             data-testid="account-main-link"
           >
-            <>
-              <ChevronDown className="transform rotate-90" />
-              <span>Account</span>
-            </>
+            <ChevronDown className="transform rotate-90" />
+            <span>حسابي</span>
           </LocalizedClientLink>
         ) : (
           <>
-            <div className="text-xl-semi mb-4 px-8">
-              Hello {customer?.first_name}
+            <div
+              className="text-lg mb-4"
+              style={{ color: "var(--ivory)", fontFamily: "var(--font-display)" }}
+            >
+              مرحباً، {customer?.first_name}
             </div>
-            <div className="text-base-regular">
+            <div className="text-sm">
               <ul>
-                <li>
-                  <LocalizedClientLink
-                    href="/account/profile"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
-                    data-testid="profile-link"
-                  >
-                    <>
+                {[
+                  { href: "/account/profile", label: "الملف الشخصي", icon: <User size={18} /> },
+                  { href: "/account/addresses", label: "العناوين", icon: <MapPin size={18} /> },
+                  { href: "/account/orders", label: "الطلبات", icon: <Package size={18} /> },
+                ].map(({ href, label, icon }) => (
+                  <li key={href}>
+                    <LocalizedClientLink
+                      href={href}
+                      className="flex items-center justify-between py-4 px-4 transition-colors duration-200"
+                      style={{
+                        borderBottom: "1px solid var(--gold-border)",
+                        color: "var(--ivory-dim)",
+                      }}
+                    >
                       <div className="flex items-center gap-x-2">
-                        <User size={20} />
-                        <span>Profile</span>
+                        {icon}
+                        <span>{label}</span>
                       </div>
                       <ChevronDown className="transform -rotate-90" />
-                    </>
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink
-                    href="/account/addresses"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
-                    data-testid="addresses-link"
-                  >
-                    <>
-                      <div className="flex items-center gap-x-2">
-                        <MapPin size={20} />
-                        <span>Addresses</span>
-                      </div>
-                      <ChevronDown className="transform -rotate-90" />
-                    </>
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink
-                    href="/account/orders"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
-                    data-testid="orders-link"
-                  >
-                    <div className="flex items-center gap-x-2">
-                      <Package size={20} />
-                      <span>Orders</span>
-                    </div>
-                    <ChevronDown className="transform -rotate-90" />
-                  </LocalizedClientLink>
-                </li>
+                    </LocalizedClientLink>
+                  </li>
+                ))}
                 <li>
                   <button
                     type="button"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8 w-full"
+                    className="flex items-center justify-between py-4 px-4 w-full transition-colors duration-200"
+                    style={{ color: "var(--ivory-muted)" }}
                     onClick={handleLogout}
                     data-testid="logout-button"
                   >
                     <div className="flex items-center gap-x-2">
                       <ArrowRightOnRectangle />
-                      <span>Log out</span>
+                      <span>تسجيل الخروج</span>
                     </div>
                     <ChevronDown className="transform -rotate-90" />
                   </button>
@@ -107,61 +90,44 @@ const AccountNav = ({
           </>
         )}
       </div>
-      <div className="hidden small:block" data-testid="account-nav">
-        <div>
-          <div className="pb-4">
-            <h3 className="text-base-semi">Account</h3>
-          </div>
-          <div className="text-base-regular">
-            <ul className="flex mb-0 justify-start items-start flex-col gap-y-4">
-              <li>
-                <AccountNavLink
-                  href="/account"
-                  route={route!}
-                  data-testid="overview-link"
-                >
-                  Overview
-                </AccountNavLink>
-              </li>
-              <li>
-                <AccountNavLink
-                  href="/account/profile"
-                  route={route!}
-                  data-testid="profile-link"
-                >
-                  Profile
-                </AccountNavLink>
-              </li>
-              <li>
-                <AccountNavLink
-                  href="/account/addresses"
-                  route={route!}
-                  data-testid="addresses-link"
-                >
-                  Addresses
-                </AccountNavLink>
-              </li>
-              <li>
-                <AccountNavLink
-                  href="/account/orders"
-                  route={route!}
-                  data-testid="orders-link"
-                >
-                  Orders
-                </AccountNavLink>
-              </li>
-              <li className="text-grey-700">
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  data-testid="logout-button"
-                >
-                  Log out
-                </button>
-              </li>
-            </ul>
-          </div>
+
+      {/* Desktop nav */}
+      <div
+        className="hidden small:block p-6"
+        style={{ backgroundColor: "var(--carbon)", border: "1px solid var(--gold-border)" }}
+        data-testid="account-nav"
+      >
+        <div
+          className="text-xs uppercase tracking-[0.2em] mb-4"
+          style={{ color: "var(--gold-dark)" }}
+        >
+          القائمة
         </div>
+        <ul className="flex flex-col gap-y-1">
+          {[
+            { href: "/account", label: "نظرة عامة" },
+            { href: "/account/profile", label: "الملف الشخصي" },
+            { href: "/account/addresses", label: "العناوين" },
+            { href: "/account/orders", label: "الطلبات" },
+          ].map(({ href, label }) => (
+            <li key={href}>
+              <AccountNavLink href={href} route={route!}>
+                {label}
+              </AccountNavLink>
+            </li>
+          ))}
+          <li className="mt-4 pt-4" style={{ borderTop: "1px solid var(--gold-border)" }}>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="text-sm transition-colors duration-200 w-full text-right"
+              style={{ color: "var(--ivory-muted)" }}
+              data-testid="logout-button"
+            >
+              تسجيل الخروج
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   )
@@ -186,9 +152,12 @@ const AccountNavLink = ({
   return (
     <LocalizedClientLink
       href={href}
-      className={clx("text-ui-fg-subtle hover:text-ui-fg-base", {
-        "text-ui-fg-base font-semibold": active,
-      })}
+      className="block text-sm py-2 px-2 transition-colors duration-200"
+      style={{
+        color: active ? "var(--gold)" : "var(--ivory-dim)",
+        borderLeft: active ? "2px solid var(--gold)" : "2px solid transparent",
+        paddingLeft: "0.75rem",
+      }}
       data-testid={dataTestId}
     >
       {children}

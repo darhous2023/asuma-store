@@ -17,42 +17,53 @@ const Register = ({ setCurrentView }: Props) => {
 
   return (
     <div
-      className="max-w-sm flex flex-col items-center"
+      className="w-full max-w-sm flex flex-col items-center p-8"
+      style={{ backgroundColor: "var(--carbon)", border: "1px solid var(--gold-border)" }}
       data-testid="register-page"
     >
-      <h1 className="text-large-semi uppercase mb-6">
-        انضم إلى متجر عصومة
-      </h1>
-      <p className="text-center text-base-regular text-ui-fg-base mb-4">
-        أنشئ حسابك في Asuma Store واحصل على تجربة تسوق متميزة.
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-2">
+        <div style={{ width: "24px", height: "1px", background: "var(--gold-border)" }} />
+        <h1
+          className="font-display font-light italic uppercase"
+          style={{ color: "var(--ivory)", letterSpacing: "0.18em", fontSize: "1.3rem" }}
+        >
+          إنشاء حساب
+        </h1>
+        <div style={{ width: "24px", height: "1px", background: "var(--gold-border)" }} />
+      </div>
+      <p className="text-center text-sm mb-6" style={{ color: "var(--ivory-muted)" }}>
+        انضم إلى أسومة ستور واستمتع بتجربة تسوق مميزة
       </p>
+
       {message?.state === "verification_required" && (
         <div
-          className="w-full mb-4 text-center text-base-regular text-ui-fg-base bg-ui-bg-subtle border border-ui-border-base rounded-rounded p-4"
+          className="w-full mb-4 text-center text-sm p-4"
+          style={{ backgroundColor: "var(--carbon-2)", border: "1px solid var(--gold-border)", color: "var(--ivory-dim)" }}
           data-testid="register-verification-message"
         >
-          We sent a verification link to <strong>{message.email}</strong>.
-          Please check your inbox to verify your email, then sign in.
+          تم إرسال رابط التحقق إلى <strong style={{ color: "var(--gold)" }}>{message.email}</strong>. يرجى التحقق من بريدك ثم تسجيل الدخول.
         </div>
       )}
+
       <form className="w-full flex flex-col" action={formAction}>
         <div className="flex flex-col w-full gap-y-2">
           <Input
-            label="First name"
+            label="الاسم الأول"
             name="first_name"
             required
             autoComplete="given-name"
             data-testid="first-name-input"
           />
           <Input
-            label="Last name"
+            label="اسم العائلة"
             name="last_name"
             required
             autoComplete="family-name"
             data-testid="last-name-input"
           />
           <Input
-            label="Email"
+            label="البريد الإلكتروني"
             name="email"
             required
             type="email"
@@ -60,14 +71,14 @@ const Register = ({ setCurrentView }: Props) => {
             data-testid="email-input"
           />
           <Input
-            label="Phone"
+            label="رقم الهاتف"
             name="phone"
             type="tel"
             autoComplete="tel"
             data-testid="phone-input"
           />
           <Input
-            label="Password"
+            label="كلمة المرور"
             name="password"
             required
             type="password"
@@ -79,36 +90,38 @@ const Register = ({ setCurrentView }: Props) => {
           error={message?.state === "error" ? message.error : null}
           data-testid="register-error"
         />
-        <span className="text-center text-ui-fg-base text-small-regular mt-6">
-          By creating an account, you agree to Asuma Store&apos;s{" "}
+        <span className="text-center text-xs mt-6" style={{ color: "var(--ivory-muted)" }}>
+          بإنشاء حساب، أنت توافق على{" "}
           <LocalizedClientLink
             href="/content/privacy-policy"
-            className="underline"
+            className="transition-colors duration-200"
+            style={{ color: "var(--gold)", textDecoration: "underline" }}
           >
-            Privacy Policy
+            سياسة الخصوصية
           </LocalizedClientLink>{" "}
-          and{" "}
+          و{" "}
           <LocalizedClientLink
             href="/content/terms-of-use"
-            className="underline"
+            className="transition-colors duration-200"
+            style={{ color: "var(--gold)", textDecoration: "underline" }}
           >
-            Terms of Use
+            شروط الاستخدام
           </LocalizedClientLink>
-          .
         </span>
         <SubmitButton className="w-full mt-6" data-testid="register-button">
-          Join
+          إنشاء حساب
         </SubmitButton>
       </form>
-      <span className="text-center text-ui-fg-base text-small-regular mt-6">
-        Already a member?{" "}
+
+      <span className="text-center text-sm mt-6" style={{ color: "var(--ivory-muted)" }}>
+        لديك حساب بالفعل؟{" "}
         <button
           onClick={() => setCurrentView(LOGIN_VIEW.SIGN_IN)}
-          className="underline"
+          className="transition-colors duration-200"
+          style={{ color: "var(--gold)", textDecoration: "underline" }}
         >
-          Sign in
+          تسجيل الدخول
         </button>
-        .
       </span>
     </div>
   )
