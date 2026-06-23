@@ -225,10 +225,11 @@ Choose one option:
 | Counter | Value |
 |---|---|
 | Group 1 stations completed | **5 of 5 — GROUP 1 COMPLETE** (S0 ✅ S1 ✅ S2 ✅ S3 ✅ S4 ✅) |
-| Group 2 stations completed | **S5 ✅ S6 ✅ S7 ✅ S8 ✅ S9 ✅ — GROUP 2 COMPLETE** |
-| Last commit | `08d5b86` (S8 link audit) |
+| Group 2 stations completed | **5 of 5 — GROUP 2 COMPLETE** (S5 ✅ S6 ✅ S7 ✅ S8 ✅ S9 ✅) |
+| Group 3 stations completed | **S10 ✅ S11 ✅ S12 ✅ S13 ✅ S14 ✅ — GROUP 3 COMPLETE** |
+| Last commit | `3f05fca` (S14 smoke tests + runbooks) |
 | Last deploy | `8921f041` SUCCESS — backend, Railway Redis fix |
-| Push status | 8 commits local only (safe — no auto-deploy) |
+| Push status | 14 commits local only — **Window C + Window B deploys required** |
 
 ---
 
@@ -402,15 +403,147 @@ Remove the `medusa user …` portion. Safe: admin user already exists in DB. The
 
 ---
 
+## S10 — Database & Catalog Integrity
+
+**Status:** COMPLETED  
+**Date:** 2026-06-24  
+**Changes:** Admin API calls only (no code commits)
+
+### Audit Results
+
+| Check | Result |
+|---|---|
+| Published products | 25 ✅ |
+| Draft products | 4 (Medusa demo T-Shirt/Sweatpants/Sweatshirt/Shorts) ✅ |
+| Sales channels | 5 total (1 primary `sc_01KVQAHT4AHWP7NH0RG64FY6QW` linked to storefront key) ✅ |
+| Publishable key | `apk_01KVR04WYT9JC95T4B60XVSQJH` (Storefront, not revoked) ✅ |
+| EGP pricing | 149 EGP (14900 piasters) confirmed for sample product ✅ |
+| Shipping | الشحن العادي 40 EGP + الشحن السريع 80 EGP ✅ |
+| Auth identities | 1 user only — no duplicates ✅ |
+| Test orders | 3 orders (#1, #2, #3) tagged with `{test:true, note:"dev-test-order"}` ✅ |
+| Admin API | `POST /store/carts` → 200 in current session ✅ |
+
+**S10: COMPLETE — No code changes required**
+
+---
+
+## S11 — Security Hardening
+
+**Status:** COMPLETED (code only; secret rotation = Owner Action O3)  
+**Date:** 2026-06-24  
+**Commit:** `a3d85ea`
+
+### Code Changes
+
+- `next.config.js`: added security headers via `headers()`:
+  - `X-Frame-Options: SAMEORIGIN`
+  - `X-Content-Type-Options: nosniff`
+  - `Referrer-Policy: strict-origin-when-cross-origin`
+  - `Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()`
+  - `Strict-Transport-Security: max-age=31536000; includeSubDomains`
+  - Content-Security-Policy (self + Supabase + backend URL)
+- `productionBrowserSourceMaps: false` — prevents source code leakage in production
+
+### Pending Owner Actions (O3 — Gate 12)
+
+See `docs/RUNBOOKS.md` RB-10 for the step-by-step rotation procedure.
+
+**S11: COMPLETE (code) — Gate 12 rotations are Owner Action O3 (pre-launch)**
+
+---
+
+## S12 — Performance, Mobile, A11y + VISUAL PRESERVATION GATE
+
+**Status:** COMPLETED  
+**Date:** 2026-06-24  
+**Commit:** `ea13033`
+
+### Changes Made
+
+- **Loader (`loader/index.tsx`):** skip canvas animation on `prefers-reduced-motion` → immediately mark done
+- **HeroCanvas (`hero-canvas/index.tsx`):** skip Three.js animation on `prefers-reduced-motion`
+- **ScrollReveal (`scroll-reveal/index.tsx`):** show `.reveal` elements immediately on `prefers-reduced-motion` (no GSAP import needed)
+- **CustomCursor (`cursor/index.tsx`):** skip cursor on touch devices (`pointer: coarse`) AND on `prefers-reduced-motion`
+- **SideMenu (`side-menu/index.tsx`):** added `aria-label="Close menu"` to icon-only close button
+
+### VISUAL PRESERVATION GATE
+
+All protected assets preserved:
+- Loader/intro animation ✅ (only skipped on accessibility request)
+- Hero + Three.js canvas ✅ (only skipped on accessibility request)
+- GSAP scroll reveals ✅ (only skipped on accessibility request; elements shown immediately)
+- Custom cursor ✅ (only hidden on touch/reduced-motion)
+- Golden Noir palette, fonts, design-lab ✅ — not touched
+
+**S12: COMPLETE — Code committed, pending Window C deploy**
+
+---
+
+## S13 — SEO & Metadata
+
+**Status:** COMPLETED  
+**Date:** 2026-06-24  
+**Commit:** `959d46e`
+
+### Changes Made
+
+- `apps/storefront/src/app/sitemap.ts` — dynamic sitemap with homepage, store, 5 content pages, all published products, all categories
+- `apps/storefront/src/app/robots.ts` — disallow cart/checkout/account/order/verify-account
+- `cart/page.tsx` — `robots: { index: false }` 
+- `checkout/page.tsx` — `robots: { index: false }`
+- `account/layout.tsx` — `robots: { index: false }` (covers all account sub-pages)
+- `(main)/page.tsx` — OpenGraph + Twitter Card metadata added
+
+**S13: COMPLETE — Code committed, pending Window C deploy**
+
+---
+
+## S14 — Observability & Recovery
+
+**Status:** COMPLETED  
+**Date:** 2026-06-24  
+**Commit:** `3f05fca`
+
+### Deliverables
+
+- `scripts/smoke-test.js` — 14-check production smoke test
+  - Backend health, products API, cart creation, shipping options
+  - Storefront home + store + 5 content pages + 404 handling
+  - Sitemap + robots.txt reachability
+- `docs/RUNBOOKS.md` — 10 runbooks: deploy, rollback, Redis replacement, admin recovery, DB backup, incident checklist, env vars, Gate 12 rotation
+
+### Pre-Deploy Smoke Test Result
+
+Ran against live production (before Window C deploy):
+- **8 PASS** (backend, products, cart, shipping, storefront, sitemap, robots)
+- **6 FAIL** (all expected — content pages + 404 not yet deployed)
+- Core commerce path fully healthy ✅
+
+**S14: COMPLETE — Smoke test script committed; full-green expected after Window C deploy**
+
+---
+
 ## Owner Actions Required
 
 | ID | Station | Description | Status |
 |---|---|---|---|
 | O1 | S1-A | Provision paid/unlimited Redis (Railway Redis plugin) | **COMPLETED** |
 | O2 | S7 | Resend API key + `NOTIFICATION_FROM_EMAIL` + `NOTIFICATION_ADMIN_EMAIL` in Railway backend | Pending |
-| O3 | S11 | Secret rotations (DB pw, Redis pw, JWT/Cookie secrets, admin pw) | Not yet reached |
+| O3 | S11 | Secret rotations — see `docs/RUNBOOKS.md` RB-10 | **Pre-launch (Gate 12)** |
 | O4 | S5 | Approve business policy text values (shipping 40/80 EGP, 3-day returns, COD only) | Pending |
 | O5a | S9 | Remove 5 S3+BUILD_TRIGGER_S3 vars from Railway backend | Pending |
 | O5b | S9 | Remove `BUILD_TRIGGER` from Railway storefront | Pending |
 | O5c | S9 | Verify storefront `REDIS_URL` not used, then remove it | Pending |
 | O5d | S9 | Remove `medusa user` from Railway backend start command | Pending |
+
+---
+
+## Deployment Windows — Status
+
+| Window | Stations | Service | Status |
+|---|---|---|---|
+| A — Critical Backend Recovery | S1 | Backend | **DEPLOYED** `8921f041` ✅ |
+| B — Backend Completion | S7 (after O2) | Backend | **PENDING O2** |
+| C — Storefront Completion Batch | S4,S5,S6,S8,S11,S12,S13,S14 | Storefront | **READY TO DEPLOY** (14 commits queued) |
+| D — Infrastructure & Security | S9,S11 Gate-12 | Backend | **PENDING O3 + O5** |
+| E — Final Release Candidate | S15 | Both | **NOT STARTED** |
