@@ -29,9 +29,7 @@ export default async function ProductPreview({
         {/* Image */}
         <div
           className="relative overflow-hidden"
-          style={{
-            aspectRatio: isFeatured ? "11/14" : "4/5",
-          }}
+          style={{ aspectRatio: "1/1" }}
         >
           {image ? (
             <Image
