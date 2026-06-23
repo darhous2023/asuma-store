@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asuma — Direction C: Futuristic Feminine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Noto+Kufi+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07050F;--bg2:#0D0A1A;--bg3:#120F22;--pk:#FF6EB4;--cy:#00F5D4;--pu:#8B5CF6;--pk-d:#C94A8A;--txt:#EDE8F5;--muted:#6B5F7E;--ease:cubic-bezier(.16,1,.3,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'Space Grotesk','Noto Kufi Arabic',sans-serif;overflow-x:hidden;cursor:none}
+
+#loader{position:fixed;inset:0;background:#050310;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transition:opacity .8s ease}
+#loader.hide{opacity:0;pointer-events:none}
+#lmatrix{position:absolute;inset:0;opacity:.35}
+.l-logo-c{font-family:'Space Grotesk',sans-serif;font-size:56px;font-weight:600;letter-spacing:.06em;position:relative;z-index:1;opacity:0;animation:glitch-in 1.2s ease .8s forwards}
+.l-logo-c .pk{color:var(--pk)}
+.l-logo-c .cy{color:var(--cy)}
+@keyframes glitch-in{0%{opacity:0;transform:skewX(20deg) translateX(-10px);filter:blur(8px)}60%{opacity:1;transform:skewX(-4deg) translateX(3px);filter:blur(0)}80%{transform:skewX(2deg) translateX(-1px)}100%{opacity:1;transform:none}}
+.l-bar-wrap{width:240px;height:2px;background:rgba(255,110,180,.15);position:relative;z-index:1;border-radius:2px;overflow:hidden}
+.l-bar-fill{height:100%;width:0%;border-radius:2px;background:linear-gradient(90deg,var(--pk),var(--cy));transition:width .08s linear;box-shadow:0 0 10px var(--pk)}
+.l-status{font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);position:relative;z-index:1;opacity:0;animation:fdin .8s ease 1.2s forwards}
+.l-sig{position:absolute;bottom:36px;font-size:11px;color:rgba(255,110,180,.4);letter-spacing:.35em;text-transform:uppercase;z-index:1}
+@keyframes fdin{to{opacity:1}}
+
+.trail-dot{position:fixed;width:6px;height:6px;border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:opacity .3s}
+
+nav{position:fixed;top:0;inset-inline:0;z-index:100;padding:22px 56px;display:flex;align-items:center;justify-content:space-between;transition:all .4s var(--ease)}
+nav.sc{background:rgba(7,5,15,.94);border-bottom:.5px solid rgba(255,110,180,.15);padding:14px 56px;backdrop-filter:blur(20px)}
+.nl{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;letter-spacing:.06em;text-decoration:none;background:linear-gradient(135deg,var(--pk),var(--cy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nm{display:flex;gap:36px;list-style:none}
+.nm a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:.22em;text-transform:uppercase;transition:color .3s;position:relative}
+.nm a::before{content:'';position:absolute;inset-inline-start:-8px;top:50%;width:4px;height:4px;border-radius:50%;background:var(--pk);transform:translateY(-50%) scale(0);transition:transform .3s}
+.nm a:hover{color:var(--pk)}
+.nm a:hover::before{transform:translateY(-50%) scale(1)}
+.nc{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:color .3s;border:.5px solid rgba(255,110,180,.25);padding:8px 20px;border-radius:30px}
+.nc:hover{color:var(--pk);border-color:var(--pk)}
+
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+#hcv{position:absolute;inset:0}
+.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px;padding:120px 64px 80px;width:100%}
+.hi-l{display:flex;flex-direction:column;gap:24px}
+.h-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,110,180,.1);border:.5px solid rgba(255,110,180,.3);border-radius:30px;padding:6px 16px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--pk);width:fit-content;opacity:0;animation:fdin .8s ease .6s forwards}
+.h-chip::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pk);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.h1{font-size:clamp(32px,5vw,66px);font-weight:600;line-height:1.1;letter-spacing:-.01em;opacity:0;animation:fdin 1s ease 1s forwards}
+.h1 .grad{background:linear-gradient(135deg,var(--pk) 0%,var(--pu) 50%,var(--cy) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h1 .ar{font-family:'Noto Kufi Arabic',sans-serif;font-weight:500}
+.h-desc{font-size:15px;color:var(--muted);line-height:1.8;max-width:380px;opacity:0;animation:fdin 1s ease 1.3s forwards}
+.h-btns{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fdin 1s ease 1.6s forwards}
+.btn-glow{padding:13px 36px;background:var(--pk);color:#fff;text-decoration:none;font-size:12px;letter-spacing:.3em;text-transform:uppercase;border-radius:30px;transition:all .3s;border:none;cursor:pointer;box-shadow:0 0 20px rgba(255,110,180,.3);font-family:inherit}
+.btn-glow:hover{box-shadow:0 0 40px rgba(255,110,180,.6);transform:translateY(-2px)}
+.btn-out{padding:13px 36px;background:transparent;color:var(--cy);text-decoration:none;font-size:12px;letter-spacing:.3em;text-transform:uppercase;border-radius:30px;border:.5px solid var(--cy);transition:all .3s}
+.btn-out:hover{background:rgba(0,245,212,.1);box-shadow:0 0 20px rgba(0,245,212,.2)}
+.hi-r{position:relative;display:flex;align-items:center;justify-content:center;opacity:0;animation:fdin 1.2s ease 1.8s forwards}
+.portal-ring{width:360px;height:360px;border-radius:50%;position:relative;flex-shrink:0}
+.portal-ring::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(from 0deg,var(--pk),var(--cy),var(--pu),var(--pk));animation:spin 4s linear infinite;z-index:0}
+.portal-ring::after{content:'';position:absolute;inset:-1px;border-radius:50%;background:var(--bg);z-index:1}
+.portal-img{position:absolute;inset:8px;border-radius:50%;overflow:hidden;z-index:2}
+.portal-img img{width:100%;height:100%;object-fit:cover;filter:saturate(1.2) brightness(.9);transition:transform .8s var(--ease)}
+.portal-ring:hover .portal-img img{transform:scale(1.08)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.portal-badge{position:absolute;top:16px;inset-inline-end:-16px;background:rgba(13,10,26,.9);border:.5px solid rgba(255,110,180,.4);border-radius:12px;padding:12px 18px;z-index:3;backdrop-filter:blur(10px)}
+.pb-p{font-size:22px;font-weight:600;color:var(--pk)}
+.pb-n{font-size:11px;color:var(--muted);margin-top:2px}
+.pb-chip{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--cy);margin-top:6px}
+.float-orb{position:absolute;border-radius:50%;pointer-events:none;animation:orb-float 6s ease-in-out infinite}
+.orb1{width:120px;height:120px;background:rgba(139,92,246,.15);inset-inline-start:-40px;top:20%;filter:blur(20px);animation-delay:-2s}
+.orb2{width:80px;height:80px;background:rgba(0,245,212,.12);inset-inline-end:-20px;bottom:25%;filter:blur(15px);animation-delay:-4s}
+@keyframes orb-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+
+.sec{padding:100px 64px;opacity:0;transform:translateY(32px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.sec.vis{opacity:1;transform:translateY(0)}
+.sh{margin-bottom:52px;display:flex;align-items:baseline;justify-content:space-between}
+.st{font-size:36px;font-weight:600;letter-spacing:-.01em}
+.st .grad{background:linear-gradient(135deg,var(--pk),var(--cy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sl{color:var(--pk);font-size:11px;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;opacity:.7;transition:opacity .3s}
+.sl:hover{opacity:1}
+
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.pc{position:relative;cursor:pointer;border-radius:16px;overflow:hidden;background:var(--bg2);border:.5px solid rgba(255,110,180,.1);transition:border-color .4s,transform .4s var(--ease);group:true}
+.pc:hover{border-color:rgba(255,110,180,.45);transform:translateY(-6px)}
+.piw{aspect-ratio:3/4;position:relative;overflow:hidden}
+.piw img{width:100%;height:100%;object-fit:cover;filter:grayscale(.5) saturate(.8);transition:filter .7s,transform .7s}
+.pc:hover .piw img{filter:grayscale(0) saturate(1.3);transform:scale(1.06)}
+.piw-glow{position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse at 50% 80%,rgba(255,110,180,.3),transparent 70%);transition:opacity .5s;pointer-events:none}
+.pc:hover .piw-glow{opacity:1}
+.holo-add{position:absolute;bottom:10px;left:50%;transform:translateX(-50%) translateY(12px);background:rgba(7,5,15,.85);border:.5px solid var(--pk);color:var(--pk);padding:8px 24px;font-size:10px;letter-spacing:.3em;text-transform:uppercase;border-radius:30px;white-space:nowrap;opacity:0;transition:all .4s;backdrop-filter:blur(8px)}
+.pc:hover .holo-add{opacity:1;transform:translateX(-50%) translateY(0)}
+.pinfo{padding:14px 14px 16px}
+.pn{font-size:13px;color:var(--muted);margin-bottom:5px;font-family:'Noto Kufi Arabic','Space Grotesk',sans-serif}
+.pp{font-size:20px;font-weight:600;color:var(--pk)}
+.ptag{display:inline-flex;align-items:center;gap:4px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--cy);background:rgba(0,245,212,.1);border:.5px solid rgba(0,245,212,.3);border-radius:20px;padding:2px 8px;margin-bottom:6px}
+.ptag::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--cy)}
+
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.cat-port{position:relative;border-radius:20px;overflow:hidden;cursor:pointer;aspect-ratio:3/4;background:var(--bg2);border:.5px solid rgba(139,92,246,.15);transition:border-color .4s,transform .4s var(--ease)}
+.cat-port:hover{border-color:rgba(139,92,246,.5);transform:translateY(-5px)}
+.cat-port img{width:100%;height:100%;object-fit:cover;filter:grayscale(.4) brightness(.75);transition:filter .6s,transform .6s}
+.cat-port:hover img{filter:grayscale(0) brightness(.85);transform:scale(1.06)}
+.cat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,5,15,.8) 0%,transparent 55%)}
+.cat-info{position:absolute;bottom:20px;left:0;right:0;padding:0 20px}
+.cat-name{font-size:18px;font-weight:600;color:var(--txt);font-family:'Noto Kufi Arabic','Space Grotesk',sans-serif;margin-bottom:4px}
+.cat-count{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--cy)}
+.cat-port:hover .cat-info .cat-name{color:var(--pk)}
+
+.holo-section{margin:0 64px;border-radius:20px;background:var(--bg2);border:.5px solid rgba(255,110,180,.12);padding:80px 64px;overflow:hidden;position:relative;opacity:0;transform:translateY(32px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.holo-section.vis{opacity:1;transform:translateY(0)}
+.holo-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.holo-blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.15}
+.holo-blob.b1{width:300px;height:300px;background:var(--pk);top:-100px;inset-inline-end:-50px}
+.holo-blob.b2{width:250px;height:250px;background:var(--cy);bottom:-80px;inset-inline-start:-30px}
+.holo-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.holo-title{font-size:36px;font-weight:600;line-height:1.1;margin-bottom:16px}
+.holo-title .grad{background:linear-gradient(135deg,var(--pk),var(--pu),var(--cy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.holo-desc{font-size:14px;color:var(--muted);line-height:1.85;margin-bottom:28px}
+.holo-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.stat{background:rgba(255,110,180,.08);border:.5px solid rgba(255,110,180,.2);border-radius:12px;padding:16px;text-align:center}
+.stat-n{font-size:24px;font-weight:600;color:var(--pk)}
+.stat-l{font-size:10px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;margin-top:4px}
+.perf-grid{display:flex;flex-direction:column;gap:12px}
+.perf-row{display:flex;align-items:center;justify-content:space-between;background:rgba(7,5,15,.6);border:.5px solid rgba(139,92,246,.2);border-radius:12px;padding:16px 20px;cursor:pointer;transition:border-color .3s,background .3s}
+.perf-row:hover{border-color:rgba(255,110,180,.4);background:rgba(255,110,180,.05)}
+.perf-name{font-size:13px;color:var(--txt);font-family:'Noto Kufi Arabic','Space Grotesk',sans-serif}
+.perf-price{font-size:16px;font-weight:600;color:var(--pk)}
+.perf-add{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--cy);opacity:0;transition:opacity .3s}
+.perf-row:hover .perf-add{opacity:1}
+
+.cgrid5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.ci2{position:relative;cursor:pointer;border-radius:16px;overflow:hidden;border:.5px solid rgba(139,92,246,.15);transition:all .4s var(--ease)}
+.ci2:hover{transform:translateY(-5px);border-color:rgba(255,110,180,.4)}
+.ci2 img{width:100%;aspect-ratio:3/4;object-fit:cover;filter:saturate(.7) brightness(.75);transition:filter .6s,transform .6s;display:block}
+.ci2:hover img{filter:saturate(1.2) brightness(.85);transform:scale(1.06)}
+.ci2-lbl{position:absolute;bottom:0;left:0;right:0;padding:16px 14px 14px;background:linear-gradient(to top,rgba(7,5,15,.85),transparent)}
+.ci2-ar{font-size:14px;font-weight:500;color:var(--txt);font-family:'Noto Kufi Arabic','Space Grotesk',sans-serif}
+.ci2-en{display:block;font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:var(--cy);margin-top:2px}
+
+footer{padding:72px 64px;border-top:.5px solid rgba(255,110,180,.12);display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px}
+.fb-logo{font-size:22px;font-weight:600;margin-bottom:12px;background:linear-gradient(135deg,var(--pk),var(--cy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.fb-desc{font-size:13px;color:var(--muted);line-height:1.85;max-width:240px;margin-bottom:20px}
+.socials{display:flex;gap:12px}
+.socials a{color:var(--muted);transition:color .3s;line-height:0;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:.5px solid rgba(255,110,180,.2);border-radius:50%;transition:all .3s}
+.socials a:hover{color:var(--pk);border-color:var(--pk);box-shadow:0 0 10px rgba(255,110,180,.3)}
+.fc h4{font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:var(--pk);margin-bottom:20px}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.fc ul a{color:var(--muted);text-decoration:none;font-size:13px;transition:color .3s;font-family:'Noto Kufi Arabic','Space Grotesk',sans-serif}
+.fc ul a:hover{color:var(--cy)}
+.fbot{padding:20px 64px;border-top:.5px solid rgba(255,110,180,.08);display:flex;justify-content:space-between;align-items:center}
+.fbot p{font-size:12px;color:var(--muted)}
+.fsig a{color:var(--pk);text-decoration:none;font-size:13px;letter-spacing:.2em;opacity:.75;transition:opacity .3s}
+.fsig a:hover{opacity:1}
+
+#cart{position:fixed;inset:0;background:rgba(5,3,16,.85);z-index:1000;opacity:0;pointer-events:none;transition:opacity .4s;display:flex;justify-content:flex-end}
+#cart.on{opacity:1;pointer-events:all}
+#cpanel{width:400px;background:var(--bg2);border-inline-start:.5px solid rgba(255,110,180,.2);height:100%;padding:44px 36px;transform:translateX(100%);transition:transform .5s var(--ease);overflow-y:auto;position:relative}
+#cart.on #cpanel{transform:translateX(0)}
+.ct{font-size:28px;font-weight:600;margin-bottom:4px;background:linear-gradient(135deg,var(--pk),var(--cy));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cs{font-size:11px;color:var(--muted);letter-spacing:.22em;text-transform:uppercase;margin-bottom:40px}
+.citem{display:flex;gap:14px;padding:20px 0;border-bottom:.5px solid rgba(255,110,180,.12)}
+.cimg{width:64px;height:86px;object-fit:cover;border-radius:10px;filter:saturate(.9)}
+.cin-nm{font-size:13px;color:var(--txt);margin-bottom:4px;font-family:'Noto Kufi Arabic','Space Grotesk',sans-serif}
+.cin-cat{font-size:11px;color:var(--muted);letter-spacing:.12em;margin-bottom:6px}
+.cin-p{font-size:18px;font-weight:600;color:var(--pk)}
+.cchk{margin-top:40px;width:100%;padding:15px;background:var(--pk);color:#fff;border:none;font-size:12px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;border-radius:30px;font-family:inherit;box-shadow:0 0 20px rgba(255,110,180,.3);transition:box-shadow .3s}
+.cchk:hover{box-shadow:0 0 40px rgba(255,110,180,.6)}
+.ccod{text-align:center;font-size:11px;color:var(--muted);margin-top:14px;letter-spacing:.15em;text-transform:uppercase}
+.ccls{position:absolute;top:20px;inset-inline-end:20px;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;transition:color .3s}
+.ccls:hover{color:var(--pk)}
+
+.note-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(255,110,180,.1);border:.5px solid rgba(255,110,180,.4);padding:8px 24px;font-size:11px;color:var(--pk);letter-spacing:.2em;z-index:500;white-space:nowrap;border-radius:30px;backdrop-filter:blur(10px)}
+
+@keyframes touch-ripple{0%{transform:translate(-50%,-50%) scale(0);opacity:.6}100%{transform:translate(-50%,-50%) scale(4);opacity:0}}
+
+@media(max-width:768px){
+  nav{padding:18px 20px}nav.sc{padding:12px 20px}
+  .hero-inner{grid-template-columns:1fr;padding:100px 22px 60px}
+  .portal-ring{width:260px;height:260px}
+  .pgrid{grid-template-columns:repeat(2,1fr)}
+  .cgrid5,.grid3{grid-template-columns:repeat(2,1fr)}
+  .holo-section{margin:0 20px;padding:48px 24px}
+  .holo-inner{grid-template-columns:1fr}
+  .holo-stats{grid-template-columns:repeat(3,1fr)}
+  footer{grid-template-columns:1fr 1fr;padding:56px 22px;gap:32px}
+  .sec{padding:80px 22px}
+  .fbot{padding:18px 22px;flex-direction:column;gap:10px;text-align:center}
+  #cpanel{width:100%}
+  .nm{gap:20px}
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <canvas id="lmatrix"></canvas>
+  <div class="l-logo-c"><span class="pk">A</span><span style="color:var(--txt)">suma</span> <span class="cy">أسوما</span></div>
+  <div class="l-bar-wrap"><div class="l-bar-fill" id="lbfill"></div></div>
+  <div class="l-status" id="lstatus">Initializing...</div>
+  <div class="l-sig">Designed by Ahmed Darhous</div>
+</div>
+
+<div id="cart" onclick="if(event.target===this)closeCart()">
+  <div id="cpanel">
+    <button class="ccls" onclick="closeCart()">×</button>
+    <div class="ct">سلتك</div>
+    <div class="cs">Cart · 1 item</div>
+    <div class="citem">
+      <img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/accessories-placeholder.png" class="cimg" alt="">
+      <div>
+        <div class="cin-nm">حلق لؤلؤ مطلي بالذهب</div>
+        <div class="cin-cat">إكسسوارات</div>
+        <div class="cin-p">149 EGP</div>
+      </div>
+    </div>
+    <button class="cchk">إتمام الطلب</button>
+    <div class="ccod">Cash on Delivery · توصيل لكل مصر</div>
+  </div>
+</div>
+
+<nav id="nav">
+  <a href="#" class="nl">ASUMA</a>
+  <ul class="nm">
+    <li><a href="#new">الجديد</a></li>
+    <li><a href="#cats">الأقسام</a></li>
+    <li><a href="#perf">العطور</a></li>
+    <li><a href="#gifts">الهدايا</a></li>
+  </ul>
+  <div class="nc" onclick="openCart()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    السلة
+  </div>
+</nav>
+
+<section id="hero">
+  <canvas id="hcv"></canvas>
+  <div class="hero-inner">
+    <div class="hi-l">
+      <div class="h-chip">New Collection 2026</div>
+      <h1 class="h1"><span class="grad">Unlock</span><br><span class="ar">جمالك<br>المستقبلي</span></h1>
+      <p class="h-desc">إكسسوارات ومكياج وعطور بتجربة خارج المألوف. تكنولوجيا التسوق الحديث في خدمة أناقتك.</p>
+      <div class="h-btns">
+        <button class="btn-glow" onclick="openCart()">اكتشفي المجموعة</button>
+        <a href="#new" class="btn-out">تسوقي الآن</a>
+      </div>
+    </div>
+    <div class="hi-r">
+      <div class="float-orb orb1"></div>
+      <div class="float-orb orb2"></div>
+      <div class="portal-ring">
+        <div class="portal-img">
+          <img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/accessories-placeholder.png" alt="Asuma">
+        </div>
+      </div>
+      <div class="portal-badge">
+        <div class="pb-p">149 EGP</div>
+        <div class="pb-n">حلق لؤلؤ مطلي بالذهب</div>
+        <div class="pb-chip">● إكسسوارات</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="new">
+  <div class="sh"><h2 class="st">وصل <span class="grad">حديثاً</span></h2><a href="#" class="sl">عرض الكل</a></div>
+  <div class="pgrid">
+    <div class="pc" onclick="openCart()">
+      <div class="piw"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/accessories-placeholder.png" alt=""><div class="piw-glow"></div><div class="holo-add">أضيفي للسلة</div></div>
+      <div class="pinfo"><div class="ptag">NEW</div><div class="pn">حلق لؤلؤ مطلي بالذهب</div><div class="pp">149 EGP</div></div>
+    </div>
+    <div class="pc" onclick="openCart()">
+      <div class="piw"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/makeup-placeholder.png" alt=""><div class="piw-glow"></div><div class="holo-add">أضيفي للسلة</div></div>
+      <div class="pinfo"><div class="pn">ستيك الشفاه المخملي</div><div class="pp">159 EGP</div></div>
+    </div>
+    <div class="pc" onclick="openCart()">
+      <div class="piw"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/hair-placeholder.png" alt=""><div class="piw-glow"></div><div class="holo-add">أضيفي للسلة</div></div>
+      <div class="pinfo"><div class="ptag">TREND</div><div class="pn">هير باند ساتان بفيونكة</div><div class="pp">119 EGP</div></div>
+    </div>
+    <div class="pc" onclick="openCart()">
+      <div class="piw"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/gifts-placeholder.png" alt=""><div class="piw-glow"></div><div class="holo-add">أضيفي للسلة</div></div>
+      <div class="pinfo"><div class="ptag">LIMITED</div><div class="pn">بوكس المرأة الخاصة Premium</div><div class="pp">799 EGP</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="cats">
+  <div class="sh"><h2 class="st">الأقسام <span class="grad">الرئيسية</span></h2></div>
+  <div class="cgrid5">
+    <div class="ci2"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/accessories-placeholder.png" alt=""><div class="ci2-lbl"><div class="ci2-ar">الإكسسوارات</div><span class="ci2-en">Accessories</span></div></div>
+    <div class="ci2"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/hair-placeholder.png" alt=""><div class="ci2-lbl"><div class="ci2-ar">إكسسوارات الشعر</div><span class="ci2-en">Hair</span></div></div>
+    <div class="ci2"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/makeup-placeholder.png" alt=""><div class="ci2-lbl"><div class="ci2-ar">المكياج</div><span class="ci2-en">Makeup</span></div></div>
+    <div class="ci2"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/perfume-placeholder.png" alt=""><div class="ci2-lbl"><div class="ci2-ar">العطور</div><span class="ci2-en">Perfumes</span></div></div>
+    <div class="ci2"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/gifts-placeholder.png" alt=""><div class="ci2-lbl"><div class="ci2-ar">الهدايا</div><span class="ci2-en">Gifts</span></div></div>
+  </div>
+</section>
+
+<div class="holo-section" id="perf">
+  <div class="holo-bg"><div class="holo-blob b1"></div><div class="holo-blob b2"></div></div>
+  <div class="holo-inner">
+    <div>
+      <h2 class="holo-title"><span class="grad">عالم العطور</span><br>الفاخرة</h2>
+      <p class="holo-desc">مجموعة مختارة من العطور الشرقية والغربية. كل عطر تجربة حسية فريدة تُعبّر عن شخصيتك.</p>
+      <div class="holo-stats">
+        <div class="stat"><div class="stat-n">5</div><div class="stat-l">عطور</div></div>
+        <div class="stat"><div class="stat-n">99</div><div class="stat-l">EGP يبدأ من</div></div>
+        <div class="stat"><div class="stat-n">COD</div><div class="stat-l">الدفع</div></div>
+      </div>
+      <a href="#" class="btn-glow">تسوقي العطور</a>
+    </div>
+    <div class="perf-grid">
+      <div class="perf-row" onclick="openCart()"><div><div class="perf-name">برفان Rose Oud</div><div style="font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.1em">عطر شرقي</div></div><div style="text-align:left"><div class="perf-price">499 EGP</div><div class="perf-add">أضيفي +</div></div></div>
+      <div class="perf-row" onclick="openCart()"><div><div class="perf-name">برفان Jasmine Night</div><div style="font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.1em">عطر زهري</div></div><div style="text-align:left"><div class="perf-price">449 EGP</div><div class="perf-add">أضيفي +</div></div></div>
+      <div class="perf-row" onclick="openCart()"><div><div class="perf-name">بودي سبلاش Vanilla</div><div style="font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.1em">بودي مست</div></div><div style="text-align:left"><div class="perf-price">189 EGP</div><div class="perf-add">أضيفي +</div></div></div>
+      <div class="perf-row" onclick="openCart()"><div><div class="perf-name">ميني برفان Asuma Gold</div><div style="font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.1em">ميني</div></div><div style="text-align:left"><div class="perf-price">299 EGP</div><div class="perf-add">أضيفي +</div></div></div>
+    </div>
+  </div>
+</div>
+
+<section class="sec" id="gifts">
+  <div class="sh"><h2 class="st">الهدايا <span class="grad">المثالية</span></h2><a href="#" class="sl">عرض الكل</a></div>
+  <div class="pgrid">
+    <div class="pc" onclick="openCart()"><div class="piw"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/gifts-placeholder.png" alt=""><div class="piw-glow"></div><div class="holo-add">أضيفي للسلة</div></div><div class="pinfo"><div class="pn">بوكس هدايا الإكسسوارات الذهبية</div><div class="pp">399 EGP</div></div></div>
+    <div class="pc" onclick="openCart()"><div class="piw"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/gifts-placeholder.png" alt=""><div class="piw-glow"></div><div class="holo-add">أضيفي للسلة</div></div><div class="pinfo"><div class="pn">بوكس هدايا العطور الفاخرة</div><div class="pp">599 EGP</div></div></div>
+    <div class="pc" onclick="openCart()"><div class="piw"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/gifts-placeholder.png" alt=""><div class="piw-glow"></div><div class="holo-add">أضيفي للسلة</div></div><div class="pinfo"><div class="ptag">BEST</div><div class="pn">ست إكسسوارات كامل</div><div class="pp">449 EGP</div></div></div>
+    <div class="pc" onclick="openCart()"><div class="piw"><img src="https://atmbrocqpjzemfpazzax.supabase.co/storage/v1/object/public/asuma-products/placeholders/gifts-placeholder.png" alt=""><div class="piw-glow"></div><div class="holo-add">أضيفي للسلة</div></div><div class="pinfo"><div class="ptag">PREMIUM</div><div class="pn">بوكس المرأة الخاصة</div><div class="pp">799 EGP</div></div></div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="fb-logo">ASUMA أسوما</div>
+    <p class="fb-desc">متجر إكسسوارات ومكياج وعطور مصري. تجربة تسوق مستقبلية بجودة استثنائية.</p>
+    <div class="socials">
+      <a href="#" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+      <a href="#" aria-label="Facebook"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+      <a href="https://wa.me/201000000000" aria-label="WhatsApp"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+      <a href="https://linkedin.com" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+    </div>
+  </div>
+  <div class="fc"><h4>المتجر</h4><ul><li><a href="#">الإكسسوارات</a></li><li><a href="#">إكسسوارات الشعر</a></li><li><a href="#">المكياج</a></li><li><a href="#">العطور</a></li><li><a href="#">الهدايا</a></li></ul></div>
+  <div class="fc"><h4>المساعدة</h4><ul><li><a href="#">من نحن</a></li><li><a href="#">تواصل معنا</a></li><li><a href="#">سياسة الشحن</a></li><li><a href="#">الاستبدال</a></li></ul></div>
+  <div class="fc"><h4>قانوني</h4><ul><li><a href="#">الخصوصية</a></li><li><a href="#">الشروط</a></li></ul></div>
+</footer>
+<div class="fbot">
+  <p>© 2026 Asuma Store · جميع الحقوق محفوظة</p>
+  <div class="fsig"><a href="mailto:ahmeddarhous@gmail.com">Designed by Ahmed Darhous</a></div>
+</div>
+
+<div class="note-bar">Direction C — Futuristic Feminine · Local Interactive Prototype</div>
+
+<script>
+const COLORS=['#FF6EB4','#00F5D4','#8B5CF6','#FF6EB4'];
+const lmatrix=document.getElementById('lmatrix'),lmctx=lmatrix.getContext('2d');
+lmatrix.width=innerWidth;lmatrix.height=innerHeight;
+const cols=Math.floor(innerWidth/18),drops=Array(cols).fill(1);
+const chars='ASUMA01アイウエオABCDEFG0123456789ابجد';
+function drawMatrix(){
+  lmctx.fillStyle='rgba(5,3,16,.06)';lmctx.fillRect(0,0,lmatrix.width,lmatrix.height);
+  COLORS.forEach((c,ci)=>{
+    lmctx.fillStyle=c;lmctx.font='14px monospace';
+    for(let i=ci;i<cols;i+=4){
+      const ch=chars[Math.floor(Math.random()*chars.length)];
+      lmctx.fillText(ch,i*18,drops[i]*18);
+      if(drops[i]*18>lmatrix.height&&Math.random()>.975)drops[i]=0;
+      drops[i]++;
+    }
+  });
+}
+const miv=setInterval(drawMatrix,60);
+
+const lbfill=document.getElementById('lbfill'),lstatus=document.getElementById('lstatus');
+const msgs=['Initializing...','Loading modules...','Connecting...','Almost there...','Ready.'];
+let lp=0,mi=0,ldr=document.getElementById('loader');
+const liv=setInterval(()=>{
+  lp+=Math.random()*8+2;
+  if(lp>=100){lp=100;clearInterval(liv);clearInterval(miv);
+    setTimeout(()=>{ldr.classList.add('hide');setTimeout(()=>ldr.style.display='none',900)},400)}
+  lbfill.style.width=lp+'%';
+  const ni=Math.floor((lp/100)*msgs.length);
+  if(ni>mi&&ni<msgs.length){mi=ni;lstatus.textContent=msgs[mi]}
+},120);
+
+const trail=[];
+const TRAIL_COUNT=12;
+for(let i=0;i<TRAIL_COUNT;i++){
+  const d=document.createElement('div');
+  d.className='trail-dot';
+  d.style.cssText=`background:${i<6?'var(--pk)':'var(--cy)'};width:${6-i*.3}px;height:${6-i*.3}px;opacity:${1-i/TRAIL_COUNT}`;
+  document.body.appendChild(d);
+  trail.push({el:d,x:0,y:0});
+}
+let mx=0,my=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+function animTrail(){
+  trail.forEach((t,i)=>{
+    const prev=i===0?{x:mx,y:my}:trail[i-1];
+    t.x+=(prev.x-t.x)*.35;
+    t.y+=(prev.y-t.y)*.35;
+    t.el.style.left=t.x+'px';
+    t.el.style.top=t.y+'px';
+  });
+  requestAnimationFrame(animTrail);
+}
+animTrail();
+
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('sc',scrollY>50));
+
+const hcv=document.getElementById('hcv'),hctx=hcv.getContext('2d');
+function rsz(){hcv.width=innerWidth;hcv.height=innerHeight}rsz();
+window.addEventListener('resize',rsz);
+let pts=Array.from({length:120},()=>({
+  x:Math.random()*innerWidth,y:Math.random()*innerHeight,
+  vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,
+  r:Math.random()*2+.5,
+  c:COLORS[Math.floor(Math.random()*COLORS.length)],
+  o:Math.random()*.4+.1
+}));
+function animHero(){
+  hctx.clearRect(0,0,hcv.width,hcv.height);
+  pts.forEach(p=>{
+    const dx=mx-p.x,dy=my-p.y,dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<120){p.vx+=dx/dist*.02;p.vy+=dy/dist*.02}
+    p.x+=p.vx;p.y+=p.vy;
+    p.vx*=.98;p.vy*=.98;
+    if(p.x<0)p.x=hcv.width;if(p.x>hcv.width)p.x=0;
+    if(p.y<0)p.y=hcv.height;if(p.y>hcv.height)p.y=0;
+    hctx.beginPath();hctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    hctx.fillStyle=p.c.replace(')',`,${p.o})`).replace('rgb','rgba').replace('#','');
+    hctx.fillStyle=p.c+'88';
+    hctx.fill();
+  });
+  requestAnimationFrame(animHero);
+}
+animHero();
+
+const obs=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('vis')),{threshold:.1});
+document.querySelectorAll('.sec,.holo-section').forEach(s=>obs.observe(s));
+
+document.addEventListener('touchstart',e=>{
+  const t=e.touches[0];
+  const rip=document.createElement('div');
+  rip.style.cssText=`position:fixed;left:${t.clientX}px;top:${t.clientY}px;width:40px;height:40px;border-radius:50%;border:2px solid var(--pk);pointer-events:none;z-index:9999;animation:touch-ripple .6s ease forwards`;
+  document.body.appendChild(rip);
+  setTimeout(()=>rip.remove(),700);
+},{passive:true});
+
+function openCart(){document.getElementById('cart').classList.add('on')}
+function closeCart(){document.getElementById('cart').classList.remove('on')}
+</script>
+</body>
+</html>
