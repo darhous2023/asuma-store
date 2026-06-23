@@ -80,21 +80,6 @@ export default async function Footer() {
               Luxury beauty &amp; accessories · Cairo, Egypt
             </p>
 
-            {/* Social icons */}
-            <div className="flex items-center gap-4 mt-2">
-              {SOCIAL_LINKS.map((s) => (
-                <a
-                  key={s.name}
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={s.name}
-                  className="text-ivory-muted hover:text-gold transition-colors duration-200"
-                >
-                  {s.icon}
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Col 2 — Categories */}
@@ -178,24 +163,43 @@ export default async function Footer() {
         />
 
         {/* ── Bottom bar ── */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="font-sans text-xs text-ivory-muted" style={{ letterSpacing: "0.05em" }}>
             © {new Date().getFullYear()} Asuma Store · جميع الحقوق محفوظة
           </p>
 
-          <p
-            className="font-sans text-ivory-muted"
-            style={{ fontSize: "9px", letterSpacing: "0.12em", opacity: 0.38, textTransform: "uppercase" }}
-          >
-            designed by{" "}
-            <a
-              href="mailto:ahmeddarhous@gmail.com"
-              className="hover:opacity-70 transition-opacity duration-200"
-              style={{ color: "inherit" }}
+          <div className="flex flex-col items-center sm:items-end gap-2">
+            {/* Social icons */}
+            <div className="flex items-center gap-4">
+              {SOCIAL_LINKS.map((s) => (
+                <a
+                  key={s.name}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.name}
+                  className="text-ivory-muted hover:text-gold transition-colors duration-200"
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
+
+            {/* Designer credit */}
+            <p
+              className="font-sans text-ivory-muted"
+              style={{ fontSize: "9px", letterSpacing: "0.12em", opacity: 0.38, textTransform: "uppercase" }}
             >
-              Ahmed Darhous
-            </a>
-          </p>
+              designed by{" "}
+              <a
+                href="mailto:ahmeddarhous@gmail.com"
+                className="hover:opacity-70 transition-opacity duration-200"
+                style={{ color: "inherit" }}
+              >
+                Ahmed Darhous
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

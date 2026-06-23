@@ -27,14 +27,31 @@ export default async function ProductRail({
   }
 
   return (
-    <div className="content-container py-12 small:py-24">
-      <div className="reveal flex justify-between mb-8">
-        <Text className="txt-xlarge">{collection.title}</Text>
-        <InteractiveLink href={`/collections/${collection.handle}`}>
-          View all
-        </InteractiveLink>
+    <div className="content-container py-12 small:py-20">
+      {/* Collection header */}
+      <div className="reveal flex items-center justify-between mb-10">
+        <div className="flex items-center gap-4">
+          <div
+            aria-hidden="true"
+            style={{ width: "32px", height: "1px", background: "var(--gold-border)" }}
+          />
+          <h2
+            className="font-display font-light italic uppercase"
+            style={{ color: "var(--ivory)", letterSpacing: "0.18em", fontSize: "clamp(1rem, 2.5vw, 1.5rem)" }}
+          >
+            {collection.title}
+          </h2>
+        </div>
+        <a
+          href={`/collections/${collection.handle}`}
+          className="font-sans text-xs uppercase tracking-[0.2em] transition-colors duration-200"
+          style={{ color: "var(--gold-dark)", letterSpacing: "0.2em" }}
+        >
+          عرض الكل →
+        </a>
       </div>
-      <ul className="grid grid-cols-2 small:grid-cols-3 gap-x-6 gap-y-24 small:gap-y-36">
+
+      <ul className="grid grid-cols-2 small:grid-cols-3 large:grid-cols-4 gap-4 small:gap-6">
         {pricedProducts &&
           pricedProducts.map((product) => (
             <li key={product.id} className="reveal">
