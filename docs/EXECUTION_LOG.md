@@ -224,10 +224,40 @@ Choose one option:
 
 | Counter | Value |
 |---|---|
-| Group 1 stations completed | 3 of 5 (S0 ✅, S1 ✅, S2 ✅, S3 ✅ — S4 in progress) |
-| Last commit | `e026c20` (S0 baseline) |
+| Group 1 stations completed | **5 of 5 — GROUP 1 COMPLETE** (S0 ✅ S1 ✅ S2 ✅ S3 ✅ S4 ✅) |
+| Last commit | `c483c38` (S4 footer) |
 | Last deploy | `8921f041` SUCCESS — backend, Railway Redis fix |
-| Push status | Commits local only (safe — no auto-deploy) |
+| Push status | 5 commits local only (safe — no auto-deploy) |
+
+---
+
+---
+
+## S4 — Footer, Contacts & Designer Credit
+
+**Status:** COMPLETED  
+**Date:** 2026-06-23  
+**Commit:** `c483c38`
+
+### Changes Made
+
+- **Col 4 WhatsApp:** `wa.me/201030002331` → `wa.me/201033163769` (+20 103 316 3769, store's number)
+- **Col 4 email:** `ahmeddarhous@gmail.com` → `asmafarouq.89m@gmail.com` (store's email)
+- **Designer block:** reordered — credit text "Designed & Developed by Ahmed Darhous" FIRST, social links directly beneath
+- **External links:** `rel="noreferrer"` → `rel="noopener noreferrer"` on all social/external links
+- **Checkout footer:** copyright first, designer credit after, consistent formatting
+- **Files changed:** `footer/index.tsx`, `(checkout)/layout.tsx`
+
+### S4 Gate
+
+- [x] Col 4 shows store WhatsApp `wa.me/201033163769`
+- [x] Col 4 shows store email `asmafarouq.89m@gmail.com`
+- [x] Designer block is last element with credit text first, links beneath
+- [x] Checkout footer consistent
+- [x] Pre-existing TS errors only (unrelated file) — S4 changes clean
+- [ ] Live verification: pending Window C deploy (all storefront changes batched)
+
+**S4: COMPLETE — Code committed, pending Window C deploy**
 
 ---
 
@@ -235,7 +265,8 @@ Choose one option:
 
 | ID | Station | Description | Status |
 |---|---|---|---|
-| O1 | S1-A | Provision paid/unlimited Redis (Railway Redis plugin recommended) and provide `REDIS_URL` | **PENDING** |
+| O1 | S1-A | Provision paid/unlimited Redis (Railway Redis plugin) | **COMPLETED** |
 | O2 | S7 | Notification provider API key + sender domain verification | Not yet reached |
 | O3 | S11 | Secret rotations (DB pw, Redis pw, JWT/Cookie secrets, admin pw) | Not yet reached |
 | O4 | S5 | Approve business policy values (shipping, returns, cancellation policy text) | Not yet reached |
+| O5 | S3 | Remove `medusa user` from Railway build command (Railway dashboard UI) | Deferred to S9 |
