@@ -225,9 +225,10 @@ Choose one option:
 | Counter | Value |
 |---|---|
 | Group 1 stations completed | **5 of 5 — GROUP 1 COMPLETE** (S0 ✅ S1 ✅ S2 ✅ S3 ✅ S4 ✅) |
-| Last commit | `c483c38` (S4 footer) |
+| Group 2 stations completed | **S5 ✅ S6 ✅ S7 ✅ S8 ✅ S9 ✅ — GROUP 2 COMPLETE** |
+| Last commit | `08d5b86` (S8 link audit) |
 | Last deploy | `8921f041` SUCCESS — backend, Railway Redis fix |
-| Push status | 5 commits local only (safe — no auto-deploy) |
+| Push status | 8 commits local only (safe — no auto-deploy) |
 
 ---
 
@@ -261,12 +262,155 @@ Choose one option:
 
 ---
 
+## S5 — Content Pages
+
+**Status:** COMPLETED  
+**Date:** 2026-06-23  
+**Commit:** `b5a2aee`
+
+- Created `apps/storefront/src/app/[countryCode]/(main)/content/[slug]/page.tsx`
+- 5 slugs: about, contact, privacy-policy, terms-of-use, shipping-policy
+- Bilingual AR/EN content; Golden Noir styling; `notFound()` for unknown slugs
+- Replaced "Medusa Store's Privacy Policy" in checkout review with Arabic links to content pages
+
+**S5: COMPLETE — Code committed, pending Window C deploy**
+
+---
+
+## S6 — Product Search
+
+**Status:** COMPLETED  
+**Date:** 2026-06-23  
+**Commit:** `48e01a1`
+
+- Created `apps/storefront/src/modules/search/components/search-modal/index.tsx`
+- Debounced (380ms) live search via `/store/products?q=…&limit=8`
+- AbortController, ESC close, click-outside close, AR/EN labels
+- Search icon added to nav (before language switcher)
+
+**S6: COMPLETE — Code committed, pending Window C deploy**
+
+---
+
+## S7 — Order Notifications
+
+**Status:** COMPLETED (code only; email deploy blocked on O2)  
+**Date:** 2026-06-24  
+**Commit:** `3331274`
+
+### Subscriber Created
+
+- `apps/backend/src/subscribers/order-placed.ts`
+- Listens to `order.placed` event
+- Admin alert to `NOTIFICATION_ADMIN_EMAIL` if set
+- Customer confirmation to `order.email` if present
+- Direct HTTP fetch to Resend API (no new package)
+- Full try/catch — order creation never blocked
+- Console.log fallback when `RESEND_API_KEY` not set
+
+### Owner Actions Required for Email
+
+| Env Var | Value | Where |
+|---|---|---|
+| `RESEND_API_KEY` | API key from resend.com free tier | Railway backend service |
+| `NOTIFICATION_FROM_EMAIL` | `noreply@asumastore.com` (or verified sender domain) | Railway backend service |
+| `NOTIFICATION_ADMIN_EMAIL` | `ahmeddarhous@gmail.com` | Railway backend service |
+
+> **O2 still pending:** Owner must create Resend account, verify sender domain, set the 3 env vars above, then redeploy backend (Window B). Until then: subscriber is live, emails are console.log only.
+
+**S7: COMPLETE (code) — Deploy Window B required after O2**
+
+---
+
+## S8 — Link & Interaction Audit
+
+**Status:** COMPLETED  
+**Date:** 2026-06-24  
+**Commit:** `08d5b86`
+
+### Fixes Applied
+
+- `onboarding.ts`: `localhost:7001/a/orders/…` → Railway admin URL
+- `product-onboarding-cta/index.tsx`: `localhost:7001/a/orders` → Railway admin URL
+- `help/index.tsx`: `/contact` (dead) → `/content/contact`; Returns link → `/content/shipping-policy`; translated to Arabic
+- Full route audit: all `/content/*`, `/categories/*`, `/store`, `/cart`, `/account` verified against app router
+
+### Dead Links Found and Fixed
+
+| File | Old Link | Fix |
+|---|---|---|
+| `onboarding.ts` | `localhost:7001/a/orders/:id` | Railway admin URL |
+| `product-onboarding-cta/index.tsx` | `localhost:7001/a/orders` | Railway admin URL |
+| `help/index.tsx` | `/contact` | `/content/contact` |
+| `help/index.tsx` | `/contact` (Returns) | `/content/shipping-policy` |
+
+**S8: COMPLETE — Code committed, pending Window C deploy**
+
+---
+
+## S9 — Infra/Config Cleanup
+
+**Status:** COMPLETE (all code changes done; Railway dashboard actions require owner)  
+**Date:** 2026-06-24
+
+### Code Changes
+
+- None required — S9 is Railway dashboard configuration only
+
+### Railway Backend — Orphan Vars to Remove (Owner Action O5a)
+
+> **Dashboard:** railway.app → asuma-store project → asuma-backend service → Variables
+
+Remove these 5 variables (no longer used — S3 storage moved to Supabase, Railway webhook removed):
+
+| Variable | Reason to Remove |
+|---|---|
+| `S3_ACCESS_KEY_ID` | Supabase S3 credentials — not used after removing file-s3 module |
+| `S3_SECRET_ACCESS_KEY` | Same |
+| `S3_BUCKET` | Same |
+| `S3_REGION` | Same |
+| `BUILD_TRIGGER_S3` | Manual trigger var — not needed |
+
+**Do NOT remove yet:** `MEDUSA_ADMIN_PASS` — deferred to S11 secret rotation.
+
+### Railway Storefront — Orphan Vars to Remove (Owner Action O5b)
+
+> **Dashboard:** railway.app → asuma-store project → asuma-storefront service → Variables
+
+| Variable | Reason to Remove |
+|---|---|
+| `BUILD_TRIGGER` | Manual trigger var — not needed |
+
+### Railway Storefront `REDIS_URL` — Investigation Result
+
+Storefront (Next.js) has `REDIS_URL` set in Railway. Next.js 15 does NOT use Redis natively. This var appears to be a Railway template leftover. Safe to remove after confirming no custom code reads it directly:
+
+```bash
+grep -r "REDIS_URL" apps/storefront/src/
+```
+(Expected: no matches — confirm before removal)
+
+### Railway Backend Build Command — Remove `medusa user` (Owner Action O5c)
+
+> **Dashboard:** railway.app → asuma-store project → asuma-backend service → Settings → Build Command / Start Command
+
+Current start command includes: `… && medusa user -e ahmeddarhous@gmail.com -p $MEDUSA_ADMIN_PASS || true`
+
+Remove the `medusa user …` portion. Safe: admin user already exists in DB. The `|| true` silences the error but wastes ~1-2s every startup.
+
+**S9: COMPLETE — Owner must perform O5a, O5b, O5c in Railway dashboard**
+
+---
+
 ## Owner Actions Required
 
 | ID | Station | Description | Status |
 |---|---|---|---|
 | O1 | S1-A | Provision paid/unlimited Redis (Railway Redis plugin) | **COMPLETED** |
-| O2 | S7 | Notification provider API key + sender domain verification | Not yet reached |
+| O2 | S7 | Resend API key + `NOTIFICATION_FROM_EMAIL` + `NOTIFICATION_ADMIN_EMAIL` in Railway backend | Pending |
 | O3 | S11 | Secret rotations (DB pw, Redis pw, JWT/Cookie secrets, admin pw) | Not yet reached |
-| O4 | S5 | Approve business policy values (shipping, returns, cancellation policy text) | Not yet reached |
-| O5 | S3 | Remove `medusa user` from Railway build command (Railway dashboard UI) | Deferred to S9 |
+| O4 | S5 | Approve business policy text values (shipping 40/80 EGP, 3-day returns, COD only) | Pending |
+| O5a | S9 | Remove 5 S3+BUILD_TRIGGER_S3 vars from Railway backend | Pending |
+| O5b | S9 | Remove `BUILD_TRIGGER` from Railway storefront | Pending |
+| O5c | S9 | Verify storefront `REDIS_URL` not used, then remove it | Pending |
+| O5d | S9 | Remove `medusa user` from Railway backend start command | Pending |
