@@ -5,7 +5,7 @@
 > Do not create alternate copies (`plan-final.md`, `revised-plan.md`, etc.).
 
 - **Plan revision date:** 2026-06-23
-- **Status:** APPROVED-AS-BASELINE, PRE-IMPLEMENTATION. No station executed yet.
+- **Status:** EXECUTION-IN-PROGRESS. Plan patched 2026-06-23: design-lab protected, Storefront deploy target 1–2, EXECUTION CONTROL PROTOCOL added.
 - **Author of execution:** Claude Code (agent), under owner Ahmed Darhous.
 
 ---
@@ -272,11 +272,11 @@ No deploy after each text/link/component/commit/sub-station. Small commits accum
 |---|---|---|---|---|---|
 | **A — Critical Backend Recovery** | S1 (+ any S2 backend fix) | Backend | Cart-500 cause proven; backend builds locally/safe-env | **1** (max 2 if a second distinct backend cause emerges) | cart 201; admin login; full COD |
 | **B — Backend Completion** | S3 branding, S7 notifications, remaining S2 backend fixes | Backend | Window A stable | **1** | admin branding; order notification; login durable |
-| **C — Storefront Completion Batch** | S4 footer, S5 content + Medusa-text, S6 search, S8 links, S13 SEO, low-risk S12 perf, S14 health route | Storefront | local build + type/lint/tests + link checks + visual verify pass | **1** (max 2 if a blocker forces a split) | footer, content, search, links, SEO, Visual Preservation Gate |
-| **D — Infrastructure & Security** | S9 var cleanup, S11 secrets (staged), security headers (with last storefront batch) | Both | Windows A–C stable; backup before DB/Redis rotation | Backend **2–3** (staged rotations), Storefront **1** (headers) | health, login (new secret), cart, images (CSP) after each |
+| **C — Storefront Completion Batch** | S4 footer, S5 content + Medusa-text, S6 search, S8 links, S12 perf/a11y, S13 SEO, S14 health route, security headers, CSP, source-map prod config, safe image config, mobile/a11y improvements | Storefront | local build + type checks + lint/tests + route checks + link audit + visual comparison + image checks + security-header config review + VISUAL PRESERVATION GATE | **1 main completion deploy** (+ max 1 corrective deploy only if a proven production-only failure appears that cannot be reproduced locally) | footer, content, search, links, SEO, visual gate, security headers, images |
+| **D — Infrastructure & Security** | S9 var cleanup, S11 secrets (staged rotations only) | Backend | Windows A–C stable; backup before DB/Redis rotation | Backend **2–3** (staged rotations); Storefront **0** (all storefront changes already in Window C) | health, login (new secret), cart after each rotation |
 | **E — Final Release Candidate** | S15 validation; deploy only to fix a proven failure | Both | All stations complete | **0–1 each** | full regression matrix |
 
-**Expected total deploys (target, realistic):** Backend ≈ **4–6** (A:1, B:1, D:2–3, E:0–1); Storefront ≈ **2–4** (C:1–2, D:1, E:0–1). Goal: fewest deploys consistent with safety; secret rotations are the only intentionally-staged multi-deploy step.
+**Expected total deploys (target):** Backend ≈ **4–6** (A:1, B:1, D:2–3, E:0–1); **Storefront ≈ 1–2** (C:1 main completion deploy + max 1 corrective for a proven production-only failure; all other storefront changes are batched into the single Window C deploy). Goal: fewest deploys consistent with safety; secret rotations are the only intentionally-staged multi-deploy step. No standalone Storefront deploy for security headers, CSP, or image config unless a genuine technical blocker prevents batching.
 
 ---
 
@@ -303,7 +303,7 @@ No deploy after each text/link/component/commit/sub-station. Small commits accum
 | `apps/storefront/src/app/sitemap.ts`, `robots.ts` *(create)* | — | SEO files | S13 | C | Low |
 | `scripts/*` *(create)* | — | smoke tests | S14 | C/D | Low |
 | `docs/*` | this plan + handover | plan (now) + handover docs (S16) | S0/S16 | — | Low |
-| `design-lab/*` | tracked prototypes | untrack/remove (housekeeping) | S9 | D | Low |
+| `design-lab/*` | **PROTECTED design-reference archive** | **DO NOT DELETE, UNTRACK, MOVE, RENAME, REWRITE, OR CLEAN.** Preserve unchanged. Not part of any infrastructure/housekeeping cleanup. Not included in production runtime (already excluded from build). Any future archival or repository separation requires separate explicit Owner Approval. | — | — | None |
 
 ---
 
@@ -368,7 +368,7 @@ No deploy after each text/link/component/commit/sub-station. Small commits accum
 
 ## 11. Visual Preservation Gate
 
-**Protected Visual Assets (never delete by default):** Intro/Loading experience; Asuma monogram/logo animation; Hero visual; Three.js effects; GSAP motion; scroll reveals; custom cursor + glow; Golden Noir palette; gold/ivory/obsidian language; Arabic typography; desktop premium experience; mobile visual identity; current footer visual quality; existing transitions/micro-interactions.
+**Protected Visual Assets (never delete by default):** Intro/Loading experience; Asuma monogram/logo animation; Hero visual; Three.js effects; GSAP motion; scroll reveals; custom cursor + glow; Golden Noir palette; gold/ivory/obsidian language; Arabic typography; desktop premium experience; mobile visual identity; current footer visual quality; existing transitions/micro-interactions; `design-lab/` design-reference archive.
 
 **Rule:** `PRESERVE FIRST — OPTIMIZE SECOND — ADD IF USEFUL — NEVER DELETE BY DEFAULT`.
 If an element hurts performance: measure → do not delete → apply lazy load / dynamic import / reduced quality on low-end / `prefers-reduced-motion` / mobile-specific optimization / touch guard / compression / conditional render / pause off-viewport → keep full version on capable devices. Any radical removal needs strong evidence + separate Owner Approval.
@@ -421,7 +421,34 @@ Do **not** stop merely to send a progress report or ask "should I continue?".
 
 ---
 
-## 15. Unavoidable Owner Actions (minimal, timed)
+## 15. EXECUTION CONTROL PROTOCOL
+
+- Execution continues automatically within each group of five stations — no confirmation needed between stations.
+- An independent commit is created after each completed station (pattern: `fix/feat/test/chore/docs(sN): message`).
+- A commit does NOT trigger a deploy; deploys follow Section 6 Deployment Windows only.
+- `docs/MASTER_EXECUTION_PLAN.md` station status and `docs/EXECUTION_LOG.md` are updated after each station.
+- Execution STOPS after every five fully-completed stations, sends a comprehensive 10-section report, and waits for Owner Approval before the next group.
+- A station is NOT counted as complete unless: all objectives achieved, all Acceptance Criteria passed, plan updated, execution log updated, commit created, hash recorded.
+- **Context/Compaction protocol:** before any context-window compression, update `docs/MASTER_EXECUTION_PLAN.md` + `docs/EXECUTION_LOG.md` with full current state; create commit if station is complete; resume from first incomplete item post-compaction; do not lose the five-station group counter.
+
+### Five-Station Groups
+| Group | Stations | Report trigger |
+|---|---|---|
+| Group 1 | S0, S1, S2, S3, S4 | Stop + report + wait after S4 |
+| Group 2 | S5, S6, S7, S8, S9 | Stop + report + wait after S9 |
+| Group 3 | S10, S11, S12, S13, S14 | Stop + report + wait after S14 |
+| Final | S15, S16 | Final report after S16 |
+
+### Exceptional stops (before group of 5 is complete)
+Only stop for: payment/billing, OTP, email/domain verification, inaccessible secret, real data-loss risk, destructive migration, binding business decision, protected visual asset at risk, explicit Owner Approval required by plan.
+**Do not stop for:** normal errors, test failures, build failures, missing packages, code issues, context size, task length — diagnose, fix, continue.
+
+### design-lab absolute protection
+`design-lab/` is a protected design-reference archive. **Never delete, untrack, move, rename, rewrite, or clean its files.** Not part of any cleanup station. Any archival requires separate Owner Approval.
+
+---
+
+## 16. Unavoidable Owner Actions (minimal, timed)
 
 1. **(S0/S1-E/S11 — before destructive/migration/rotation only)** Confirm/trigger a Supabase DB backup (Database → Backups → confirm PITR/daily or "Backup now"). *Needs DB creds.*
 2. **(S1, if `railway logs` lacks runtime)** Copy ~20 runtime-log lines around the failing `POST /store/carts` from Railway dashboard.
@@ -435,7 +462,7 @@ Everything else (code, content drafts, non-secret Railway vars, deploys, tests, 
 
 ---
 
-## 16. Final Launch Checklist
+## 17. Final Launch Checklist
 
 - [ ] Cart 201; full COD order completes (T01–T07)
 - [ ] Order visible in Admin (T06)
@@ -459,14 +486,14 @@ Everything else (code, content drafts, non-secret Railway vars, deploys, tests, 
 
 ---
 
-## 17. Post-Launch Verification
+## 18. Post-Launch Verification
 
 **Immediately:** `/health` 200; home + a product + synthetic non-completing cart 201; Admin login; Redis + Supabase usage baseline-normal; no 500s.
 **After first real order:** order in Admin with correct EGP totals + COD + shipping; address captured; no duplicate; admin notification received; re-check Redis request trend (no creep toward limits).
 
 ---
 
-## 18. Out-of-Scope
+## 19. Out-of-Scope
 
 **In scope (must not be dropped):** Search, order notifications, contact links, policies, SEO basics, monitoring, owner documentation, mobile, visual preservation.
 
@@ -479,10 +506,10 @@ Everything else (code, content drafts, non-secret Railway vars, deploys, tests, 
 
 ---
 
-## 19. Final Verdict
+## 20. Final Verdict
 
 - Covers everything blocking sales: yes (S1→S2 target Cart-500 with evidence-gated fix).
-- Covers all audit findings: yes (cart→S1/S2; contacts→S4; dead links→S5/S8; Medusa text→S5; admin branding→S3; localhost→S8; orphan vars→S9; secrets→S11; SEO→S13; perf/cursor→S12; design-lab→S9; search→S6; notifications→S7).
+- Covers all audit findings: yes (cart→S1/S2; contacts→S4; dead links→S5/S8; Medusa text→S5; admin branding→S3; localhost→S8; orphan vars→S9; secrets→S11; SEO→S13; perf/cursor→S12; design-lab→PROTECTED-PRESERVE-ONLY; search→S6; notifications→S7).
 - Unproven assumptions baked in: none — U1/U2/U3 are diagnosis-gated, not assumed.
 - First station: S0. Last station: S16.
 - Likely remaining after completion: order photography, card payments, custom domain — all explicitly out-of-scope by decision, not by omission.
