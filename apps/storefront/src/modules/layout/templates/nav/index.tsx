@@ -9,6 +9,7 @@ import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import LanguageSwitcher from "@modules/layout/components/language-switcher"
 import AsumaLogo from "@modules/common/components/asuma-logo"
+import SearchModal from "@modules/search/components/search-modal"
 
 export default async function Nav() {
   const [regions, locales, currentLocale] = await Promise.all([
@@ -41,8 +42,9 @@ export default async function Nav() {
             </LocalizedClientLink>
           </div>
 
-          {/* Right — lang + account + cart */}
+          {/* Right — search + lang + account + cart */}
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
+            <SearchModal locale={currentLocale} countryCode="eg" />
             <div className="hidden small:flex items-center gap-x-6 h-full">
               <LanguageSwitcher />
               <LocalizedClientLink
