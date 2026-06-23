@@ -4,6 +4,9 @@ import { I18nProvider } from "@lib/i18n"
 import { Metadata } from "next"
 import { Cormorant_Garamond, Space_Grotesk, Noto_Kufi_Arabic } from "next/font/google"
 import "styles/globals.css"
+import Loader from "@modules/layout/components/loader"
+import CustomCursor from "@modules/layout/components/cursor"
+import ScrollReveal from "@modules/layout/components/scroll-reveal"
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -43,6 +46,9 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       className={`${cormorant.variable} ${spaceGrotesk.variable} ${notoKufiArabic.variable}`}
     >
       <body className="font-sans antialiased">
+        <Loader />
+        <CustomCursor />
+        <ScrollReveal />
         <I18nProvider initialLocale={locale}>
           <main className="relative">{props.children}</main>
         </I18nProvider>

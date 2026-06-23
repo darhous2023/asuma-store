@@ -45,6 +45,20 @@ a {
   50%       { transform: translateY(6px); }
 }
 
+/* ─── GSAP scroll reveal initial state ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+/* Respect reduced motion — skip animations entirely */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {

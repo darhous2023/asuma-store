@@ -1,4 +1,5 @@
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import HeroCanvas from "@modules/home/components/hero-canvas"
 
 const Hero = () => {
   return (
@@ -9,6 +10,9 @@ const Hero = () => {
         backgroundColor: "var(--obsidian)",
       }}
     >
+      {/* ── Three.js particle sphere ── */}
+      <HeroCanvas />
+
       {/* ── Radial gold glow ── */}
       <div
         aria-hidden="true"
@@ -28,7 +32,7 @@ const Hero = () => {
 
       {/* ── Content ── */}
       <div
-        className="relative z-10 flex flex-col items-center text-center px-6"
+        className="reveal relative z-10 flex flex-col items-center text-center px-6"
         style={{ animation: "fade-up 1s var(--ease-luxury) both" }}
       >
         {/* Eyebrow */}
