@@ -523,6 +523,90 @@ Ran against live production (before Window C deploy):
 
 ---
 
+## S15 — Full Production Validation
+
+**Status:** COMPLETED  
+**Date:** 2026-06-24  
+**Smoke Test:** 14/14 PASS  
+**Commit:** `527cb8f` (product 500→404 fix) — deployed to Railway
+
+### Bug Fixed in This Session
+
+- **Product unknown handle → 500 → now 404:** `getImagesForVariant(pricedProduct, selectedVariantId)` was called before the `if (!pricedProduct) notFound()` check in `apps/storefront/src/app/[countryCode]/(main)/products/[handle]/page.tsx`. Fixed by swapping order.
+- Commit: `527cb8f` — deployed — confirmed 404 on `/eg/products/nonexistent-product-xyz-abc`
+
+### Smoke Test Results (Post-Fix Deploy)
+
+```
+PASS  Backend /health returns 200
+PASS  Store API returns ≥1 published product
+PASS  POST /store/carts returns 200 + cart_id
+PASS  Shipping options include Arabic options (≥1)
+PASS  Storefront /eg returns 200
+PASS  Storefront /eg/store returns 200
+PASS  Content page /eg/content/about returns 200
+PASS  Content page /eg/content/contact returns 200
+PASS  Content page /eg/content/privacy-policy returns 200
+PASS  Content page /eg/content/terms-of-use returns 200
+PASS  Content page /eg/content/shipping-policy returns 200
+PASS  Unknown route returns 404 (not 500)
+PASS  Sitemap is reachable
+PASS  robots.txt is reachable
+
+Passed: 14 | Failed: 0 — SMOKE TEST PASSED
+```
+
+### Extended Validation Results
+
+| Check | Result |
+|---|---|
+| Published products | 25 ✅ |
+| Categories | 29 (5 main + 20 sub + Medusa defaults) ✅ |
+| Collections | 5 ✅ |
+| Shipping options | 2 (الشحن العادي 40 EGP / الشحن السريع 80 EGP) ✅ |
+| Real product page `/eg/products/asuma-earrings-pearl-gold` | 200 ✅ |
+| Unknown product `/eg/products/nonexistent-xyz` | 404 ✅ |
+| Unknown root route `/random-route-xyz` | 307→404 ✅ |
+| Admin panel `/app` | 200 ✅ |
+| Sitemap entries | 61 (incl. 25 products, 5 content pages, /store, /eg) ✅ |
+| robots.txt | Correct (blocks cart/checkout/account/order) ✅ |
+| HSTS header | `max-age=31536000; includeSubDomains` ✅ |
+| X-Frame-Options | `SAMEORIGIN` ✅ |
+| X-Content-Type-Options | `nosniff` ✅ |
+| Referrer-Policy | `strict-origin-when-cross-origin` ✅ |
+| CSP | Present ✅ |
+| Account page | 200 (auth guard working) ✅ |
+| Checkout without cart | 404 (cart guard working, expected) ✅ |
+
+**S15: COMPLETE — All 14 smoke test checks + 17 extended checks passing**
+
+---
+
+## S16 — Owner Manual & Handover Documentation
+
+**Status:** COMPLETED  
+**Date:** 2026-06-24  
+**File:** `docs/OWNER_MANUAL.md`
+
+### Deliverables
+
+- `docs/OWNER_MANUAL.md` — comprehensive non-technical guide covering:
+  - Admin panel login and navigation
+  - Order management: view, fulfill, capture, archive, cancel
+  - Product management: edit, add, publish/draft, inventory, delete
+  - Categories and collections
+  - Customer management
+  - Pricing (piasters → EGP conversion table)
+  - Shipping option configuration
+  - Content pages
+  - Email notifications setup (O2 guide)
+  - Pre-launch checklist (Gate 12)
+  - Incident response quick reference
+
+**S16: COMPLETE**
+
+---
+
 ## Owner Actions Required
 
 | ID | Station | Description | Status |
@@ -544,6 +628,7 @@ Ran against live production (before Window C deploy):
 |---|---|---|---|
 | A — Critical Backend Recovery | S1 | Backend | **DEPLOYED** `8921f041` ✅ |
 | B — Backend Completion | S7 (after O2) | Backend | **PENDING O2** |
-| C — Storefront Completion Batch | S4,S5,S6,S8,S11,S12,S13,S14 | Storefront | **READY TO DEPLOY** (14 commits queued) |
+| C — Storefront Completion Batch | S4,S5,S6,S8,S11,S12,S13,S14 | Storefront | **DEPLOYED** `437a410a` ✅ |
+| C-fix — Product 500→404 Bug | fix commit `527cb8f` | Storefront | **DEPLOYED** ✅ |
 | D — Infrastructure & Security | S9,S11 Gate-12 | Backend | **PENDING O3 + O5** |
-| E — Final Release Candidate | S15 | Both | **NOT STARTED** |
+| E — Final Release Candidate | S15, S16 | Both | **COMPLETE** ✅ |
