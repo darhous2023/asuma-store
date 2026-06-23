@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Asuma Store — Blush Pink Future</title>
+<meta name="description" content="أسوما ستور — المستقبل الوردي"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Noto+Kufi+Arabic:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════════════════════
+   BLUSH PINK FUTURE — DESIGN SYSTEM
+   Dark Blush + Powder Pink + Rose-Gold
+   Glass Morphism + Soft Futurism
+   DM Serif Display + DM Sans + Noto Kufi Arabic
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --void:'#0A0608';
+  --deep:'#10080C';
+  --abyss:'#160B10';
+  --dark-blush:'#1E0D15';
+  --mid-blush:'#2D1520';
+  --powder:'#FF9EC6';
+  --powder-dim:'#C96B9A';
+  --powder-deep:'#8B3A65';
+  --rose-gold:'#C9847E';
+  --rose-gold-bright:'#E5A8A0';
+  --rose-gold-dark:'#8B5550';
+  --soft-white:'#FFF0F5';
+  --soft-dim:'#D4A8BB';
+  --soft-muted:'#8A5A70';
+  --glass-bg:'rgba(255,158,198,0.05)';
+  --glass-border:'rgba(255,158,198,0.15)';
+  --glass-shine:'rgba(255,240,245,0.1)';
+  --font-display:'DM Serif Display',Georgia,serif;
+  --font-ui:'DM Sans',system-ui,sans-serif;
+  --font-arabic:'Noto Kufi Arabic',sans-serif;
+  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --ease-soft:cubic-bezier(0.16,1,0.3,1);
+  --space-xs:8px;--space-sm:16px;--space-md:24px;--space-lg:48px;--space-xl:80px;--space-2xl:120px;
+  --z-cursor:9999;--z-loader:9998;--z-nav:100;--z-cart:200;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{background:#0A0608;color:var(--soft-white);font-family:var(--font-arabic);overflow-x:hidden;cursor:none;}
+::-webkit-scrollbar{width:2px;} ::-webkit-scrollbar-track{background:#0A0608;} ::-webkit-scrollbar-thumb{background:var(--powder-deep);}
+
+/* ═══ GLASS MIXIN ═══ */
+.glass{background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
+.glass-strong{background:rgba(255,158,198,0.08);border:1px solid rgba(255,158,198,0.2);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);}
+
+/* ═══ CURSOR — Rose Bloom ═══ */
+#cursor-bloom{position:fixed;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(255,158,198,0.1) 0%,transparent 70%);pointer-events:none;z-index:var(--z-cursor);transform:translate(-50%,-50%);mix-blend-mode:screen;}
+#cursor-core{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--powder);pointer-events:none;z-index:var(--z-cursor);transform:translate(-50%,-50%);transition:width .3s var(--ease-spring),height .3s var(--ease-spring),background .3s;}
+#cursor-ring{position:fixed;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,158,198,.4);pointer-events:none;z-index:var(--z-cursor);transform:translate(-50%,-50%);transition:width .4s var(--ease-spring),height .4s var(--ease-spring);}
+#cursor-trail{position:fixed;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,rgba(255,158,198,.06) 0%,transparent 70%);pointer-events:none;z-index:calc(var(--z-cursor) - 1);transform:translate(-50%,-50%);}
+
+/* ═══ LOADER — Particle Bloom ═══ */
+#loader{position:fixed;inset:0;z-index:var(--z-loader);background:#0A0608;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
+#loader-particles{position:absolute;inset:0;}
+#loader-glass{position:relative;z-index:2;padding:48px 64px;background:rgba(255,158,198,.04);border:1px solid rgba(255,158,198,.12);backdrop-filter:blur(20px);text-align:center;opacity:0;transform:scale(.9);}
+#loader-glass.show{opacity:1;transform:scale(1);transition:opacity .8s var(--ease-soft),transform .8s var(--ease-soft);}
+#loader-logo-text{font-family:var(--font-display);font-size:72px;font-style:italic;color:var(--soft-white);letter-spacing:.05em;line-height:1;}
+#loader-logo-sub{font-family:var(--font-arabic);font-size:13px;color:var(--soft-dim);letter-spacing:.1em;margin-top:8px;}
+#loader-progress-track{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);width:200px;height:1px;background:rgba(255,158,198,.1);}
+#loader-progress-fill{height:100%;background:linear-gradient(90deg,var(--powder-deep),var(--powder));width:0%;transition:width .1s linear;}
+#loader-sig{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-family:var(--font-ui);font-size:9px;letter-spacing:.2em;color:var(--soft-muted);white-space:nowrap;text-transform:uppercase;}
+#loader-sig a{color:var(--powder-dim);text-decoration:none;}
+#loader-sig a:hover{color:var(--powder);}
+
+/* ═══ NAV ═══ */
+#nav{position:fixed;top:0;left:0;right:0;z-index:var(--z-nav);display:flex;align-items:center;justify-content:space-between;padding:20px 48px;transition:background .4s,padding .4s;}
+#nav.scrolled{background:rgba(10,6,8,.9);backdrop-filter:blur(20px);padding:12px 48px;border-bottom:1px solid rgba(255,158,198,.08);}
+.nav-logo{text-decoration:none;cursor:none;display:flex;flex-direction:column;}
+.nav-logo-en{font-family:var(--font-display);font-size:24px;font-style:italic;color:var(--soft-white);letter-spacing:.05em;}
+.nav-logo-en span{color:var(--powder);}
+.nav-logo-ar{font-family:var(--font-arabic);font-size:10px;color:var(--soft-dim);margin-top:2px;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-family:var(--font-ui);font-size:12px;letter-spacing:.12em;color:var(--soft-dim);text-decoration:none;cursor:none;text-transform:uppercase;transition:color .3s;}
+.nav-links a:hover{color:var(--powder);}
+.nav-actions{display:flex;gap:16px;align-items:center;}
+.nav-action-btn{background:none;border:none;cursor:none;color:var(--soft-dim);font-size:16px;transition:color .3s;position:relative;}
+.nav-action-btn:hover{color:var(--powder);}
+#cart-pill{position:absolute;top:-5px;right:-5px;background:var(--powder);color:#0A0608;font-size:8px;font-weight:700;width:14px;height:14px;border-radius:50%;display:none;align-items:center;justify-content:center;font-family:var(--font-ui);}
+.nav-lang{font-family:var(--font-ui);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--soft-dim);cursor:none;background:none;border:1px solid rgba(255,158,198,.2);padding:4px 10px;transition:all .3s;}
+.nav-lang:hover{color:var(--powder);border-color:var(--powder);}
+
+/* ═══ HERO ═══ */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+#hero-three{position:absolute;inset:0;z-index:0;}
+#hero-particles{position:absolute;inset:0;z-index:1;pointer-events:none;}
+.hero-glass-card{position:relative;z-index:2;text-align:center;max-width:860px;padding:64px;background:rgba(255,158,198,.03);border:1px solid rgba(255,158,198,.1);backdrop-filter:blur(12px);}
+.hero-tag{font-family:var(--font-ui);font-size:10px;letter-spacing:.35em;color:var(--powder);text-transform:uppercase;margin-bottom:24px;opacity:0;}
+.hero-title{font-family:var(--font-display);font-size:clamp(56px,9vw,130px);font-style:italic;line-height:.92;color:var(--soft-white);margin-bottom:24px;opacity:0;transform:translateY(30px);}
+.hero-title em{color:var(--powder);font-style:normal;}
+.hero-title-ar{font-family:var(--font-arabic);font-size:clamp(20px,3vw,40px);font-weight:300;color:var(--soft-dim);margin-bottom:48px;opacity:0;}
+.hero-divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--powder),transparent);margin:0 auto 48px;opacity:0;transform:scaleX(0);}
+.hero-btns{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;opacity:0;}
+.btn-rose{padding:14px 40px;background:linear-gradient(135deg,var(--powder-deep),var(--powder-dim));color:var(--soft-white);font-family:var(--font-ui);font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:none;border:none;transition:all .4s var(--ease-soft);text-decoration:none;border-radius:2px;}
+.btn-rose:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(255,158,198,.3);}
+.btn-glass-outline{padding:13px 40px;background:rgba(255,158,198,.05);border:1px solid rgba(255,158,198,.3);color:var(--powder);font-family:var(--font-ui);font-size:11px;letter-spacing:.18em;text-transform:uppercase;cursor:none;transition:all .4s;text-decoration:none;border-radius:2px;backdrop-filter:blur(8px);}
+.btn-glass-outline:hover{background:rgba(255,158,198,.12);border-color:var(--powder);}
+.hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp 1s 3.5s forwards;}
+@keyframes fadeUp{to{opacity:1;}}
+.hero-scroll span{font-family:var(--font-ui);font-size:9px;letter-spacing:.3em;color:var(--powder-deep);text-transform:uppercase;}
+.scroll-orb{width:1px;height:50px;background:linear-gradient(180deg,var(--powder-deep),transparent);animation:scrollOrb 2s infinite;}
+@keyframes scrollOrb{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ═══ SECTIONS ═══ */
+section{padding:var(--space-2xl) 0;}
+.container{max-width:1400px;margin:0 auto;padding:0 48px;}
+.section-tag{font-family:var(--font-ui);font-size:9px;letter-spacing:.4em;color:var(--powder);text-transform:uppercase;margin-bottom:12px;}
+.section-title{font-family:var(--font-display);font-size:clamp(32px,5vw,68px);font-style:italic;color:var(--soft-white);line-height:1.05;}
+.section-title em{color:var(--powder);font-style:normal;}
+.section-title-ar{font-family:var(--font-arabic);font-size:clamp(16px,2.5vw,30px);font-weight:300;color:var(--soft-dim);margin-top:8px;}
+.rose-rule{width:40px;height:1px;background:var(--powder-dim);margin:20px 0;}
+.reveal{opacity:0;transform:translateY(30px);}
+.reveal.visible{opacity:1;transform:translateY(0);transition:opacity .8s var(--ease-soft),transform .8s var(--ease-soft);}
+
+/* ═══ MANIFESTO ═══ */
+#manifesto{background:var(--deep);position:relative;overflow:hidden;}
+#manifesto::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(255,158,198,.06) 0%,transparent 60%);}
+.manifesto-bento{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:0;}
+.manifesto-glass-cell{padding:64px;position:relative;overflow:hidden;}
+.manifesto-glass-cell:first-child{background:rgba(255,158,198,.03);border:1px solid rgba(255,158,198,.08);}
+.manifesto-glass-cell:last-child{background:rgba(201,132,126,.03);border:1px solid rgba(201,132,126,.08);}
+.manifesto-glass-cell::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,158,198,.2),transparent);}
+.manifesto-quote{font-family:var(--font-display);font-size:clamp(24px,3.5vw,46px);font-style:italic;line-height:1.2;color:var(--soft-white);}
+.manifesto-quote em{color:var(--powder);}
+.manifesto-body{font-family:var(--font-arabic);font-size:15px;line-height:2.2;color:var(--soft-dim);max-width:480px;}
+.manifesto-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px;}
+.stat-glass{padding:32px 24px;text-align:center;background:rgba(255,158,198,.03);border:1px solid rgba(255,158,198,.07);position:relative;overflow:hidden;}
+.stat-glass::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(255,158,198,.05) 0%,transparent 60%);}
+.stat-num{font-family:var(--font-display);font-size:48px;font-style:italic;color:var(--powder);}
+.stat-label{font-family:var(--font-arabic);font-size:12px;color:var(--soft-muted);margin-top:6px;}
+
+/* ═══ CATEGORIES — BENTO GRID ═══ */
+#categories{background:#0A0608;}
+.categories-bento{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:auto auto;gap:2px;margin-top:56px;}
+.bento-cell{position:relative;overflow:hidden;cursor:none;}
+.bento-cell.span2{grid-column:span 2;}
+.bento-cell.span3{grid-column:span 3;}
+.bento-cell.tall{grid-row:span 2;}
+.bento-cell canvas{width:100%;height:100%;display:block;}
+.bento-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,6,8,.85) 0%,transparent 55%);transition:background .5s;}
+.bento-cell:hover .bento-overlay{background:linear-gradient(to top,rgba(10,6,8,.6) 0%,rgba(30,13,21,.3) 100%);}
+.bento-body{position:absolute;bottom:0;left:0;right:0;padding:20px;}
+.bento-tag{font-family:var(--font-ui);font-size:8px;letter-spacing:.3em;color:var(--powder);text-transform:uppercase;margin-bottom:5px;}
+.bento-title-ar{font-family:var(--font-arabic);font-size:16px;color:var(--soft-white);}
+.bento-count{font-family:var(--font-ui);font-size:9px;color:var(--soft-muted);margin-top:2px;}
+.bento-glass-badge{position:absolute;top:16px;right:16px;padding:4px 12px;background:rgba(255,158,198,.1);border:1px solid rgba(255,158,198,.2);backdrop-filter:blur(8px);font-family:var(--font-ui);font-size:8px;letter-spacing:.2em;color:var(--powder);text-transform:uppercase;}
+
+/* ═══ PRODUCT CARD ═══ */
+.product-card{background:var(--dark-blush);position:relative;overflow:hidden;cursor:none;}
+.product-card-media{position:relative;overflow:hidden;}
+.product-card-media canvas{width:100%;display:block;}
+.product-card-action{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;background:rgba(10,6,8,.5);backdrop-filter:blur(4px);transition:opacity .4s;}
+.product-card:hover .product-card-action{opacity:1;}
+.product-quick-btn{padding:10px 28px;background:rgba(255,158,198,.12);border:1px solid rgba(255,158,198,.35);color:var(--soft-white);font-family:var(--font-ui);font-size:10px;letter-spacing:.2em;text-transform:uppercase;cursor:none;transform:translateY(8px);transition:transform .4s var(--ease-spring);backdrop-filter:blur(8px);}
+.product-card:hover .product-quick-btn{transform:translateY(0);}
+.product-card-body{padding:16px 18px 20px;}
+.product-card-tag{font-family:var(--font-ui);font-size:8px;letter-spacing:.25em;color:var(--powder);text-transform:uppercase;margin-bottom:5px;}
+.product-card-name-ar{font-family:var(--font-arabic);font-size:14px;color:var(--soft-white);margin-bottom:3px;}
+.product-card-name-en{font-family:var(--font-display);font-size:12px;font-style:italic;color:var(--soft-dim);margin-bottom:10px;}
+.product-card-price{font-family:var(--font-ui);font-size:15px;color:var(--powder);}
+.product-card-price span{font-size:9px;color:var(--soft-muted);}
+.product-card::after{content:'';position:absolute;inset:0;border:1px solid rgba(255,158,198,0);transition:border-color .4s;}
+.product-card:hover::after{border-color:rgba(255,158,198,.15);}
+
+/* ═══ NEW ARRIVALS ═══ */
+#new-arrivals{background:var(--abyss);overflow:hidden;}
+.arrivals-track-wrap{overflow:hidden;margin-top:52px;}
+.arrivals-track{display:flex;gap:16px;padding-bottom:20px;}
+
+/* ═══ BEST SELLERS ═══ */
+#best-sellers{background:var(--dark-blush);}
+.bestsellers-bento{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:52px;}
+
+/* ═══ SCENE SECTIONS — GLASS SPLIT ═══ */
+.scene-glass{display:grid;grid-template-columns:1fr 1fr;min-height:60vh;}
+.scene-glass.flip{direction:ltr;}
+.scene-glass.flip .scene-glass-media{order:2;}
+.scene-glass.flip .scene-glass-text{order:1;}
+.scene-glass-media{position:relative;overflow:hidden;}
+.scene-glass-media canvas{width:100%;height:100%;display:block;}
+.scene-glass-text{display:flex;flex-direction:column;justify-content:center;padding:80px 56px;background:var(--mid-blush);position:relative;}
+.scene-glass-text::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(255,158,198,.05) 0%,transparent 60%);}
+
+/* ═══ ASUMA PICKS ═══ */
+#asuma-picks{background:var(--deep);}
+.picks-bento{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:2px;margin-top:52px;}
+.pick-card{position:relative;overflow:hidden;cursor:none;}
+.pick-card.tall{grid-row:span 2;}
+.pick-card canvas{width:100%;height:100%;display:block;}
+.pick-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,6,8,.85) 0%,transparent 55%);}
+.pick-card-body{position:absolute;bottom:0;left:0;right:0;padding:24px;}
+
+/* ═══ LIMITED ═══ */
+#limited{background:var(--abyss);position:relative;overflow:hidden;}
+#limited::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(255,158,198,.04) 0%,transparent 60%);}
+#limited::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;border:1px solid rgba(255,158,198,.04);pointer-events:none;}
+.limited-glass-box{background:rgba(255,158,198,.03);border:1px solid rgba(255,158,198,.1);backdrop-filter:blur(20px);padding:64px;text-align:center;max-width:900px;margin:0 auto;position:relative;}
+.limited-glass-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,158,198,.3),transparent);}
+.limited-countdown{display:flex;gap:40px;justify-content:center;margin:48px 0;}
+.cd-unit{text-align:center;padding:20px 28px;background:rgba(255,158,198,.04);border:1px solid rgba(255,158,198,.1);}
+.cd-num{font-family:var(--font-display);font-size:64px;font-style:italic;color:var(--soft-white);line-height:1;}
+.cd-label{font-family:var(--font-ui);font-size:8px;letter-spacing:.3em;color:var(--powder);text-transform:uppercase;margin-top:8px;}
+.limited-products{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px;}
+
+/* ═══ OFFERS ═══ */
+#offers{background:var(--dark-blush);}
+.offers-bento{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:52px;}
+.offer-card{position:relative;overflow:hidden;min-height:300px;cursor:none;}
+.offer-card canvas{width:100%;height:100%;display:block;position:absolute;inset:0;}
+.offer-body{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:36px;background:linear-gradient(to top,rgba(10,6,8,.88) 0%,transparent 55%);}
+.offer-glass-tag{display:inline-block;padding:3px 12px;background:rgba(255,158,198,.1);border:1px solid rgba(255,158,198,.2);font-family:var(--font-ui);font-size:8px;letter-spacing:.2em;color:var(--powder);text-transform:uppercase;margin-bottom:10px;backdrop-filter:blur(4px);}
+.offer-title-ar{font-family:var(--font-arabic);font-size:22px;color:var(--soft-white);margin-bottom:4px;}
+.offer-title-en{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--powder-dim);}
+
+/* ═══ INFO STRIP ═══ */
+#info-strip{background:var(--mid-blush);border-top:1px solid rgba(255,158,198,.08);border-bottom:1px solid rgba(255,158,198,.08);}
+.info-glass-grid{display:grid;grid-template-columns:repeat(3,1fr);}
+.info-glass-cell{padding:48px;text-align:center;border-right:1px solid rgba(255,158,198,.08);position:relative;}
+.info-glass-cell:last-child{border-right:none;}
+.info-glass-cell::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(255,158,198,.04) 0%,transparent 50%);}
+.info-icon{font-size:24px;margin-bottom:14px;}
+.info-title-en{font-family:var(--font-ui);font-size:9px;letter-spacing:.25em;color:var(--powder);text-transform:uppercase;margin-bottom:10px;}
+.info-title-ar{font-family:var(--font-arabic);font-size:16px;color:var(--soft-white);margin-bottom:8px;}
+.info-desc-ar{font-family:var(--font-arabic);font-size:13px;color:var(--soft-muted);line-height:1.9;}
+
+/* ═══ TESTIMONIALS ═══ */
+#testimonials{background:var(--deep);}
+.testimonials-bento{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px;}
+.testimonial-glass{padding:36px;background:rgba(255,158,198,.03);border:1px solid rgba(255,158,198,.08);position:relative;overflow:hidden;}
+.testimonial-glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,158,198,.15),transparent);}
+.testimonial-quote-mark{font-family:var(--font-display);font-size:64px;font-style:italic;color:rgba(255,158,198,.15);line-height:.5;display:block;margin-bottom:16px;}
+.testimonial-text{font-family:var(--font-arabic);font-size:14px;line-height:2;color:var(--soft-dim);margin-bottom:20px;}
+.testimonial-author{font-family:var(--font-arabic);font-size:13px;color:var(--soft-white);}
+.testimonial-city{font-family:var(--font-ui);font-size:9px;letter-spacing:.15em;color:var(--powder);text-transform:uppercase;margin-top:2px;}
+.testimonial-stars{color:var(--powder);font-size:10px;margin-bottom:4px;}
+
+/* ═══ SOCIAL WALL ═══ */
+#social{background:#0A0608;}
+.social-bento{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:52px;}
+.social-tile{position:relative;aspect-ratio:1;overflow:hidden;cursor:none;}
+.social-tile canvas{width:100%;height:100%;display:block;}
+.social-tile-glass{position:absolute;inset:0;background:rgba(255,158,198,0);transition:background .4s;display:flex;align-items:center;justify-content:center;}
+.social-tile:hover .social-tile-glass{background:rgba(255,158,198,.08);backdrop-filter:blur(4px);}
+.social-tile-icon{color:var(--powder);font-size:22px;opacity:0;transform:scale(.8);transition:all .4s var(--ease-spring);}
+.social-tile:hover .social-tile-icon{opacity:1;transform:scale(1);}
+
+/* ═══ WHATSAPP CTA ═══ */
+#whatsapp-cta{background:var(--dark-blush);}
+.whatsapp-glass{max-width:700px;margin:0 auto;text-align:center;padding:64px;background:rgba(255,158,198,.03);border:1px solid rgba(255,158,198,.1);position:relative;}
+.whatsapp-glass::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,158,198,.2),transparent);}
+.wa-glass-btn{display:inline-flex;align-items:center;gap:16px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;padding:18px 48px;margin-top:40px;font-family:var(--font-arabic);font-size:17px;text-decoration:none;cursor:none;transition:all .4s var(--ease-soft);border-radius:2px;}
+.wa-glass-btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(37,211,102,.25);}
+.wa-glass-btn svg{width:22px;height:22px;fill:currentColor;}
+
+/* ═══ FOOTER ═══ */
+#footer{background:var(--abyss);border-top:1px solid rgba(255,158,198,.08);}
+.footer-inner{padding:var(--space-xl) 0 var(--space-lg);}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:52px;margin-bottom:52px;}
+.footer-logo-text{font-family:var(--font-display);font-size:28px;font-style:italic;color:var(--soft-white);}
+.footer-logo-text em{color:var(--powder);}
+.footer-logo-ar{font-family:var(--font-arabic);font-size:12px;color:var(--soft-muted);margin-top:4px;}
+.footer-desc{font-family:var(--font-arabic);font-size:13px;line-height:1.9;color:var(--soft-muted);margin-top:14px;max-width:280px;}
+.footer-socials{display:flex;gap:10px;margin-top:20px;}
+.footer-social{width:32px;height:32px;background:rgba(255,158,198,.05);border:1px solid rgba(255,158,198,.12);display:flex;align-items:center;justify-content:center;color:var(--soft-muted);text-decoration:none;cursor:none;font-family:var(--font-ui);font-size:9px;letter-spacing:.1em;transition:all .3s;}
+.footer-social:hover{background:rgba(255,158,198,.1);border-color:var(--powder);color:var(--powder);}
+.footer-col-tag{font-family:var(--font-ui);font-size:8px;letter-spacing:.3em;color:var(--powder);text-transform:uppercase;margin-bottom:18px;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:11px;}
+.footer-links a{font-family:var(--font-arabic);font-size:13px;color:var(--soft-muted);text-decoration:none;cursor:none;transition:color .3s;}
+.footer-links a:hover{color:var(--soft-dim);}
+.footer-bottom{border-top:1px solid rgba(255,158,198,.06);padding-top:24px;display:flex;justify-content:space-between;align-items:center;}
+.footer-copy{font-family:var(--font-arabic);font-size:11px;color:var(--soft-muted);}
+.footer-badge{font-family:var(--font-display);font-size:12px;font-style:italic;color:var(--powder-deep);}
+.footer-sig{font-family:var(--font-ui);font-size:9px;letter-spacing:.15em;color:var(--soft-muted);text-transform:uppercase;}
+.footer-sig a{color:var(--powder-deep);text-decoration:none;}
+.footer-sig a:hover{color:var(--powder);}
+
+/* ═══ CART ═══ */
+#cart-drawer{position:fixed;top:0;right:-480px;width:480px;height:100vh;background:var(--abyss);z-index:var(--z-cart);border-left:1px solid rgba(255,158,198,.12);transition:right .5s var(--ease-soft);display:flex;flex-direction:column;backdrop-filter:blur(20px);}
+#cart-drawer.open{right:0;}
+.cart-bg{position:fixed;inset:0;background:rgba(10,6,8,.7);z-index:calc(var(--z-cart) - 1);display:none;backdrop-filter:blur(8px);}
+.cart-bg.show{display:block;}
+.cart-header{padding:24px 28px;border-bottom:1px solid rgba(255,158,198,.1);display:flex;align-items:center;justify-content:space-between;}
+.cart-title{font-family:var(--font-display);font-size:24px;font-style:italic;color:var(--soft-white);}
+.cart-close{background:none;border:none;color:var(--soft-dim);font-size:16px;cursor:none;}
+.cart-items-list{flex:1;overflow-y:auto;padding:18px 28px;}
+.cart-empty-msg{font-family:var(--font-arabic);font-size:15px;color:var(--soft-muted);padding:40px 0;text-align:center;}
+.cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.cart-item-wrap{width:64px;height:80px;background:var(--dark-blush);flex-shrink:0;overflow:hidden;}
+.cart-item-wrap canvas{width:100%;height:100%;display:block;}
+.cart-item-name{font-family:var(--font-arabic);font-size:13px;color:var(--soft-white);margin-bottom:5px;}
+.cart-item-price{font-family:var(--font-ui);font-size:13px;color:var(--powder);}
+.cart-item-del{background:none;border:none;color:var(--soft-muted);cursor:none;font-size:11px;margin-top:6px;display:block;transition:color .3s;}
+.cart-item-del:hover{color:var(--soft-dim);}
+.cart-footer{padding:18px 28px;border-top:1px solid rgba(255,158,198,.1);}
+.cart-total-row{display:flex;justify-content:space-between;margin-bottom:18px;}
+.cart-total-lbl{font-family:var(--font-arabic);font-size:14px;color:var(--soft-dim);}
+.cart-total-val{font-family:var(--font-ui);font-size:18px;color:var(--powder);}
+.cart-checkout-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--powder-deep),var(--powder-dim));color:var(--soft-white);font-family:var(--font-arabic);font-size:15px;border:none;cursor:none;transition:all .3s;border-radius:2px;}
+.cart-checkout-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,158,198,.25);}
+#cart-toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--dark-blush);border:1px solid rgba(255,158,198,.2);backdrop-filter:blur(12px);padding:14px 24px;font-family:var(--font-arabic);font-size:13px;color:var(--soft-white);z-index:var(--z-cart);transition:transform .4s var(--ease-spring);white-space:nowrap;border-radius:2px;}
+#cart-toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ═══ MOBILE ═══ */
+@media(max-width:768px){
+  #nav{padding:14px 24px;} .nav-links{display:none;}
+  .hero-glass-card{padding:40px 24px;margin:0 16px;}
+  .manifesto-bento{grid-template-columns:1fr;} .manifesto-glass-cell{padding:40px 24px;}
+  .categories-bento{grid-template-columns:1fr 1fr;} .bento-cell.span2,.bento-cell.span3{grid-column:auto;} .bento-cell.tall{grid-row:auto;}
+  .bestsellers-bento{grid-template-columns:repeat(2,1fr);}
+  .scene-glass,.scene-glass.flip{grid-template-columns:1fr;} .scene-glass-text{padding:40px 24px;}
+  .scene-glass.flip .scene-glass-media,.scene-glass.flip .scene-glass-text{order:unset;}
+  .info-glass-grid{grid-template-columns:1fr;} .info-glass-cell{border-right:none;border-bottom:1px solid rgba(255,158,198,.08);}
+  .testimonials-bento{grid-template-columns:1fr;}
+  .social-bento{grid-template-columns:repeat(3,1fr);}
+  .footer-top{grid-template-columns:1fr 1fr;gap:28px;}
+  .footer-bottom{flex-direction:column;gap:12px;text-align:center;}
+  #cart-drawer{width:100%;right:-100%;}
+  .picks-bento{grid-template-columns:1fr;} .pick-card.tall{grid-row:auto;}
+  .limited-products,.offers-bento{grid-template-columns:1fr;}
+  section{padding:64px 0;} .container{padding:0 20px;}
+  .limited-glass-box{padding:32px 20px;}
+  .limited-countdown{gap:12px;} .cd-unit{padding:16px 16px;}
+  .cd-num{font-size:44px;}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;} .reveal{opacity:1;transform:none;}}
+</style>
+</head>
+<body>
+
+<!-- ═══ CURSOR ═══ -->
+<div id="cursor-bloom"></div>
+<div id="cursor-trail"></div>
+<div id="cursor-ring"></div>
+<div id="cursor-core"></div>
+
+<!-- ═══ LOADER ═══ -->
+<div id="loader">
+  <canvas id="loader-particles" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
+  <div id="loader-glass">
+    <div id="loader-logo-text">Asuma</div>
+    <div id="loader-logo-sub">أسوما ستور — Blush Pink Future</div>
+  </div>
+  <div id="loader-progress-track"><div id="loader-progress-fill"></div></div>
+  <p id="loader-sig">Designed by <a href="mailto:ahmeddarhous@gmail.com">Ahmed Darhous</a> · <a href="mailto:ahmeddarhous@gmail.com">أحمد درهوس</a></p>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo" aria-label="Asuma Store">
+    <div class="nav-logo-en">As<span>u</span>ma</div>
+    <div class="nav-logo-ar">متجر أسوما — Blush Future</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#categories">SHOP</a></li>
+    <li><a href="#new-arrivals">NEW IN</a></li>
+    <li><a href="#limited">LIMITED</a></li>
+    <li><a href="#offers">OFFERS</a></li>
+    <li><a href="#whatsapp-cta">CONTACT</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-lang" onclick="toggleLang()">EN</button>
+    <button class="nav-action-btn" onclick="openCart()">🛒<span id="cart-pill">0</span></button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <canvas id="hero-three" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;"></canvas>
+  <canvas id="hero-particles" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;"></canvas>
+  <div class="hero-glass-card">
+    <p class="hero-tag">Blush Pink Future · أسوما ستور</p>
+    <h1 class="hero-title">The Future<br/>Looks <em>Pink</em></h1>
+    <p class="hero-title-ar">المستقبل وردي دائماً</p>
+    <div class="hero-divider"></div>
+    <div class="hero-btns">
+      <a href="#categories" class="btn-rose">تسوقي الآن · Shop Now</a>
+      <a href="#limited" class="btn-glass-outline">الإصدار المحدود</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-orb"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ═══ MANIFESTO ═══ -->
+<section id="manifesto">
+  <div class="container">
+    <p class="section-tag reveal">Brand Vision · رؤية العلامة</p>
+  </div>
+  <div class="manifesto-bento">
+    <div class="manifesto-glass-cell reveal">
+      <blockquote class="manifesto-quote">
+        "Softness is a<br/>superpower. <em>Own it.</em>"
+      </blockquote>
+      <div class="rose-rule" style="margin-top:32px;"></div>
+    </div>
+    <div class="manifesto-glass-cell reveal">
+      <p class="manifesto-body">
+        في أسوما ستور، نؤمن أن الجمال الحقيقي ينبع من الداخل. نقدّم لك مجموعة مختارة من أجمل الإكسسوارات والعطور والمكياج، لتعبّري عن ذاتك بكل ثقة وأناقة.
+        <br/><br/>
+        كل منتج نختاره بعناية ليكون امتداداً لشخصيتك — لأنك تستحقين الأفضل دائماً.
+      </p>
+    </div>
+  </div>
+  <div class="manifesto-stats reveal">
+    <div class="stat-glass"><div class="stat-num">500+</div><div class="stat-label">منتج مختار</div></div>
+    <div class="stat-glass"><div class="stat-num">10K+</div><div class="stat-label">عميلة متألقة</div></div>
+    <div class="stat-glass"><div class="stat-num">100%</div><div class="stat-label">جودة مضمونة</div></div>
+  </div>
+</section>
+
+<!-- ═══ CATEGORIES ═══ -->
+<section id="categories">
+  <div class="container">
+    <p class="section-tag reveal">All Categories · جميع الأقسام</p>
+    <h2 class="section-title reveal">Our <em>World</em></h2>
+    <p class="section-title-ar reveal">عالمنا من الجمال</p>
+    <div class="rose-rule reveal"></div>
+    <div class="categories-bento" id="categories-bento"></div>
+  </div>
+</section>
+
+<!-- ═══ NEW ARRIVALS ═══ -->
+<section id="new-arrivals">
+  <div class="container">
+    <p class="section-tag reveal">Fresh Drops · وصل حديثاً</p>
+    <h2 class="section-title reveal">New <em>Arrivals</em></h2>
+    <p class="section-title-ar reveal">أحدث الوصولات</p>
+    <div class="rose-rule reveal"></div>
+  </div>
+  <div class="arrivals-track-wrap">
+    <div class="arrivals-track" id="arrivals-track"></div>
+  </div>
+</section>
+
+<!-- ═══ BEST SELLERS ═══ -->
+<section id="best-sellers">
+  <div class="container">
+    <p class="section-tag reveal">Top Picks · الأكثر طلباً</p>
+    <h2 class="section-title reveal">Best <em>Sellers</em></h2>
+    <p class="section-title-ar reveal">المفضّل عند عملائنا</p>
+    <div class="rose-rule reveal"></div>
+    <div class="bestsellers-bento" id="bestsellers-bento"></div>
+  </div>
+</section>
+
+<!-- ═══ SCENE SECTIONS ═══ -->
+<div class="scene-glass">
+  <div class="scene-glass-media"><canvas id="accessories-canvas" width="700" height="500"></canvas></div>
+  <div class="scene-glass-text">
+    <p class="section-tag reveal">Accessories · الإكسسوارات</p>
+    <h2 class="section-title reveal" style="font-size:clamp(32px,4vw,60px);">Adorn<br/><em>Yourself</em></h2>
+    <p class="section-title-ar reveal" style="margin:12px 0 28px;">زيّني نفسك باللمسات الذهبية</p>
+    <div class="rose-rule reveal"></div>
+    <a href="#categories" class="btn-rose reveal" style="display:inline-block;width:fit-content;">تسوقي الإكسسوارات</a>
+  </div>
+</div>
+<div class="scene-glass flip">
+  <div class="scene-glass-media"><canvas id="hair-canvas" width="700" height="500"></canvas></div>
+  <div class="scene-glass-text">
+    <p class="section-tag reveal">Hair · إكسسوارات الشعر</p>
+    <h2 class="section-title reveal" style="font-size:clamp(32px,4vw,60px);">Effortless<br/><em>Chic</em></h2>
+    <p class="section-title-ar reveal" style="margin:12px 0 28px;">أناقة شعر بلا جهد</p>
+    <div class="rose-rule reveal"></div>
+    <a href="#categories" class="btn-rose reveal" style="display:inline-block;width:fit-content;">تسوقي الآن</a>
+  </div>
+</div>
+<div class="scene-glass">
+  <div class="scene-glass-media"><canvas id="makeup-canvas" width="700" height="500"></canvas></div>
+  <div class="scene-glass-text">
+    <p class="section-tag reveal">Makeup · المكياج</p>
+    <h2 class="section-title reveal" style="font-size:clamp(32px,4vw,60px);">Glow<br/><em>Differently</em></h2>
+    <p class="section-title-ar reveal" style="margin:12px 0 28px;">أضيئي بطريقتك الفريدة</p>
+    <div class="rose-rule reveal"></div>
+    <a href="#categories" class="btn-rose reveal" style="display:inline-block;width:fit-content;">استكشفي المكياج</a>
+  </div>
+</div>
+<div class="scene-glass flip">
+  <div class="scene-glass-media"><canvas id="perfume-canvas" width="700" height="500"></canvas></div>
+  <div class="scene-glass-text">
+    <p class="section-tag reveal">Perfumes · العطور</p>
+    <h2 class="section-title reveal" style="font-size:clamp(32px,4vw,60px);">Leave Your<br/><em>Signature</em></h2>
+    <p class="section-title-ar reveal" style="margin:12px 0 28px;">اتركي توقيعك في كل مكان</p>
+    <div class="rose-rule reveal"></div>
+    <a href="#categories" class="btn-rose reveal" style="display:inline-block;width:fit-content;">اكتشفي العطور</a>
+  </div>
+</div>
+<div class="scene-glass">
+  <div class="scene-glass-media"><canvas id="gifts-canvas" width="700" height="500"></canvas></div>
+  <div class="scene-glass-text">
+    <p class="section-tag reveal">Gifts · الهدايا</p>
+    <h2 class="section-title reveal" style="font-size:clamp(32px,4vw,60px);">Gift With<br/><em>Love</em></h2>
+    <p class="section-title-ar reveal" style="margin:12px 0 28px;">هدايا من القلب</p>
+    <div class="rose-rule reveal"></div>
+    <a href="#categories" class="btn-rose reveal" style="display:inline-block;width:fit-content;">تصفحي الهدايا</a>
+  </div>
+</div>
+
+<!-- ═══ ASUMA PICKS ═══ -->
+<section id="asuma-picks">
+  <div class="container">
+    <p class="section-tag reveal">Curated For You · اخترناها لك</p>
+    <h2 class="section-title reveal">Asuma <em>Picks</em></h2>
+    <p class="section-title-ar reveal">اختيارات أسوما المميزة</p>
+    <div class="rose-rule reveal"></div>
+    <div class="picks-bento" id="picks-bento"></div>
+  </div>
+</section>
+
+<!-- ═══ LIMITED ═══ -->
+<section id="limited">
+  <div class="container">
+    <div class="limited-glass-box reveal">
+      <p class="section-tag" style="margin-bottom:16px">Limited Drop · إصدار محدود</p>
+      <h2 class="section-title" style="font-size:clamp(36px,6vw,86px);">Almost <em>Gone</em></h2>
+      <p class="section-title-ar" style="margin-top:8px">كميات محدودة — اسرعي</p>
+      <div class="limited-countdown" id="countdown">
+        <div class="cd-unit"><div class="cd-num" id="cd-d">07</div><div class="cd-label">Days</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-h">14</div><div class="cd-label">Hours</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-m">32</div><div class="cd-label">Mins</div></div>
+        <div class="cd-unit"><div class="cd-num" id="cd-s">00</div><div class="cd-label">Secs</div></div>
+      </div>
+    </div>
+    <div class="limited-products" id="limited-grid"></div>
+  </div>
+</section>
+
+<!-- ═══ OFFERS ═══ -->
+<section id="offers">
+  <div class="container">
+    <p class="section-tag reveal">Deals · عروض خاصة</p>
+    <h2 class="section-title reveal">Don't Miss <em>Out</em></h2>
+    <p class="section-title-ar reveal">لا تفوتي الفرصة</p>
+    <div class="rose-rule reveal"></div>
+    <div class="offers-bento" id="offers-bento"></div>
+  </div>
+</section>
+
+<!-- ═══ INFO STRIP ═══ -->
+<section id="info-strip">
+  <div class="container">
+    <div class="info-glass-grid">
+      <div class="info-glass-cell reveal">
+        <div class="info-icon">💝</div>
+        <p class="info-title-en">Cash on Delivery</p>
+        <p class="info-title-ar">الدفع عند الاستلام</p>
+        <p class="info-desc-ar">ادفعي عند وصول طلبك بدون تعقيد</p>
+      </div>
+      <div class="info-glass-cell reveal">
+        <div class="info-icon">🌸</div>
+        <p class="info-title-en">Fast Shipping</p>
+        <p class="info-title-ar">توصيل سريع لكل مصر</p>
+        <p class="info-desc-ar">في 2–4 أيام عمل لجميع المحافظات</p>
+      </div>
+      <div class="info-glass-cell reveal">
+        <div class="info-icon">✨</div>
+        <p class="info-title-en">Easy Returns</p>
+        <p class="info-title-ar">استرجاع مضمون</p>
+        <p class="info-desc-ar">استرجاع سهل خلال 14 يوم من الاستلام</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section id="testimonials">
+  <div class="container">
+    <p class="section-tag reveal">Real Reviews · آراء حقيقية</p>
+    <h2 class="section-title reveal">They <em>Love</em> Us</h2>
+    <p class="section-title-ar reveal">عملاؤنا يتحدثون</p>
+    <div class="rose-rule reveal"></div>
+    <div class="testimonials-bento">
+      <div class="testimonial-glass reveal">
+        <span class="testimonial-quote-mark">"</span>
+        <p class="testimonial-text">منتجات رائعة وجودة عالية! استلمت الطلب بسرعة والتغليف كان جميل جداً. بالتأكيد هطلب تاني!</p>
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-author">سارة أحمد</div>
+        <div class="testimonial-city">Cairo · القاهرة</div>
+      </div>
+      <div class="testimonial-glass reveal">
+        <span class="testimonial-quote-mark">"</span>
+        <p class="testimonial-text">أفضل عطر اشتريته في حياتي! الريحة بتفضل طول اليوم وسعره مناسب جداً. أسوما ستور يستاهل!</p>
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-author">منة محمد</div>
+        <div class="testimonial-city">Alexandria · الإسكندرية</div>
+      </div>
+      <div class="testimonial-glass reveal">
+        <span class="testimonial-quote-mark">"</span>
+        <p class="testimonial-text">اشتريت بوكس الهدايا لأختي وانبسطت! التغليف كان جميل جداً. شكراً أسوما على الاهتمام!</p>
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-author">نور علي</div>
+        <div class="testimonial-city">Giza · الجيزة</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SOCIAL WALL ═══ -->
+<section id="social">
+  <div class="container">
+    <p class="section-tag reveal">Follow Our Story · تابعينا</p>
+    <h2 class="section-title reveal">@<em>asumastore</em></h2>
+    <p class="section-title-ar reveal">انضمي لمجتمع أسوما</p>
+    <div class="rose-rule reveal"></div>
+    <div class="social-bento" id="social-bento"></div>
+    <div style="text-align:center;margin-top:40px;" class="reveal">
+      <a href="https://www.instagram.com/darhous/" target="_blank" rel="noopener" class="btn-glass-outline">Follow on Instagram · تابعينا</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHATSAPP CTA ═══ -->
+<section id="whatsapp-cta">
+  <div class="container" style="padding:var(--space-2xl) 48px;">
+    <div class="whatsapp-glass reveal">
+      <p class="section-tag" style="margin-bottom:12px">Let's Chat · تحدثي معنا</p>
+      <h2 class="section-title" style="font-size:clamp(32px,5vw,64px);">We're <em>Here</em> for You</h2>
+      <p class="section-title-ar" style="margin:8px 0 0">نحن هنا دائماً لمساعدتك</p>
+      <div class="rose-rule" style="margin:20px auto;"></div>
+      <p style="font-family:var(--font-arabic);font-size:15px;line-height:2;color:var(--soft-dim);">فريقنا جاهز للإجابة على جميع استفساراتك 7 أيام في الأسبوع.</p>
+      <a href="https://wa.me/201030002331" target="_blank" rel="noopener" class="wa-glass-btn">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        تحدثي معنا على واتساب
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer id="footer">
+  <div class="container footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo-text">As<em>u</em>ma</div>
+        <div class="footer-logo-ar">أسوما ستور</div>
+        <p class="footer-desc">وجهتك للأناقة والجمال — إكسسوارات وعطور ومكياج وهدايا فاخرة لكل مناسبة.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/darhous/" class="footer-social" target="_blank" rel="noopener">IG</a>
+          <a href="https://www.facebook.com/ahmed.darhous" class="footer-social" target="_blank" rel="noopener">FB</a>
+          <a href="https://wa.me/201030002331" class="footer-social" target="_blank" rel="noopener">WA</a>
+          <a href="https://www.linkedin.com/in/darhous/" class="footer-social" target="_blank" rel="noopener">LI</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-col-tag">Shop</p>
+        <ul class="footer-links">
+          <li><a href="#categories">جميع الأقسام</a></li>
+          <li><a href="#new-arrivals">وصل حديثاً</a></li>
+          <li><a href="#best-sellers">الأكثر مبيعاً</a></li>
+          <li><a href="#limited">إصدار محدود</a></li>
+          <li><a href="#offers">العروض</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-tag">Info</p>
+        <ul class="footer-links">
+          <li><a href="#manifesto">من نحن</a></li>
+          <li><a href="#info-strip">الشحن والتوصيل</a></li>
+          <li><a href="#info-strip">سياسة الإرجاع</a></li>
+          <li><a href="#">سياسة الخصوصية</a></li>
+          <li><a href="#">الشروط والأحكام</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-tag">Connect</p>
+        <ul class="footer-links">
+          <li><a href="https://wa.me/201030002331">واتساب: 01030002331</a></li>
+          <li><a href="https://www.instagram.com/darhous/">@darhous</a></li>
+          <li><a href="#">متاحون ١٠ص – ١٠م</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 أسوما ستور — جميع الحقوق محفوظة</p>
+      <p class="footer-badge">Asuma ♡ Store</p>
+      <p class="footer-sig">Designed by <a href="mailto:ahmeddarhous@gmail.com">Ahmed Darhous</a> · Design Lab</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ CART ═══ -->
+<div class="cart-bg" id="cart-bg" onclick="closeCart()"></div>
+<div id="cart-drawer">
+  <div class="cart-header">
+    <h2 class="cart-title">My Bag</h2>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items-list" id="cart-items-list">
+    <p class="cart-empty-msg">سلّتك فارغة ✨</p>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="cart-total-row">
+      <span class="cart-total-lbl">الإجمالي</span>
+      <span class="cart-total-val" id="cart-total-val">0 جنيه</span>
+    </div>
+    <button class="cart-checkout-btn">إتمام الطلب · COD متاح</button>
+  </div>
+</div>
+<div id="cart-toast">✓ أُضيف لسلّتك</div>
+
+<script>
+/* ═════════════════════════════════════════════════
+   BLUSH PINK FUTURE — SCRIPT
+   ═════════════════════════════════════════════════ */
+const $=id=>document.getElementById(id);
+function rgba(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgba(${r},${g},${b},${a})`;}
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){this.beginPath();this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();return this;};
+}
+
+// ═══ PALETTE ═══
+const P={
+  black:'#0A0608', deep:'#10080C', darkBlush:'#1E0D15',
+  powder:'#FF9EC6', powderDim:'#C96B9A', powderDeep:'#8B3A65',
+  roseGold:'#C9847E', roseGoldBright:'#E5A8A0',
+  softWhite:'#FFF0F5', softDim:'#D4A8BB', softMuted:'#8A5A70'
+};
+
+// ═══ PRODUCTS ═══
+const PRODUCTS=[
+  {id:'a1',nameAr:'حلق لؤلؤ ذهبي',nameEn:'Pearl Gold Earrings',price:149,cat:'accessories'},
+  {id:'a2',nameAr:'سلسلة قلب فضية',nameEn:'Silver Heart Chain',price:199,cat:'accessories'},
+  {id:'a3',nameAr:'أسوارة ستانلس',nameEn:'Gold Steel Bracelet',price:129,cat:'accessories'},
+  {id:'a4',nameAr:'خاتم زركون',nameEn:'Zircon Ring',price:99,cat:'accessories'},
+  {id:'a5',nameAr:'بروش ورد',nameEn:'Rose Brooch',price:179,cat:'accessories'},
+  {id:'h1',nameAr:'توكة ساتان فاخرة',nameEn:'Satin Hair Tie',price:79,cat:'hair'},
+  {id:'h2',nameAr:'استك شعر حرير',nameEn:'Silk Scrunchie',price:59,cat:'hair'},
+  {id:'h3',nameAr:'هيرباند لؤلؤ',nameEn:'Pearl Headband',price:119,cat:'hair'},
+  {id:'h4',nameAr:'كلبسات معدنية',nameEn:'Metal Clips',price:89,cat:'hair'},
+  {id:'m1',nameAr:'أحمر شفاه مات',nameEn:'Matte Lipstick',price:159,cat:'makeup'},
+  {id:'m2',nameAr:'مسكارا فوليوم',nameEn:'Volume Mascara',price:139,cat:'makeup'},
+  {id:'m3',nameAr:'باليت ظلال 12 لون',nameEn:'12-Color Palette',price:249,cat:'makeup'},
+  {id:'p1',nameAr:'عطر Rose Oud',nameEn:'Rose Oud',price:499,cat:'perfume'},
+  {id:'p2',nameAr:'بودي سبلاش فواكه',nameEn:'Fruity Body Splash',price:149,cat:'perfume'},
+  {id:'p3',nameAr:'عطر Vanilla Mini',nameEn:'Vanilla Mini',price:99,cat:'perfume'},
+  {id:'g1',nameAr:'بوكس هدايا ذهبي',nameEn:'Gold Gift Box',price:399,cat:'gifts'},
+  {id:'g2',nameAr:'بوكس عطور فاخر',nameEn:'Luxury Perfume Box',price:549,cat:'gifts'},
+  {id:'g3',nameAr:'بوكس مكياج كامل',nameEn:'Full Makeup Box',price:599,cat:'gifts'},
+];
+const CATEGORIES=[
+  {id:'accessories',nameAr:'الإكسسوارات',nameEn:'Accessories',count:'25+ منتج',span:'span2 tall'},
+  {id:'hair',nameAr:'إكسسوارات الشعر',nameEn:'Hair',count:'20+ منتج',span:'span2'},
+  {id:'makeup',nameAr:'المكياج',nameEn:'Makeup',count:'30+ منتج',span:'span2'},
+  {id:'perfume',nameAr:'العطور',nameEn:'Perfumes',count:'15+ منتج',span:'span3'},
+  {id:'gifts',nameAr:'الهدايا',nameEn:'Gifts',count:'12+ منتج',span:'span3'},
+];
+
+// ═══ DRAWING FUNCTIONS — PINK ═══
+function drawBg(ctx,w,h,c1,c2){
+  const g=ctx.createLinearGradient(0,0,w,h);
+  g.addColorStop(0,c1); g.addColorStop(1,c2);
+  ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+}
+function glassOrb(ctx,cx,cy,r,color,alpha){
+  const g=ctx.createRadialGradient(cx-r*.3,cy-r*.3,r*.1,cx,cy,r);
+  g.addColorStop(0,rgba(color,alpha*.8)); g.addColorStop(.4,rgba(color,alpha*.3)); g.addColorStop(1,rgba(color,0));
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill();
+  // glass rim
+  ctx.strokeStyle=rgba(color,alpha*.4); ctx.lineWidth=1;
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.stroke();
+  // highlight
+  ctx.fillStyle=rgba('#FFF0F5',.12);
+  ctx.beginPath(); ctx.ellipse(cx-r*.2,cy-r*.25,r*.25,r*.15,Math.PI*-.3,0,Math.PI*2); ctx.fill();
+}
+function drawPinkAccessory(ctx,w,h){
+  drawBg(ctx,w,h,'#140810','#1E0D15');
+  glassOrb(ctx,w*.3,h*.4,50,P.powder,.15);
+  glassOrb(ctx,w*.7,h*.6,35,P.roseGold,.15);
+  // floating heart pendant
+  const cx=w*.5,cy=h*.5;
+  ctx.fillStyle=rgba(P.powder,.6);
+  ctx.beginPath(); ctx.arc(cx-8,cy-8,10,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(cx+8,cy-8,10,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(cx-18,cy-4); ctx.lineTo(cx,cy+14); ctx.lineTo(cx+18,cy-4); ctx.closePath(); ctx.fill();
+  // gold chain
+  ctx.strokeStyle=rgba(P.roseGold,.5); ctx.lineWidth=1;
+  for(let i=0;i<12;i++){
+    const x=cx+Math.sin(i*.6)*30,y=h*.25+i*14;
+    ctx.beginPath(); ctx.arc(x,y,2.5,0,Math.PI*2); ctx.stroke();
+  }
+  // sparkles
+  [[w*.2,h*.2],[w*.8,h*.25],[w*.15,h*.75],[w*.85,h*.7]].forEach(([sx,sy])=>{
+    ctx.fillStyle=rgba(P.roseGoldBright,.6);
+    [0,1,2,3].forEach(a=>{ const ang=a*Math.PI/2; ctx.fillRect(sx+Math.cos(ang)*8-.5,sy+Math.sin(ang)*8-.5,2,2); });
+  });
+}
+function drawPinkHair(ctx,w,h){
+  drawBg(ctx,w,h,'#150A10','#200E18');
+  glassOrb(ctx,w*.25,h*.35,45,P.powder,.12);
+  glassOrb(ctx,w*.75,h*.65,40,P.powderDim,.12);
+  const cx=w/2,cy=h*.5;
+  // pink silk scrunchie
+  ctx.fillStyle=rgba(P.powder,.5);
+  ctx.beginPath(); ctx.ellipse(cx,cy,40,22,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=rgba(P.powderDim,.4);
+  ctx.beginPath(); ctx.ellipse(cx,cy,30,16,0,0,Math.PI*2); ctx.fill();
+  // ruffles
+  for(let i=0;i<8;i++){
+    const a=i/8*Math.PI*2;
+    ctx.fillStyle=rgba(P.powder,.3);
+    ctx.beginPath(); ctx.ellipse(cx+Math.cos(a)*36,cy+Math.sin(a)*20,12,8,a,0,Math.PI*2); ctx.fill();
+  }
+  // center hole
+  ctx.fillStyle='#150A10';
+  ctx.beginPath(); ctx.ellipse(cx,cy,12,7,0,0,Math.PI*2); ctx.fill();
+  // pearl dots
+  [[-45,h*.25],[45,h*.25],[-50,h*.75],[50,h*.75]].forEach(([dx,dy])=>{
+    ctx.fillStyle=rgba(P.softDim,.7);
+    ctx.beginPath(); ctx.arc(cx+dx,dy,4,0,Math.PI*2); ctx.fill();
+  });
+}
+function drawPinkMakeup(ctx,w,h){
+  drawBg(ctx,w,h,'#160A10','#0F0608');
+  glassOrb(ctx,w*.2,h*.3,55,P.powderDeep,.12);
+  glassOrb(ctx,w*.8,h*.7,40,P.roseGold,.1);
+  // rose-gold lipstick
+  const lx=w*.38,ly=h*.7;
+  const tubGrad=ctx.createLinearGradient(lx-10,0,lx+10,0);
+  tubGrad.addColorStop(0,'#8B5550'); tubGrad.addColorStop(1,'#C9847E');
+  ctx.fillStyle=tubGrad; ctx.fillRect(lx-10,ly-55,20,55);
+  const lipGrad=ctx.createLinearGradient(lx-10,ly-85,lx+10,ly-55);
+  lipGrad.addColorStop(0,P.powder); lipGrad.addColorStop(1,P.powderDeep);
+  ctx.fillStyle=lipGrad;
+  ctx.beginPath(); ctx.moveTo(lx-10,ly-55); ctx.lineTo(lx+10,ly-55); ctx.lineTo(lx+7,ly-84); ctx.lineTo(lx,ly-90); ctx.lineTo(lx-7,ly-84); ctx.closePath(); ctx.fill();
+  ctx.fillStyle=rgba(P.roseGoldBright,.8); ctx.fillRect(lx-10,ly-62,20,4);
+  // blush palette
+  const px=w*.65,py=h*.5;
+  ctx.fillStyle='#2A1520';
+  ctx.roundRect(px-32,py-18,64,36,6); ctx.fill();
+  ctx.strokeStyle=rgba(P.roseGold,.4); ctx.lineWidth=1;
+  ctx.roundRect(px-32,py-18,64,36,6); ctx.stroke();
+  [P.powder,P.powderDim,P.roseGold,P.roseGoldBright].forEach((c,i)=>{
+    ctx.fillStyle=c; ctx.beginPath(); ctx.arc(px-22+i*15,py,5.5,0,Math.PI*2); ctx.fill();
+  });
+}
+function drawPinkPerfume(ctx,w,h){
+  drawBg(ctx,w,h,'#120810','#0A0608');
+  glassOrb(ctx,w*.3,h*.4,60,P.powder,.1);
+  glassOrb(ctx,w*.7,h*.6,45,P.roseGold,.1);
+  const cx=w/2;
+  // translucent pink bottle
+  const bottleGrad=ctx.createLinearGradient(cx-22,h*.28,cx+22,h*.7);
+  bottleGrad.addColorStop(0,rgba(P.powderDeep,.6));
+  bottleGrad.addColorStop(.4,rgba(P.powder,.3));
+  bottleGrad.addColorStop(1,rgba(P.powderDeep,.8));
+  ctx.fillStyle=bottleGrad;
+  ctx.beginPath(); ctx.roundRect(cx-22,h*.3,44,h*.38,8); ctx.fill();
+  // glass highlight
+  ctx.fillStyle=rgba(P.softWhite,.1);
+  ctx.beginPath(); ctx.ellipse(cx-6,h*.42,5,h*.1,Math.PI*-.15,0,Math.PI*2); ctx.fill();
+  // neck
+  ctx.fillStyle=rgba(P.powderDeep,.5);
+  ctx.beginPath(); ctx.roundRect(cx-9,h*.22,18,h*.1,3); ctx.fill();
+  // rose-gold cap
+  const capG=ctx.createLinearGradient(cx-12,h*.1,cx+12,h*.22);
+  capG.addColorStop(0,P.roseGold); capG.addColorStop(1,P.roseGoldBright);
+  ctx.fillStyle=capG;
+  ctx.beginPath(); ctx.roundRect(cx-12,h*.1,24,h*.13,3); ctx.fill();
+  // rose-gold band
+  ctx.fillStyle=rgba(P.roseGold,.8); ctx.fillRect(cx-22,h*.44,44,1.5); ctx.fillRect(cx-22,h*.6,44,1.5);
+  // orb glow
+  const glow=ctx.createRadialGradient(cx,h*.5,0,cx,h*.5,90);
+  glow.addColorStop(0,rgba(P.powder,.08)); glow.addColorStop(1,'transparent');
+  ctx.fillStyle=glow; ctx.fillRect(0,0,w,h);
+}
+function drawPinkGift(ctx,w,h){
+  drawBg(ctx,w,h,'#150A10','#0A0608');
+  glassOrb(ctx,w*.2,h*.3,50,P.powder,.1);
+  const cx=w/2,by=h*.68;
+  ctx.fillStyle='#1E0D15';
+  ctx.roundRect(cx-36,h*.38,72,h*.3,4); ctx.fill();
+  ctx.strokeStyle=rgba(P.roseGold,.4); ctx.lineWidth=1;
+  ctx.roundRect(cx-36,h*.38,72,h*.3,4); ctx.stroke();
+  // lid
+  ctx.fillStyle='#2D1520';
+  ctx.roundRect(cx-40,h*.35,80,h*.06,4); ctx.fill();
+  ctx.strokeStyle=rgba(P.powder,.4); ctx.lineWidth=1.5;
+  ctx.roundRect(cx-40,h*.35,80,h*.06,4); ctx.stroke();
+  // pink ribbon
+  ctx.strokeStyle=rgba(P.powder,.7); ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.moveTo(cx,h*.35); ctx.lineTo(cx,by); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx-36,h*.38); ctx.lineTo(cx+36,h*.38); ctx.stroke();
+  // bow
+  ctx.fillStyle=rgba(P.powderDeep,.7);
+  ctx.beginPath(); ctx.ellipse(cx-17,h*.33,17,10,Math.PI*.4,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx+17,h*.33,17,10,-Math.PI*.4,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=P.powder;
+  ctx.beginPath(); ctx.ellipse(cx,h*.33,7,5,0,0,Math.PI*2); ctx.fill();
+  // sparkles
+  [[cx-22,h*.5],[cx+22,h*.54],[cx,h*.58],[cx+10,h*.46]].forEach(([sx,sy])=>{
+    ctx.fillStyle=rgba(P.roseGoldBright,.5);
+    ctx.beginPath(); ctx.arc(sx,sy,1.5,0,Math.PI*2); ctx.fill();
+  });
+}
+const DRAW_FNS={accessories:drawPinkAccessory,hair:drawPinkHair,makeup:drawPinkMakeup,perfume:drawPinkPerfume,gifts:drawPinkGift};
+
+// ═══ LOADER PARTICLES ═══
+(function initLoader(){
+  const canvas=$('loader-particles');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  const particles=Array.from({length:60},()=>({
+    x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+    vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
+    r:Math.random()*2.5+.5, a:Math.random()*.4+.1,
+    color:Math.random()>.5?P.powder:P.roseGold
+  }));
+  let animating=true;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>canvas.width) p.vx*=-1;
+      if(p.y<0||p.y>canvas.height) p.vy*=-1;
+      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
+      g.addColorStop(0,p.color.replace(')',`,${p.a})`).replace('rgb','rgba')||`rgba(255,158,198,${p.a})`);
+      g.addColorStop(1,'transparent');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r*4,0,Math.PI*2); ctx.fill();
+    });
+    if(animating) requestAnimationFrame(draw);
+  }
+  draw();
+  let prog=0;
+  setTimeout(()=>{ $('loader-glass').classList.add('show'); },400);
+  const tick=()=>{
+    prog=Math.min(prog+.006,1);
+    $('loader-progress-fill').style.width=(prog*100)+'%';
+    if(prog<1) requestAnimationFrame(tick);
+    else setTimeout(()=>{
+      animating=false;
+      const loader=$('loader');
+      loader.style.transition='opacity 1s';
+      loader.style.opacity='0';
+      setTimeout(()=>{
+        loader.style.display='none';
+        initHeroThreeJS();
+        initHeroParticles();
+        revealHero();
+      },1000);
+    },300);
+  };
+  tick();
+})();
+
+// ═══ THREE.JS HERO — Rose Spheres ═══
+function initHeroThreeJS(){
+  const canvas=$('hero-three');
+  const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,.1,100);
+  camera.position.z=4;
+  // Pink particle sphere
+  const geo=new THREE.BufferGeometry();
+  const N=180, pos=new Float32Array(N*3);
+  for(let i=0;i<N;i++){
+    const r=1.6+Math.random()*.8,theta=Math.random()*Math.PI*2,phi=Math.acos(2*Math.random()-1);
+    pos[i*3]=r*Math.sin(phi)*Math.cos(theta); pos[i*3+1]=r*Math.sin(phi)*Math.sin(theta); pos[i*3+2]=r*Math.cos(phi);
+  }
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  const mat=new THREE.PointsMaterial({color:0xFF9EC6,size:.012,transparent:true,opacity:.45,blending:THREE.AdditiveBlending,depthWrite:false});
+  const points=new THREE.Points(geo,mat);
+  scene.add(points);
+  // Rose-gold inner ring
+  const geo2=new THREE.BufferGeometry();
+  const N2=60, pos2=new Float32Array(N2*3);
+  for(let i=0;i<N2;i++){
+    const a=i/N2*Math.PI*2, r=.9+Math.random()*.2;
+    pos2[i*3]=r*Math.cos(a); pos2[i*3+1]=r*Math.sin(a); pos2[i*3+2]=(Math.random()-.5)*.1;
+  }
+  geo2.setAttribute('position',new THREE.BufferAttribute(pos2,3));
+  const mat2=new THREE.PointsMaterial({color:0xC9847E,size:.01,transparent:true,opacity:.7,blending:THREE.AdditiveBlending,depthWrite:false});
+  scene.add(new THREE.Points(geo2,mat2));
+  let mx=0,my=0;
+  document.addEventListener('mousemove',e=>{mx=(e.clientX/window.innerWidth-.5)*.5;my=(e.clientY/window.innerHeight-.5)*.5;});
+  window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
+  let t=0;
+  (function animate(){requestAnimationFrame(animate);t+=.003;points.rotation.y=t*.3+mx;points.rotation.x=t*.1+my;renderer.render(scene,camera);})();
+}
+
+// ═══ HERO PARTICLES ═══
+function initHeroParticles(){
+  const canvas=$('hero-particles');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  const particles=Array.from({length:40},()=>({
+    x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+    vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+    r:Math.random()*1.5+.5, a:Math.random()*.3+.1,
+  }));
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>canvas.width) p.vx*=-1;
+      if(p.y<0||p.y>canvas.height) p.vy*=-1;
+      ctx.fillStyle=`rgba(255,158,198,${p.a})`;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ═══ HERO REVEAL ═══
+function revealHero(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    document.querySelectorAll('.hero-tag,.hero-title,.hero-title-ar,.hero-divider,.hero-btns').forEach(e=>{e.style.opacity='1';e.style.transform='none';});
+    return;
+  }
+  gsap.registerPlugin(ScrollTrigger);
+  const tl=gsap.timeline({delay:.2});
+  tl.to('.hero-tag',{opacity:1,duration:.8,ease:'power2.out'})
+    .to('.hero-title',{opacity:1,y:0,duration:1.1,ease:'power3.out'},'-=.4')
+    .to('.hero-title-ar',{opacity:1,duration:.9,ease:'power2.out'},'-=.7')
+    .to('.hero-divider',{opacity:1,scaleX:1,duration:.9,ease:'power2.out'},'-=.5')
+    .to('.hero-btns',{opacity:1,duration:.7,ease:'power2.out'},'-=.3');
+  // stat counters
+  document.querySelectorAll('.stat-num').forEach(el=>{
+    const end=parseInt(el.textContent)||0;
+    ScrollTrigger.create({trigger:el,start:'top 85%',once:true,onEnter:()=>{
+      const obj={v:0};
+      gsap.to(obj,{v:end,duration:1.8,ease:'power2.out',onUpdate:()=>el.textContent=Math.round(obj.v)+(el.textContent.includes('K')?'K+':el.textContent.includes('+')?'+':'%')});
+    }});
+  });
+}
+
+// ═══ NAV ═══
+window.addEventListener('scroll',()=>$('nav').classList.toggle('scrolled',window.scrollY>80));
+
+// ═══ CURSOR ═══
+(function(){
+  const bloom=$('cursor-bloom'),trail=$('cursor-trail'),ring=$('cursor-ring'),core=$('cursor-core');
+  let ox=0,oy=0,tx=0,ty=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    rx=e.clientX; ry=e.clientY;
+    bloom.style.left=e.clientX+'px'; bloom.style.top=e.clientY+'px';
+    core.style.left=e.clientX+'px'; core.style.top=e.clientY+'px';
+  });
+  function tick(){
+    ox+=(rx-ox)*.08; oy+=(ry-oy)*.08;
+    tx+=(rx-tx)*.04; ty+=(ry-ty)*.04;
+    ring.style.left=Math.round(ox)+'px'; ring.style.top=Math.round(oy)+'px';
+    trail.style.left=Math.round(tx)+'px'; trail.style.top=Math.round(ty)+'px';
+    requestAnimationFrame(tick);
+  }
+  tick();
+  document.querySelectorAll('a,button,.product-card,.bento-cell,.pick-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='44px';ring.style.height='44px';core.style.background='#FF9EC6';core.style.width='12px';core.style.height='12px';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';core.style.background='var(--powder)';core.style.width='8px';core.style.height='8px';});
+  });
+})();
+
+// ═══ CATEGORIES BENTO ═══
+(function(){
+  const bento=$('categories-bento');
+  const configs=[
+    {cat:'accessories',cW:400,cH:500,span:'span2 tall',badge:'New Drop'},
+    {cat:'hair',cW:300,cH:240,span:'span2',badge:null},
+    {cat:'makeup',cW:300,cH:240,span:'span2',badge:'Trending'},
+    {cat:'perfume',cW:450,cH:260,span:'span3',badge:null},
+    {cat:'gifts',cW:450,cH:260,span:'span3',badge:'Special'},
+  ];
+  configs.forEach(({cat,cW,cH,span,badge})=>{
+    const catInfo=CATEGORIES.find(c=>c.id===cat);
+    const cell=document.createElement('div');
+    cell.className='bento-cell '+span;
+    const canvas=document.createElement('canvas'); canvas.width=cW; canvas.height=cH;
+    DRAW_FNS[cat](canvas.getContext('2d'),cW,cH);
+    cell.appendChild(canvas);
+    const ov=document.createElement('div'); ov.className='bento-overlay'; cell.appendChild(ov);
+    const body=document.createElement('div'); body.className='bento-body';
+    body.innerHTML=`<p class="bento-tag">${catInfo.nameEn}</p><p class="bento-title-ar">${catInfo.nameAr}</p><p class="bento-count">${catInfo.count}</p>`;
+    cell.appendChild(body);
+    if(badge){const bg=document.createElement('div');bg.className='bento-glass-badge';bg.textContent=badge;cell.appendChild(bg);}
+    bento.appendChild(cell);
+  });
+})();
+
+// ═══ PRODUCT CARD ═══
+function makeCard(p){
+  const card=document.createElement('div'); card.className='product-card';
+  card.innerHTML=`<div class="product-card-media"><canvas width="280" height="320"></canvas><div class="product-card-action"><button class="product-quick-btn" data-id="${p.id}">ADD TO BAG</button></div></div><div class="product-card-body"><p class="product-card-tag">${p.cat}</p><p class="product-card-name-ar">${p.nameAr}</p><p class="product-card-name-en">${p.nameEn}</p><p class="product-card-price">${p.price} <span>جنيه</span></p></div>`;
+  DRAW_FNS[p.cat](card.querySelector('canvas').getContext('2d'),280,320);
+  card.querySelector('.product-quick-btn').addEventListener('click',()=>addToCart(p));
+  return card;
+}
+
+// ═══ NEW ARRIVALS ═══
+(function(){
+  const track=$('arrivals-track');
+  PRODUCTS.slice(0,8).forEach(p=>track.appendChild(makeCard(p)));
+  let isDown=false,startX,sl;
+  track.addEventListener('mousedown',e=>{isDown=true;startX=e.pageX-track.offsetLeft;sl=track.scrollLeft;});
+  track.addEventListener('mouseleave',()=>isDown=false); track.addEventListener('mouseup',()=>isDown=false);
+  track.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();track.scrollLeft=sl-(e.pageX-track.offsetLeft-startX)*1.5;});
+})();
+
+// ═══ BEST SELLERS ═══
+(function(){ const g=$('bestsellers-bento'); PRODUCTS.slice(8,12).forEach(p=>g.appendChild(makeCard(p))); })();
+
+// ═══ SCENES ═══
+(function(){
+  [['accessories-canvas',drawPinkAccessory],['hair-canvas',drawPinkHair],['makeup-canvas',drawPinkMakeup],['perfume-canvas',drawPinkPerfume],['gifts-canvas',drawPinkGift]]
+  .forEach(([id,fn])=>{ const c=$(id); if(c) fn(c.getContext('2d'),700,500); });
+})();
+
+// ═══ PICKS ═══
+(function(){
+  const bento=$('picks-bento');
+  const feat=PRODUCTS[12];
+  const featCard=document.createElement('div'); featCard.className='pick-card tall';
+  const fc=document.createElement('canvas'); fc.width=450; fc.height=580; featCard.appendChild(fc);
+  DRAW_FNS[feat.cat](fc.getContext('2d'),450,580);
+  const fo=document.createElement('div'); fo.className='pick-card-overlay'; featCard.appendChild(fo);
+  const fb=document.createElement('div'); fb.className='pick-card-body';
+  fb.innerHTML=`<p class="section-tag" style="margin-bottom:6px">${feat.nameEn}</p><h3 class="section-title" style="font-size:28px;">${feat.nameAr}</h3><p style="font-family:var(--font-ui);color:var(--powder);margin:10px 0">${feat.price} جنيه</p><button class="btn-rose" data-id="${feat.id}" style="cursor:none;">Add to Bag</button>`;
+  featCard.appendChild(fb);
+  fb.querySelector('button').addEventListener('click',()=>addToCart(feat));
+  bento.appendChild(featCard);
+  PRODUCTS.slice(13,17).forEach(p=>{
+    const card=document.createElement('div'); card.className='pick-card';
+    const c=document.createElement('canvas'); c.width=400; c.height=288; card.appendChild(c);
+    DRAW_FNS[p.cat](c.getContext('2d'),400,288);
+    const ov=document.createElement('div'); ov.className='pick-card-overlay'; card.appendChild(ov);
+    const body=document.createElement('div'); body.className='pick-card-body';
+    body.innerHTML=`<p style="font-family:var(--font-arabic);font-size:15px;color:var(--soft-white)">${p.nameAr}</p><p style="font-family:var(--font-ui);color:var(--powder);font-size:13px">${p.price} جنيه</p>`;
+    card.appendChild(body); bento.appendChild(card);
+  });
+})();
+
+// ═══ LIMITED ═══
+(function(){ const g=$('limited-grid'); PRODUCTS.slice(15,18).forEach(p=>g.appendChild(makeCard(p))); })();
+
+// ═══ OFFERS ═══
+(function(){
+  const g=$('offers-bento');
+  [{cat:'accessories',tag:'Sale 20% Off',ar:'إكسسوارات الموسم',en:'Season Accessories'},{cat:'perfume',tag:'Bundle Deal',ar:'مجموعة العطور',en:'Perfume Bundle'}].forEach(({cat,tag,ar,en})=>{
+    const card=document.createElement('div'); card.className='offer-card';
+    const c=document.createElement('canvas'); c.width=700; c.height=300; card.appendChild(c);
+    DRAW_FNS[cat](c.getContext('2d'),700,300);
+    card.innerHTML+=`<div class="offer-body"><span class="offer-glass-tag">${tag}</span><h3 class="offer-title-ar">${ar}</h3><p class="offer-title-en">${en}</p><button class="btn-rose" style="margin-top:16px;cursor:none;">Shop Now</button></div>`;
+    g.appendChild(card);
+  });
+})();
+
+// ═══ SOCIAL ═══
+(function(){
+  const g=$('social-bento');
+  for(let i=0;i<5;i++){
+    const tile=document.createElement('div'); tile.className='social-tile';
+    const c=document.createElement('canvas'); c.width=260; c.height=260;
+    const ctx=c.getContext('2d');
+    drawBg(ctx,260,260,P.darkBlush,P.black);
+    const fns=[drawPinkAccessory,drawPinkPerfume,drawPinkMakeup,drawPinkHair,drawPinkGift];
+    fns[i%5](ctx,260,260);
+    tile.appendChild(c);
+    const glass=document.createElement('div'); glass.className='social-tile-glass';
+    glass.innerHTML='<span class="social-tile-icon">📸</span>';
+    tile.appendChild(glass);
+    const a=document.createElement('a'); a.href='https://www.instagram.com/darhous/'; a.target='_blank'; a.rel='noopener'; a.style.cssText='position:absolute;inset:0;z-index:2;'; tile.appendChild(a); tile.style.position='relative';
+    g.appendChild(tile);
+  }
+})();
+
+// ═══ CART ═══
+const cart=[];
+function addToCart(p){ const e=cart.find(i=>i.id===p.id); if(e) e.qty++; else cart.push({...p,qty:1}); updateCartUI(); showToast(`✓ ${p.nameAr}`); }
+function removeFromCart(id){ const i=cart.findIndex(x=>x.id===id); if(i>-1) cart.splice(i,1); updateCartUI(); }
+function updateCartUI(){
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  const pill=$('cart-pill'); pill.textContent=count; pill.style.display=count?'flex':'none';
+  const list=$('cart-items-list'),footer=$('cart-footer');
+  if(!cart.length){ list.innerHTML='<p class="cart-empty-msg">سلّتك فارغة ✨</p>'; footer.style.display='none'; }
+  else {
+    list.innerHTML=cart.map(i=>`<div class="cart-item"><div class="cart-item-wrap"><canvas id="ci-${i.id}" width="64" height="80"></canvas></div><div><p class="cart-item-name">${i.nameAr} × ${i.qty}</p><p class="cart-item-price">${i.price*i.qty} جنيه</p><button class="cart-item-del" data-id="${i.id}">✕ حذف</button></div></div>`).join('');
+    list.querySelectorAll('.cart-item-del').forEach(b=>b.addEventListener('click',()=>removeFromCart(b.dataset.id)));
+    cart.forEach(i=>{ const c=document.getElementById('ci-'+i.id); if(c) DRAW_FNS[i.cat](c.getContext('2d'),64,80); });
+    footer.style.display='block'; $('cart-total-val').textContent=total+' جنيه';
+  }
+}
+function openCart(){ $('cart-drawer').classList.add('open'); $('cart-bg').classList.add('show'); }
+function closeCart(){ $('cart-drawer').classList.remove('open'); $('cart-bg').classList.remove('show'); }
+let toastTimer;
+function showToast(msg){ const t=$('cart-toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),3000); }
+
+// ═══ COUNTDOWN ═══
+(function(){
+  const target=new Date(Date.now()+7*86400000+14*3600000+32*60000);
+  const pad=n=>String(n).padStart(2,'0');
+  function tick(){
+    const d=Math.max(0,target-Date.now());
+    $('cd-d').textContent=pad(Math.floor(d/86400000));
+    $('cd-h').textContent=pad(Math.floor((d%86400000)/3600000));
+    $('cd-m').textContent=pad(Math.floor((d%3600000)/60000));
+    $('cd-s').textContent=pad(Math.floor((d%60000)/1000));
+  }
+  tick(); setInterval(tick,1000);
+})();
+
+// ═══ REVEALS ═══
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+})();
+
+// ═══ LANG TOGGLE ═══
+let isEn=false;
+function toggleLang(){isEn=!isEn;document.documentElement.lang=isEn?'en':'ar';document.documentElement.dir=isEn?'ltr':'rtl';document.querySelector('.nav-lang').textContent=isEn?'AR':'EN';}
+</script>
+</body>
+</html>
