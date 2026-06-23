@@ -1,38 +1,41 @@
 import { HttpTypes } from "@medusajs/types"
-import { Heading, Text } from "@modules/common/components/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
-type ProductInfoProps = {
-  product: HttpTypes.StoreProduct
-}
-
-const ProductInfo = ({ product }: ProductInfoProps) => {
+const ProductInfo = ({ product }: { product: HttpTypes.StoreProduct }) => {
   return (
-    <div id="product-info">
-      <div className="flex flex-col gap-y-4 lg:max-w-[500px] mx-auto">
-        {product.collection && (
-          <LocalizedClientLink
-            href={`/collections/${product.collection.handle}`}
-            className="text-medium text-ui-fg-muted hover:text-ui-fg-subtle"
-          >
-            {product.collection.title}
-          </LocalizedClientLink>
-        )}
-        <Heading
-          level="h2"
-          className="text-3xl leading-10 text-ui-fg-base"
-          data-testid="product-title"
+    <div id="product-info" className="flex flex-col gap-4">
+      {product.collection && (
+        <LocalizedClientLink
+          href={`/collections/${product.collection.handle}`}
+          className="font-sans text-xs uppercase tracking-[0.2em] transition-colors duration-200"
+          style={{ color: "var(--gold-dark)", letterSpacing: "0.2em" }}
         >
-          {product.title}
-        </Heading>
+          {product.collection.title}
+        </LocalizedClientLink>
+      )}
 
-        <Text
-          className="text-medium text-ui-fg-subtle whitespace-pre-line"
+      <h2
+        className="font-display font-light"
+        style={{
+          color: "var(--ivory)",
+          fontSize: "clamp(1.6rem, 4vw, 2.4rem)",
+          lineHeight: 1.2,
+          letterSpacing: "0.02em",
+        }}
+        data-testid="product-title"
+      >
+        {product.title}
+      </h2>
+
+      {product.description && (
+        <p
+          className="font-sans text-sm leading-relaxed"
+          style={{ color: "var(--ivory-muted)", letterSpacing: "0.03em" }}
           data-testid="product-description"
         >
           {product.description}
-        </Text>
-      </div>
+        </p>
+      )}
     </div>
   )
 }

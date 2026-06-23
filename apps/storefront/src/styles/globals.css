@@ -59,6 +59,14 @@ a {
   }
 }
 
+/* ─── RTL overrides ─── */
+[dir="rtl"] .ltr-only { direction: ltr; }
+[dir="rtl"] input,
+[dir="rtl"] textarea { text-align: right; }
+
+/* ─── Category bar scrollbar hide ─── */
+.cat-bar::-webkit-scrollbar { display: none; }
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {

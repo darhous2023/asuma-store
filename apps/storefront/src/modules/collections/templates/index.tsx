@@ -21,27 +21,31 @@ export default function CollectionTemplate({
   const sort = sortBy || "created_at"
 
   return (
-    <div className="flex flex-col small:flex-row small:items-start py-6 content-container">
-      <RefinementList sortBy={sort} />
-      <div className="w-full">
-        <div className="mb-8 text-2xl-semi">
-          <h1>{collection.title}</h1>
-        </div>
-        <Suspense
-          fallback={
-            <SkeletonProductGrid
-              numberOfProducts={collection.products?.length}
-            />
-          }
+    <div className="content-container py-10">
+      {/* Header */}
+      <div
+        className="reveal flex items-center gap-4 mb-8"
+        style={{ borderBottom: "1px solid var(--gold-border)", paddingBottom: "1.5rem" }}
+      >
+        <div style={{ width: "32px", height: "1px", background: "var(--gold-border)" }} aria-hidden="true" />
+        <h1
+          className="font-display font-light italic uppercase"
+          style={{ color: "var(--ivory)", letterSpacing: "0.18em", fontSize: "clamp(1.2rem, 3vw, 2rem)" }}
         >
-          <PaginatedProducts
-            sortBy={sort}
-            page={pageNumber}
-            collectionId={collection.id}
-            countryCode={countryCode}
-          />
-        </Suspense>
+          {collection.title}
+        </h1>
+        <div className="flex-1" />
+        <RefinementList sortBy={sort} />
       </div>
+
+      <Suspense fallback={<SkeletonProductGrid numberOfProducts={collection.products?.length} />}>
+        <PaginatedProducts
+          sortBy={sort}
+          page={pageNumber}
+          collectionId={collection.id}
+          countryCode={countryCode}
+        />
+      </Suspense>
     </div>
   )
 }
