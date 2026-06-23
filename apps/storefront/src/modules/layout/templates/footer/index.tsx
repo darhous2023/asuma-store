@@ -129,20 +129,20 @@ export default async function Footer() {
             <ul className="flex flex-col gap-3">
               <li>
                 <a
-                  href="https://wa.me/201030002331"
+                  href="https://wa.me/201033163769"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="font-sans text-sm text-ivory-dim hover:text-gold transition-colors duration-200"
                 >
-                  WhatsApp: +20 103 000 2331
+                  WhatsApp: +20 103 316 3769
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:ahmeddarhous@gmail.com"
+                  href="mailto:asmafarouq.89m@gmail.com"
                   className="font-sans text-sm text-ivory-dim hover:text-gold transition-colors duration-200"
                 >
-                  ahmeddarhous@gmail.com
+                  asmafarouq.89m@gmail.com
                 </a>
               </li>
               <li className="font-sans text-sm text-ivory-muted">
@@ -168,29 +168,14 @@ export default async function Footer() {
             © {new Date().getFullYear()} Asuma Store · جميع الحقوق محفوظة
           </p>
 
+          {/* Designer block — last element */}
           <div className="flex flex-col items-center sm:items-end gap-2">
-            {/* Social icons */}
-            <div className="flex items-center gap-4">
-              {SOCIAL_LINKS.map((s) => (
-                <a
-                  key={s.name}
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={s.name}
-                  className="text-ivory-muted hover:text-gold transition-colors duration-200"
-                >
-                  {s.icon}
-                </a>
-              ))}
-            </div>
-
-            {/* Designer credit */}
+            {/* Designer credit — first */}
             <p
               className="font-sans text-ivory-muted"
               style={{ fontSize: "9px", letterSpacing: "0.12em", opacity: 0.38, textTransform: "uppercase" }}
             >
-              designed by{" "}
+              Designed &amp; Developed by{" "}
               <a
                 href="mailto:ahmeddarhous@gmail.com"
                 className="hover:opacity-70 transition-opacity duration-200"
@@ -199,6 +184,23 @@ export default async function Footer() {
                 Ahmed Darhous
               </a>
             </p>
+
+            {/* Designer social links — directly beneath the name */}
+            <div className="flex items-center gap-4">
+              {SOCIAL_LINKS.map((s) => (
+                <a
+                  key={s.name}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.name}
+                  className="text-ivory-muted hover:text-gold transition-colors duration-200"
+                  style={{ opacity: 0.45 }}
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>

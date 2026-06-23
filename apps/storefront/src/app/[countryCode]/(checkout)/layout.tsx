@@ -50,15 +50,14 @@ export default function CheckoutLayout({
         style={{ borderTop: "1px solid var(--gold-border)" }}
       >
         <p className="font-sans text-xs" style={{ color: "var(--ivory-muted)" }}>
-          designed by{" "}
+          © {new Date().getFullYear()} Asuma Store &nbsp;·&nbsp; Designed &amp; Developed by{" "}
           <a
             href="mailto:ahmeddarhous@gmail.com"
             className="transition-colors duration-200"
             style={{ color: "var(--gold-dark)" }}
           >
             Ahmed Darhous
-          </a>{" "}
-          © {new Date().getFullYear()} Asuma Store
+          </a>
         </p>
       </div>
     </div>
