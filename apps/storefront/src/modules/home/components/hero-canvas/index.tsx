@@ -12,7 +12,7 @@ export default function HeroCanvas() {
     let renderer: import("three").WebGLRenderer
     let animId: number
 
-    const init = async (reducedMotion: boolean) => {
+    const init = async () => {
       const THREE = await import("three")
 
       const W = mount.clientWidth
@@ -100,12 +100,10 @@ export default function HeroCanvas() {
         animId = requestAnimationFrame(animate)
         const t = clock.getElapsedTime()
 
-        if (!reducedMotion) {
-          outerPoints.rotation.y = t * 0.06 + mx
-          outerPoints.rotation.x = my * 0.3
-          innerPoints.rotation.y = -t * 0.1 + mx * 0.5
-          innerPoints.rotation.x = -my * 0.2
-        }
+        outerPoints.rotation.y = t * 0.06 + mx
+        outerPoints.rotation.x = my * 0.3
+        innerPoints.rotation.y = -t * 0.1 + mx * 0.5
+        innerPoints.rotation.x = -my * 0.2
 
         renderer.render(scene, camera)
       }
@@ -118,10 +116,8 @@ export default function HeroCanvas() {
       }
     }
 
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-
     let cleanup: (() => void) | undefined
-    init(reducedMotion).then((fn) => { cleanup = fn })
+    init().then((fn) => { cleanup = fn })
 
     return () => {
       cancelAnimationFrame(animId)

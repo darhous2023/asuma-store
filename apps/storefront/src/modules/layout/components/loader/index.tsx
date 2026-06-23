@@ -14,18 +14,6 @@ export default function Loader() {
       return
     }
 
-    // On reduced motion: skip canvas, but still show the text branding briefly
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setPhase("text")
-      setProgress(100)
-      setTimeout(() => setTextVisible(true), 80)
-      setTimeout(() => {
-        sessionStorage.setItem("asuma_loader_done", "1")
-        setPhase("done")
-      }, 1800)
-      return
-    }
-
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext("2d")!

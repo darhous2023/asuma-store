@@ -11,11 +11,6 @@ export default function CustomCursor() {
     const ring = ringRef.current
     if (!spotlight || !ring) return
 
-    // Don't show custom cursor on touch devices or when reduced motion is preferred
-    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    if (isTouchDevice || prefersReduced) return
-
     let mx = -999, my = -999
     let rx = -999, ry = -999
     let rafId: number
