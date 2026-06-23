@@ -14,10 +14,15 @@ export default function Loader() {
       return
     }
 
-    // Skip animation for users who prefer reduced motion
+    // On reduced motion: skip canvas, but still show the text branding briefly
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      sessionStorage.setItem("asuma_loader_done", "1")
-      setPhase("done")
+      setPhase("text")
+      setProgress(100)
+      setTimeout(() => setTextVisible(true), 80)
+      setTimeout(() => {
+        sessionStorage.setItem("asuma_loader_done", "1")
+        setPhase("done")
+      }, 1800)
       return
     }
 
