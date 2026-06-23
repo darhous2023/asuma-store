@@ -14,6 +14,13 @@ export default function Loader() {
       return
     }
 
+    // Skip animation for users who prefer reduced motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      sessionStorage.setItem("asuma_loader_done", "1")
+      setPhase("done")
+      return
+    }
+
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext("2d")!

@@ -116,6 +116,9 @@ export default function HeroCanvas() {
       }
     }
 
+    // Skip 3D animation when reduced motion is preferred
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
     let cleanup: (() => void) | undefined
     init().then((fn) => { cleanup = fn })
 

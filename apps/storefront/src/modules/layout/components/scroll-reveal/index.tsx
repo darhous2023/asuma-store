@@ -5,12 +5,21 @@ import { useEffect } from "react"
 export default function ScrollReveal() {
   useEffect(() => {
     const init = async () => {
+      const elements = document.querySelectorAll<HTMLElement>(".reveal")
+      if (!elements.length) return
+
+      // Respect reduced-motion: show elements immediately without animation
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        elements.forEach((el) => {
+          el.style.opacity = "1"
+          el.style.transform = "none"
+        })
+        return
+      }
+
       const { gsap } = await import("gsap")
       const { ScrollTrigger } = await import("gsap/ScrollTrigger")
       gsap.registerPlugin(ScrollTrigger)
-
-      const elements = document.querySelectorAll<HTMLElement>(".reveal")
-      if (!elements.length) return
 
       elements.forEach((el, i) => {
         gsap.fromTo(
