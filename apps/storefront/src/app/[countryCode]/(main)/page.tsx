@@ -9,6 +9,18 @@ export const metadata: Metadata = {
   title: "أسومة ستور | Asuma Store",
   description:
     "إكسسوارات · شعر · مكياج · عطور · هدايا فاخرة — القاهرة، مصر | Luxury beauty & accessories, Cairo Egypt.",
+  openGraph: {
+    title: "أسومة ستور | Asuma Store",
+    description: "إكسسوارات · شعر · مكياج · عطور · هدايا فاخرة — القاهرة، مصر",
+    type: "website",
+    locale: "ar_EG",
+    alternateLocale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "أسومة ستور | Asuma Store",
+    description: "إكسسوارات · شعر · مكياج · عطور · هدايا فاخرة — القاهرة، مصر",
+  },
 }
 
 export default async function Home(props: {
