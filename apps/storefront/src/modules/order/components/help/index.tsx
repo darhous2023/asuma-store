@@ -1,23 +1,34 @@
-import { Heading } from "@modules/common/components/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import React from "react"
 
 const Help = () => {
   return (
     <div className="mt-6">
-      <Heading className="text-base-semi">Need help?</Heading>
-      <div className="text-base-regular my-2">
-        <ul className="gap-y-2 flex flex-col">
-          <li>
-            <LocalizedClientLink href="/contact">Contact</LocalizedClientLink>
-          </li>
-          <li>
-            <LocalizedClientLink href="/contact">
-              Returns & Exchanges
-            </LocalizedClientLink>
-          </li>
-        </ul>
-      </div>
+      <p
+        className="font-sans text-xs uppercase tracking-[0.15em] mb-3"
+        style={{ color: "var(--gold-dark)" }}
+      >
+        هل تحتاج مساعدة؟
+      </p>
+      <ul className="flex flex-col gap-2">
+        <li>
+          <LocalizedClientLink
+            href="/content/contact"
+            className="font-sans text-sm hover:opacity-80 transition-opacity"
+            style={{ color: "var(--ivory-dim)" }}
+          >
+            تواصل معنا
+          </LocalizedClientLink>
+        </li>
+        <li>
+          <LocalizedClientLink
+            href="/content/shipping-policy"
+            className="font-sans text-sm hover:opacity-80 transition-opacity"
+            style={{ color: "var(--ivory-dim)" }}
+          >
+            الشحن والاستبدال والإرجاع
+          </LocalizedClientLink>
+        </li>
+      </ul>
     </div>
   )
 }
