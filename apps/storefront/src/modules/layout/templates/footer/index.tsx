@@ -46,16 +46,15 @@ const SOCIAL_LINKS = [
 ]
 
 const INFO_LINKS = [
-  { labelAr: "من نحن",                    labelEn: "About Us",           href: "/content/about" },
-  { labelAr: "تواصل معنا",               labelEn: "Contact",             href: "/content/contact" },
-  { labelAr: "سياسة الخصوصية",          labelEn: "Privacy Policy",      href: "/content/privacy-policy" },
-  { labelAr: "الشروط والأحكام",         labelEn: "Terms of Service",    href: "/content/terms-of-use" },
-  { labelAr: "الشحن والاستبدال والإرجاع", labelEn: "Shipping & Returns", href: "/content/shipping-policy" },
+  { labelAr: "من نحن",                      href: "/content/about" },
+  { labelAr: "تواصل معنا",                 href: "/content/contact" },
+  { labelAr: "سياسة الخصوصية",            href: "/content/privacy-policy" },
+  { labelAr: "الشروط والأحكام",           href: "/content/terms-of-use" },
+  { labelAr: "الشحن والاستبدال والإرجاع", href: "/content/shipping-policy" },
 ]
 
 export default async function Footer() {
   const productCategories = await listCategories()
-
   const mainCategories = productCategories?.filter((c) => !c.parent_category) ?? []
 
   return (
@@ -74,16 +73,10 @@ export default async function Footer() {
             <LocalizedClientLink href="/">
               <AsumaLogo size={40} showText={true} />
             </LocalizedClientLink>
-            <p
-              className="font-sans leading-relaxed text-sm"
-              style={{ color: "var(--ivory-muted)", maxWidth: "220px" }}
-            >
+            <p className="font-sans leading-relaxed text-sm text-ivory-muted" style={{ maxWidth: "220px" }}>
               متجر إكسسوارات ومستحضرات تجميل فاخر · القاهرة، مصر
             </p>
-            <p
-              className="font-sans text-xs"
-              style={{ color: "var(--ivory-muted)" }}
-            >
+            <p className="font-sans text-xs text-ivory-muted">
               Luxury beauty &amp; accessories · Cairo, Egypt
             </p>
 
@@ -96,10 +89,7 @@ export default async function Footer() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={s.name}
-                  className="transition-colors duration-200"
-                  style={{ color: "var(--ivory-muted)" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ivory-muted)")}
+                  className="text-ivory-muted hover:text-gold transition-colors duration-200"
                 >
                   {s.icon}
                 </a>
@@ -109,10 +99,7 @@ export default async function Footer() {
 
           {/* Col 2 — Categories */}
           <div className="flex flex-col gap-4">
-            <h3
-              className="font-sans text-xs uppercase tracking-[0.2em]"
-              style={{ color: "var(--gold)" }}
-            >
+            <h3 className="font-sans text-xs uppercase tracking-[0.2em] text-gold">
               الأقسام
             </h3>
             <ul className="flex flex-col gap-3">
@@ -120,8 +107,7 @@ export default async function Footer() {
                 <li key={c.id}>
                   <LocalizedClientLink
                     href={`/categories/${c.handle}`}
-                    className="font-sans text-sm transition-colors duration-200"
-                    style={{ color: "var(--ivory-dim)" }}
+                    className="font-sans text-sm text-ivory-dim hover:text-gold transition-colors duration-200"
                     data-testid="footer-category-link"
                   >
                     {c.name}
@@ -133,10 +119,7 @@ export default async function Footer() {
 
           {/* Col 3 — Info links */}
           <div className="flex flex-col gap-4">
-            <h3
-              className="font-sans text-xs uppercase tracking-[0.2em]"
-              style={{ color: "var(--gold)" }}
-            >
+            <h3 className="font-sans text-xs uppercase tracking-[0.2em] text-gold">
               معلومات
             </h3>
             <ul className="flex flex-col gap-3">
@@ -144,8 +127,7 @@ export default async function Footer() {
                 <li key={link.href}>
                   <LocalizedClientLink
                     href={link.href}
-                    className="font-sans text-sm transition-colors duration-200"
-                    style={{ color: "var(--ivory-dim)" }}
+                    className="font-sans text-sm text-ivory-dim hover:text-gold transition-colors duration-200"
                   >
                     {link.labelAr}
                   </LocalizedClientLink>
@@ -154,12 +136,9 @@ export default async function Footer() {
             </ul>
           </div>
 
-          {/* Col 4 — Contact info */}
+          {/* Col 4 — Contact */}
           <div className="flex flex-col gap-4">
-            <h3
-              className="font-sans text-xs uppercase tracking-[0.2em]"
-              style={{ color: "var(--gold)" }}
-            >
+            <h3 className="font-sans text-xs uppercase tracking-[0.2em] text-gold">
               تواصل معنا
             </h3>
             <ul className="flex flex-col gap-3">
@@ -168,8 +147,7 @@ export default async function Footer() {
                   href="https://wa.me/201030002331"
                   target="_blank"
                   rel="noreferrer"
-                  className="font-sans text-sm transition-colors duration-200"
-                  style={{ color: "var(--ivory-dim)" }}
+                  className="font-sans text-sm text-ivory-dim hover:text-gold transition-colors duration-200"
                 >
                   WhatsApp: +20 103 000 2331
                 </a>
@@ -177,16 +155,12 @@ export default async function Footer() {
               <li>
                 <a
                   href="mailto:ahmeddarhous@gmail.com"
-                  className="font-sans text-sm transition-colors duration-200"
-                  style={{ color: "var(--ivory-dim)" }}
+                  className="font-sans text-sm text-ivory-dim hover:text-gold transition-colors duration-200"
                 >
                   ahmeddarhous@gmail.com
                 </a>
               </li>
-              <li
-                className="font-sans text-sm"
-                style={{ color: "var(--ivory-muted)" }}
-              >
+              <li className="font-sans text-sm text-ivory-muted">
                 القاهرة، مصر
               </li>
             </ul>
@@ -205,21 +179,15 @@ export default async function Footer() {
 
         {/* ── Bottom bar ── */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p
-            className="font-sans text-xs"
-            style={{ color: "var(--ivory-muted)", letterSpacing: "0.05em" }}
-          >
+          <p className="font-sans text-xs text-ivory-muted" style={{ letterSpacing: "0.05em" }}>
             © {new Date().getFullYear()} Asuma Store · جميع الحقوق محفوظة
           </p>
 
-          <p className="font-sans text-xs" style={{ color: "var(--ivory-muted)" }}>
+          <p className="font-sans text-xs text-ivory-muted">
             designed by{" "}
             <a
               href="mailto:ahmeddarhous@gmail.com"
-              className="transition-colors duration-200"
-              style={{ color: "var(--gold-dark)" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--gold-dark)")}
+              className="text-gold-dark hover:text-gold transition-colors duration-200"
             >
               Ahmed Darhous
             </a>{" "}
