@@ -3,34 +3,44 @@ import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
 import PlaceholderImage from "@modules/common/icons/placeholder-image"
+import QuickAddButton from "./QuickAddButton"
 
 export default async function ProductPreview({
   product,
   isFeatured,
+  countryCode = "eg",
 }: {
   product: HttpTypes.StoreProduct
   isFeatured?: boolean
-  region: HttpTypes.StoreRegion
+  region?: HttpTypes.StoreRegion
+  countryCode?: string
 }) {
   const { cheapestPrice } = getProductPrice({ product })
   const image = product.thumbnail ?? product.images?.[0]?.url
 
+  // Show quick-add only for single-variant (no choices needed)
+  const singleVariant =
+    (product.variants?.length ?? 0) === 1 &&
+    (product.options?.length ?? 0) <= 1
+  const variantId = product.variants?.[0]?.id
+
   return (
-    <LocalizedClientLink href={`/products/${product.handle}`} className="group block">
+    <LocalizedClientLink
+      href={`/products/${product.handle}`}
+      className="group block"
+      style={{ touchAction: "manipulation" }}
+    >
       <div
         data-testid="product-wrapper"
+        className="relative overflow-hidden group-hover:[border-color:var(--gold)] group-hover:-translate-y-0.5"
         style={{
           backgroundColor: "var(--carbon, #0D0D0D)",
           border: "1px solid var(--gold-border, rgba(201,169,110,0.15))",
           transition: "border-color 0.3s ease, transform 0.3s ease",
         }}
-        className="relative overflow-hidden group-hover:[border-color:var(--gold)] group-hover:-translate-y-0.5"
       >
         {/* Image */}
-        <div
-          className="relative overflow-hidden"
-          style={{ aspectRatio: "1/1" }}
-        >
+        <div className="relative overflow-hidden" style={{ aspectRatio: "1/1" }}>
           {image ? (
             <Image
               src={image}
@@ -52,7 +62,7 @@ export default async function ProductPreview({
 
           {/* Hover overlay */}
           <div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6"
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6 product-hover-overlay"
             style={{ background: "linear-gradient(to top, rgba(6,6,6,0.75) 0%, transparent 60%)" }}
           >
             <span
@@ -62,6 +72,11 @@ export default async function ProductPreview({
               عرض المنتج
             </span>
           </div>
+
+          {/* Quick-add button */}
+          {singleVariant && variantId && (
+            <QuickAddButton variantId={variantId} countryCode={countryCode} />
+          )}
         </div>
 
         {/* Info */}
@@ -87,9 +102,10 @@ export default async function ProductPreview({
               <span
                 className="font-sans text-sm font-medium"
                 style={{
-                  color: cheapestPrice.price_type === "sale"
-                    ? "var(--gold-bright, #E5C882)"
-                    : "var(--gold, #C9A96E)",
+                  color:
+                    cheapestPrice.price_type === "sale"
+                      ? "var(--gold-bright, #E5C882)"
+                      : "var(--gold, #C9A96E)",
                   letterSpacing: "0.04em",
                 }}
                 data-testid="price"

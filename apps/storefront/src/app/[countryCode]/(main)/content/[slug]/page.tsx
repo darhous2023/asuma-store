@@ -348,7 +348,7 @@ export default async function ContentPage({ params }: Props) {
             className="font-sans"
             style={{ color: "var(--ivory-muted)", fontSize: "0.85rem", letterSpacing: "0.06em" }}
           >
-            {page.titleEn.split("|")[0].trim()}
+            {page.descriptionAr}
           </p>
           <div
             aria-hidden="true"
@@ -382,46 +382,6 @@ export default async function ContentPage({ params }: Props) {
             </div>
           ))}
           {page.contactCards && <ContactCards cards={page.contactCards} lang="ar" />}
-        </div>
-
-        {/* ── Divider ── */}
-        <div
-          aria-hidden="true"
-          style={{
-            height: "1px",
-            background: "linear-gradient(90deg, transparent, var(--gold-border), transparent)",
-            marginBottom: "4rem",
-          }}
-        />
-
-        {/* ── English content ── */}
-        <div className="mb-16" dir="ltr" lang="en">
-          <p
-            className="font-sans mb-8"
-            style={{ color: "var(--ivory-muted)", fontSize: "0.7rem", letterSpacing: "0.18em", textTransform: "uppercase" }}
-          >
-            English
-          </p>
-          {page.sectionsEn.map((section) => (
-            <div key={section.heading} className="mb-10">
-              <h2
-                className="font-sans mb-4"
-                style={{ color: "var(--gold)", fontSize: "0.75rem", letterSpacing: "0.2em", textTransform: "uppercase" }}
-              >
-                {section.heading}
-              </h2>
-              {section.body.map((para, i) => (
-                <p
-                  key={i}
-                  className="font-sans leading-relaxed mb-3"
-                  style={{ color: "var(--ivory-dim)", fontSize: "0.95rem", lineHeight: 1.8 }}
-                >
-                  {para}
-                </p>
-              ))}
-            </div>
-          ))}
-          {page.contactCards && <ContactCards cards={page.contactCards} lang="en" />}
         </div>
 
         {/* ── Back link ── */}

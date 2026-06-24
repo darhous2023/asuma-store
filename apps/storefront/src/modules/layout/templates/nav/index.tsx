@@ -1,21 +1,16 @@
 import { Suspense } from "react"
 
-import { listLocales } from "@lib/data/locales"
-import { getLocale } from "@lib/data/locale-actions"
 import { listRegions } from "@lib/data/regions"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
-import LanguageSwitcher from "@modules/layout/components/language-switcher"
 import AsumaLogo from "@modules/common/components/asuma-logo"
 import SearchModal from "@modules/search/components/search-modal"
 
 export default async function Nav() {
-  const [regions, locales, currentLocale] = await Promise.all([
+  const [regions] = await Promise.all([
     listRegions().then((regions: StoreRegion[]) => regions),
-    listLocales(),
-    getLocale(),
   ])
 
   return (
@@ -31,7 +26,7 @@ export default async function Nav() {
           {/* Left — hamburger menu */}
           <div className="flex-1 basis-0 h-full flex items-center">
             <div className="h-full">
-              <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} />
+              <SideMenu regions={regions} locales={null} currentLocale={null} />
             </div>
           </div>
 
@@ -46,23 +41,22 @@ export default async function Nav() {
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
             <SearchModal locale={currentLocale} countryCode="eg" />
             <div className="hidden small:flex items-center gap-x-6 h-full">
-              <LanguageSwitcher />
               <LocalizedClientLink
                 className="text-ivory-dim hover:text-gold transition-colors duration-200 text-sm tracking-wide"
                 href="/account"
                 data-testid="nav-account-link"
               >
-                {currentLocale === "ar" ? "حسابي" : "Account"}
+                حسابي
               </LocalizedClientLink>
             </div>
             <Suspense
               fallback={
                 <LocalizedClientLink
-                  className="text-ivory-dim hover:text-gold transition-colors duration-200 text-sm flex gap-2"
+                  className="text-ivory-dim hover:text-gold transition-colors duration-200 flex items-center gap-1.5"
                   href="/cart"
                   data-testid="nav-cart-link"
                 >
-                  {currentLocale === "ar" ? "السلة (0)" : "Cart (0)"}
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                 </LocalizedClientLink>
               }
             >

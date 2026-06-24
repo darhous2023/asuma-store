@@ -59,6 +59,18 @@ a {
   }
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Touch devices: disable hover-on-first-tap */
+@media (hover: none) {
+  .group:hover > [class*="group-hover"] { transform: none !important; }
+  .group:hover img { transform: none !important; }
+  .product-hover-overlay { opacity: 0 !important; }
+}
+
 /* ─── RTL overrides ─── */
 [dir="rtl"] .ltr-only { direction: ltr; }
 [dir="rtl"] input,

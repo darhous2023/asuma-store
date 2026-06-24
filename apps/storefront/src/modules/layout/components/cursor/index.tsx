@@ -7,6 +7,9 @@ export default function CustomCursor() {
   const ringRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    // Don't activate custom cursor on touch/stylus devices
+    if (window.matchMedia("(hover: none)").matches) return
+
     const spotlight = spotlightRef.current
     const ring = ringRef.current
     if (!spotlight || !ring) return
