@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import ContactCards from "./ContactCards"
 
 type Props = { params: Promise<{ countryCode: string; slug: string }> }
 
@@ -302,28 +303,6 @@ const PAGES: Record<string, PageContent> = {
   },
 }
 
-/* ── Contact icons ────────────────────────────────────────────────────────── */
-
-const ICONS = {
-  phone: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-    </svg>
-  ),
-  email: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-      <polyline points="22,6 12,13 2,6"/>
-    </svg>
-  ),
-  location: (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-      <circle cx="12" cy="10" r="3"/>
-    </svg>
-  ),
-}
-
 /* ── Page ─────────────────────────────────────────────────────────────────── */
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -352,12 +331,7 @@ export default async function ContentPage({ params }: Props) {
         <div className="mb-12">
           <div
             aria-hidden="true"
-            style={{
-              width: "32px",
-              height: "1px",
-              background: "var(--gold)",
-              marginBottom: "1.5rem",
-            }}
+            style={{ width: "32px", height: "1px", background: "var(--gold)", marginBottom: "1.5rem" }}
           />
           <h1
             className="font-display font-light italic mb-3"
@@ -392,12 +366,7 @@ export default async function ContentPage({ params }: Props) {
             <div key={section.heading} className="mb-10">
               <h2
                 className="font-sans mb-4"
-                style={{
-                  color: "var(--gold)",
-                  fontSize: "0.75rem",
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                }}
+                style={{ color: "var(--gold)", fontSize: "0.75rem", letterSpacing: "0.2em", textTransform: "uppercase" }}
               >
                 {section.heading}
               </h2>
@@ -405,64 +374,14 @@ export default async function ContentPage({ params }: Props) {
                 <p
                   key={i}
                   className="font-sans leading-relaxed mb-3"
-                  style={{
-                    color: "var(--ivory-dim)",
-                    fontSize: "0.95rem",
-                    lineHeight: 1.8,
-                  }}
+                  style={{ color: "var(--ivory-dim)", fontSize: "0.95rem", lineHeight: 1.8 }}
                 >
                   {para}
                 </p>
               ))}
             </div>
           ))}
-
-          {/* Contact cards — Arabic */}
-          {page.contactCards && (
-            <div className="flex flex-col gap-4 mt-8">
-              {page.contactCards.map((card) =>
-                card.href ? (
-                  <a
-                    key={card.icon}
-                    href={card.href}
-                    target={card.icon === "phone" ? "_blank" : undefined}
-                    rel={card.icon === "phone" ? "noopener noreferrer" : undefined}
-                    className="flex items-center gap-4 group transition-colors duration-200"
-                    style={{
-                      padding: "1rem 1.25rem",
-                      border: "1px solid var(--gold-border)",
-                      color: "var(--ivory-dim)",
-                      textDecoration: "none",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.borderColor = "var(--gold)"
-                      ;(e.currentTarget as HTMLElement).style.color = "var(--ivory)"
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.borderColor = "var(--gold-border)"
-                      ;(e.currentTarget as HTMLElement).style.color = "var(--ivory-dim)"
-                    }}
-                  >
-                    <span style={{ color: "var(--gold)", flexShrink: 0 }}>{ICONS[card.icon]}</span>
-                    <span className="font-sans" style={{ fontSize: "0.9rem", direction: "ltr" }}>{card.labelAr}</span>
-                  </a>
-                ) : (
-                  <div
-                    key={card.icon}
-                    className="flex items-center gap-4"
-                    style={{
-                      padding: "1rem 1.25rem",
-                      border: "1px solid var(--gold-border)",
-                      color: "var(--ivory-dim)",
-                    }}
-                  >
-                    <span style={{ color: "var(--gold)", flexShrink: 0 }}>{ICONS[card.icon]}</span>
-                    <span className="font-sans" style={{ fontSize: "0.9rem" }}>{card.labelAr}</span>
-                  </div>
-                )
-              )}
-            </div>
-          )}
+          {page.contactCards && <ContactCards cards={page.contactCards} lang="ar" />}
         </div>
 
         {/* ── Divider ── */}
@@ -479,12 +398,7 @@ export default async function ContentPage({ params }: Props) {
         <div className="mb-16" dir="ltr" lang="en">
           <p
             className="font-sans mb-8"
-            style={{
-              color: "var(--ivory-muted)",
-              fontSize: "0.7rem",
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-            }}
+            style={{ color: "var(--ivory-muted)", fontSize: "0.7rem", letterSpacing: "0.18em", textTransform: "uppercase" }}
           >
             English
           </p>
@@ -492,12 +406,7 @@ export default async function ContentPage({ params }: Props) {
             <div key={section.heading} className="mb-10">
               <h2
                 className="font-sans mb-4"
-                style={{
-                  color: "var(--gold)",
-                  fontSize: "0.75rem",
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                }}
+                style={{ color: "var(--gold)", fontSize: "0.75rem", letterSpacing: "0.2em", textTransform: "uppercase" }}
               >
                 {section.heading}
               </h2>
@@ -505,64 +414,14 @@ export default async function ContentPage({ params }: Props) {
                 <p
                   key={i}
                   className="font-sans leading-relaxed mb-3"
-                  style={{
-                    color: "var(--ivory-dim)",
-                    fontSize: "0.95rem",
-                    lineHeight: 1.8,
-                  }}
+                  style={{ color: "var(--ivory-dim)", fontSize: "0.95rem", lineHeight: 1.8 }}
                 >
                   {para}
                 </p>
               ))}
             </div>
           ))}
-
-          {/* Contact cards — English */}
-          {page.contactCards && (
-            <div className="flex flex-col gap-4 mt-8">
-              {page.contactCards.map((card) =>
-                card.href ? (
-                  <a
-                    key={card.icon + "-en"}
-                    href={card.href}
-                    target={card.icon === "phone" ? "_blank" : undefined}
-                    rel={card.icon === "phone" ? "noopener noreferrer" : undefined}
-                    className="flex items-center gap-4 transition-colors duration-200"
-                    style={{
-                      padding: "1rem 1.25rem",
-                      border: "1px solid var(--gold-border)",
-                      color: "var(--ivory-dim)",
-                      textDecoration: "none",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.borderColor = "var(--gold)"
-                      ;(e.currentTarget as HTMLElement).style.color = "var(--ivory)"
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.borderColor = "var(--gold-border)"
-                      ;(e.currentTarget as HTMLElement).style.color = "var(--ivory-dim)"
-                    }}
-                  >
-                    <span style={{ color: "var(--gold)", flexShrink: 0 }}>{ICONS[card.icon]}</span>
-                    <span className="font-sans" style={{ fontSize: "0.9rem" }}>{card.labelEn}</span>
-                  </a>
-                ) : (
-                  <div
-                    key={card.icon + "-en"}
-                    className="flex items-center gap-4"
-                    style={{
-                      padding: "1rem 1.25rem",
-                      border: "1px solid var(--gold-border)",
-                      color: "var(--ivory-dim)",
-                    }}
-                  >
-                    <span style={{ color: "var(--gold)", flexShrink: 0 }}>{ICONS[card.icon]}</span>
-                    <span className="font-sans" style={{ fontSize: "0.9rem" }}>{card.labelEn}</span>
-                  </div>
-                )
-              )}
-            </div>
-          )}
+          {page.contactCards && <ContactCards cards={page.contactCards} lang="en" />}
         </div>
 
         {/* ── Back link ── */}
