@@ -40,7 +40,7 @@ const Hero = () => {
           className="font-sans tracking-[0.35em] uppercase mb-8 text-xs"
           style={{ color: "var(--gold)", animationDelay: "0.1s" }}
         >
-          Cairo · Egypt · Est. 2024
+          Kafr El-Sheikh · Egypt · Est. 2024
         </p>
 
         {/* Arabic headline */}

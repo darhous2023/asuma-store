@@ -80,7 +80,7 @@ export default async function Footer() {
               <AsumaLogo size={40} showText={true} />
             </LocalizedClientLink>
             <p className="font-sans leading-relaxed text-sm text-ivory-muted" style={{ maxWidth: "220px" }}>
-              متجر إكسسوارات ومستحضرات تجميل فاخر · القاهرة، مصر
+              متجر إكسسوارات ومستحضرات تجميل فاخر · كفر الشيخ، مصر
             </p>
             <p className="font-sans text-xs text-ivory-muted">
               Luxury beauty &amp; accessories · Cairo, Egypt
@@ -156,7 +156,7 @@ export default async function Footer() {
                 </a>
               </li>
               <li className="font-sans text-sm text-ivory-muted">
-                القاهرة، مصر
+                كفر الشيخ، مصر
               </li>
             </ul>
           </div>
