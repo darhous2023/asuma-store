@@ -2,6 +2,10 @@ import { listCategories } from "@lib/data/categories"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import AsumaLogo from "@modules/common/components/asuma-logo"
 
+const DEMO_HANDLES = ["shirts", "sweatshirts", "pants", "merch"]
+const STORE_EMAIL = "asmafarouq.89m@gmail.com"
+const WHATSAPP_NUMBER = "201033163769"
+
 const SOCIAL_LINKS = [
   {
     name: "Instagram",
@@ -36,7 +40,7 @@ const SOCIAL_LINKS = [
   },
   {
     name: "WhatsApp",
-    href: "https://wa.me/201030002331",
+    href: `https://wa.me/${WHATSAPP_NUMBER}`,
     icon: (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
@@ -55,7 +59,9 @@ const INFO_LINKS = [
 
 export default async function Footer() {
   const productCategories = await listCategories()
-  const mainCategories = productCategories?.filter((c) => !c.parent_category) ?? []
+  const mainCategories = (productCategories ?? []).filter(
+    (c) => !c.parent_category && !DEMO_HANDLES.includes(c.handle ?? "")
+  )
 
   return (
     <footer
@@ -129,20 +135,24 @@ export default async function Footer() {
             <ul className="flex flex-col gap-3">
               <li>
                 <a
-                  href="https://wa.me/201033163769"
+                  href={`https://wa.me/${WHATSAPP_NUMBER}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-sans text-sm text-ivory-dim hover:text-gold transition-colors duration-200"
+                  aria-label="تواصل عبر واتساب"
+                  className="font-sans text-sm text-ivory-dim hover:text-gold transition-colors duration-200 flex items-center gap-2"
                 >
-                  WhatsApp: +20 103 316 3769
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                  </svg>
+                  <span>+20 103 316 3769</span>
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:asmafarouq.89m@gmail.com"
+                  href={`mailto:${STORE_EMAIL}`}
                   className="font-sans text-sm text-ivory-dim hover:text-gold transition-colors duration-200"
                 >
-                  asmafarouq.89m@gmail.com
+                  {STORE_EMAIL}
                 </a>
               </li>
               <li className="font-sans text-sm text-ivory-muted">
@@ -163,45 +173,51 @@ export default async function Footer() {
         />
 
         {/* ── Bottom bar ── */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="font-sans text-xs text-ivory-muted" style={{ letterSpacing: "0.05em" }}>
-            © {new Date().getFullYear()} Asuma Store · جميع الحقوق محفوظة
+        <div className="flex flex-col items-center gap-5">
+          {/* Copyright row */}
+          <p className="font-sans text-xs text-ivory-muted text-center" style={{ letterSpacing: "0.05em" }}>
+            © {new Date().getFullYear()}{" "}
+            <a
+              href={`mailto:${STORE_EMAIL}`}
+              className="hover:text-gold transition-colors duration-200"
+              style={{ color: "inherit" }}
+            >
+              أسومة ستور · Asuma Store
+            </a>
+            {" "}· جميع الحقوق محفوظة
           </p>
 
-          {/* Designer block — last element */}
-          <div className="flex flex-col items-center sm:items-end gap-2">
-            {/* Designer credit — first */}
-            <p
-              className="font-sans text-ivory-muted"
-              style={{ fontSize: "9px", letterSpacing: "0.12em", opacity: 0.38, textTransform: "uppercase" }}
-            >
-              Designed &amp; Developed by{" "}
+          {/* Social links row — centered */}
+          <div className="flex items-center gap-5">
+            {SOCIAL_LINKS.map((s) => (
               <a
-                href="mailto:ahmeddarhous@gmail.com"
-                className="hover:opacity-70 transition-opacity duration-200"
-                style={{ color: "inherit" }}
+                key={s.name}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.name}
+                className="text-ivory-muted hover:text-gold transition-colors duration-200"
+                style={{ opacity: 0.5 }}
               >
-                Ahmed Darhous
+                {s.icon}
               </a>
-            </p>
-
-            {/* Designer social links — directly beneath the name */}
-            <div className="flex items-center gap-4">
-              {SOCIAL_LINKS.map((s) => (
-                <a
-                  key={s.name}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.name}
-                  className="text-ivory-muted hover:text-gold transition-colors duration-200"
-                  style={{ opacity: 0.45 }}
-                >
-                  {s.icon}
-                </a>
-              ))}
-            </div>
+            ))}
           </div>
+
+          {/* Designer signature — centered */}
+          <p
+            className="font-sans text-ivory-muted text-center"
+            style={{ fontSize: "9px", letterSpacing: "0.12em", opacity: 0.35, textTransform: "uppercase" }}
+          >
+            Designed &amp; Developed by{" "}
+            <a
+              href="mailto:ahmeddarhous@gmail.com"
+              className="hover:opacity-70 transition-opacity duration-200"
+              style={{ color: "inherit" }}
+            >
+              Ahmed Darhous
+            </a>
+          </p>
         </div>
       </div>
     </footer>

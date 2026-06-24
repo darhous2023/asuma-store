@@ -31,17 +31,25 @@ export default function CategoryBarClient({
       }}
     >
       <div
-        ref={scrollRef}
-        className="content-container"
         style={{
           overflowX: "auto",
           scrollbarWidth: "none",
           msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
+        }}
+      >
+      <div
+        ref={scrollRef}
+        className="content-container"
+        style={{
           display: "flex",
           alignItems: "center",
-          gap: "4px",
+          justifyContent: "center",
+          flexWrap: "nowrap",
+          gap: "6px",
           padding: "10px 0",
-          WebkitOverflowScrolling: "touch",
+          minWidth: "max-content",
+          margin: "0 auto",
         }}
       >
         {items.map((cat) => {
@@ -88,6 +96,7 @@ export default function CategoryBarClient({
             </Link>
           )
         })}
+      </div>
       </div>
     </div>
   )

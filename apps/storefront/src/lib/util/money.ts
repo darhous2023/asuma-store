@@ -15,12 +15,17 @@ export const convertToLocale = ({
   maximumFractionDigits,
   locale = "en-US",
 }: ConvertToLocaleParams) => {
-  return currency_code && !isEmpty(currency_code)
-    ? new Intl.NumberFormat(locale, {
-        style: "currency",
-        currency: currency_code,
-        minimumFractionDigits,
-        maximumFractionDigits,
-      }).format(amount)
-    : amount.toString()
+  if (!currency_code || isEmpty(currency_code)) return amount.toString()
+
+  // Default to no decimals for whole-number amounts — avoids "EGP 149.00"
+  const isWholeNumber = amount % 1 === 0
+  const minFrac = minimumFractionDigits ?? (isWholeNumber ? 0 : 2)
+  const maxFrac = maximumFractionDigits ?? (isWholeNumber ? 0 : 2)
+
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency_code,
+    minimumFractionDigits: minFrac,
+    maximumFractionDigits: maxFrac,
+  }).format(amount)
 }

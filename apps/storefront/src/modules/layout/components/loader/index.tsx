@@ -66,7 +66,7 @@ export default function Loader() {
 
       if (animPhase === "rain") {
         timer++
-        setProgress(Math.round((timer / 70) * 38))
+        setProgress(Math.round((timer / 118) * 38))
         particles.forEach(p => {
           p.y += p.vy; p.x += p.vx
           if (p.y > H + 20) { p.y = -20; p.x = Math.random() * W }
@@ -74,7 +74,7 @@ export default function Loader() {
           ctx.fillStyle = p.color
           ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill()
         })
-        if (timer >= 70) { animPhase = "coalesce"; timer = 0 }
+        if (timer >= 118) { animPhase = "coalesce"; timer = 0 }
 
       } else if (animPhase === "coalesce") {
         timer++
