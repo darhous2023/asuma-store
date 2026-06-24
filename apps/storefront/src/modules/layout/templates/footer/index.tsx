@@ -196,8 +196,8 @@ export default async function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.name}
-                className="text-ivory-muted hover:text-gold transition-colors duration-200"
-                style={{ opacity: 0.5 }}
+                className="text-ivory-muted hover:text-gold transition-colors duration-200 flex items-center justify-center"
+                style={{ opacity: 0.5, padding: "13px", margin: "-13px" }}
               >
                 {s.icon}
               </a>

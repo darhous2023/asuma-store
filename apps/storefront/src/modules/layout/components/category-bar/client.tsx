@@ -67,9 +67,9 @@ export default function CategoryBarClient({
               href={href}
               style={{
                 flexShrink: 0,
-                padding: "5px 16px",
+                padding: "9px 18px",
                 fontFamily: "var(--font-space-grotesk), sans-serif",
-                fontSize: "11px",
+                fontSize: "12px",
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",
                 whiteSpace: "nowrap",

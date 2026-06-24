@@ -85,7 +85,7 @@ const CartDropdown = ({
             className="hover:text-ui-fg-base"
             href="/cart"
             data-testid="nav-cart-link"
-          >{`Cart (${totalItems})`}</LocalizedClientLink>
+          >{`السلة (${totalItems})`}</LocalizedClientLink>
         </PopoverButton>
         <Transition
           show={cartDropdownOpen}
@@ -99,11 +99,17 @@ const CartDropdown = ({
         >
           <PopoverPanel
             static
-            className="hidden small:block absolute top-[calc(100%+1px)] right-0 bg-white border-x border-b border-gray-200 w-[420px] text-ui-fg-base"
+            className="hidden small:block absolute top-[calc(100%+1px)] right-0 w-[420px]"
+            style={{
+              backgroundColor: "var(--carbon, #0D0D0D)",
+              border: "1px solid var(--gold-border, rgba(201,169,110,0.2))",
+              borderTop: "none",
+              color: "var(--ivory, #F5F0E8)",
+            }}
             data-testid="nav-cart-dropdown"
           >
             <div className="p-4 flex items-center justify-center">
-              <h3 className="text-large-semi">Cart</h3>
+              <h3 className="text-large-semi" style={{ color: "var(--gold, #C9A96E)" }}>السلة</h3>
             </div>
             {cartState && cartState.items?.length ? (
               <>
@@ -133,7 +139,7 @@ const CartDropdown = ({
                         <div className="flex flex-col justify-between flex-1">
                           <div className="flex flex-col flex-1">
                             <div className="flex items-start justify-between">
-                              <div className="flex flex-col overflow-ellipsis whitespace-nowrap mr-4 w-[180px]">
+                              <div className="flex flex-col overflow-ellipsis whitespace-nowrap mr-4 min-w-0 flex-1">
                                 <h3 className="text-base-regular overflow-hidden text-ellipsis">
                                   <LocalizedClientLink
                                     href={`/products/${item.product_handle}`}
@@ -151,7 +157,7 @@ const CartDropdown = ({
                                   data-testid="cart-item-quantity"
                                   data-value={item.quantity}
                                 >
-                                  Quantity: {item.quantity}
+                                  الكمية: {item.quantity}
                                 </span>
                               </div>
                               <div className="flex justify-end">
@@ -168,7 +174,7 @@ const CartDropdown = ({
                             className="mt-1"
                             data-testid="cart-item-remove-button"
                           >
-                            Remove
+                            إزالة
                           </DeleteButton>
                         </div>
                       </div>
@@ -176,9 +182,8 @@ const CartDropdown = ({
                 </div>
                 <div className="p-4 flex flex-col gap-y-4 text-small-regular">
                   <div className="flex items-center justify-between">
-                    <span className="text-ui-fg-base font-semibold">
-                      Subtotal{" "}
-                      <span className="font-normal">(excl. taxes)</span>
+                    <span className="font-semibold" style={{ color: "var(--ivory, #F5F0E8)" }}>
+                      الإجمالي
                     </span>
                     <span
                       className="text-large-semi"
@@ -197,7 +202,7 @@ const CartDropdown = ({
                       size="large"
                       data-testid="go-to-cart-button"
                     >
-                      Go to cart
+                      عرض السلة
                     </Button>
                   </LocalizedClientLink>
                 </div>
@@ -205,15 +210,15 @@ const CartDropdown = ({
             ) : (
               <div>
                 <div className="flex py-16 flex-col gap-y-4 items-center justify-center">
-                  <div className="bg-gray-900 text-small-regular flex items-center justify-center w-6 h-6 rounded-full text-white">
+                  <div className="text-small-regular flex items-center justify-center w-6 h-6 rounded-full" style={{ backgroundColor: "var(--carbon)", border: "1px solid var(--gold-border)", color: "var(--gold)" }}>
                     <span>0</span>
                   </div>
-                  <span>Your shopping bag is empty.</span>
+                  <span style={{ color: "var(--ivory-muted, #7A6A5A)" }}>السلة فارغة</span>
                   <div>
                     <LocalizedClientLink href="/store">
                       <>
-                        <span className="sr-only">Go to all products page</span>
-                        <Button onClick={close}>Explore products</Button>
+                        <span className="sr-only">تصفح جميع المنتجات</span>
+                        <Button onClick={close}>تصفح المنتجات</Button>
                       </>
                     </LocalizedClientLink>
                   </div>

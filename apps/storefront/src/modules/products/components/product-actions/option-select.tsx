@@ -23,7 +23,7 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
 
   return (
     <div className="flex flex-col gap-y-3">
-      <span className="text-sm">Select {title}</span>
+      <span className="text-sm" style={{ color: "var(--ivory-muted, #7A6A5A)" }}>اختر {title}</span>
       <div
         className="flex flex-wrap justify-between gap-2"
         data-testid={dataTestId}
@@ -34,13 +34,13 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
               onClick={() => updateOption(option.id, v)}
               key={v}
               className={clx(
-                "border-ui-border-base bg-ui-bg-subtle border text-small-regular h-10 rounded-rounded p-2 flex-1 ",
-                {
-                  "border-ui-border-interactive": v === current,
-                  "hover:shadow-elevation-card-rest transition-shadow ease-in-out duration-150":
-                    v !== current,
-                }
+                "text-small-regular h-11 rounded-rounded p-2 flex-1 transition-all duration-150",
               )}
+              style={{
+                border: `1px solid ${v === current ? "var(--gold, #C9A96E)" : "var(--gold-border, rgba(201,169,110,0.25))"}`,
+                backgroundColor: v === current ? "rgba(201,169,110,0.1)" : "transparent",
+                color: v === current ? "var(--gold, #C9A96E)" : "var(--ivory, #F5F0E8)",
+              }}
               disabled={disabled}
               data-testid="option-button"
             >

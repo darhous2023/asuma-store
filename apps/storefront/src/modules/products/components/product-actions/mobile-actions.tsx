@@ -70,14 +70,18 @@ const MobileActions: React.FC<MobileActionsProps> = ({
           leaveTo="opacity-0"
         >
           <div
-            className="bg-white flex flex-col gap-y-3 justify-center items-center text-large-regular p-4 h-full w-full border-t border-gray-200"
+            className="flex flex-col gap-y-3 justify-center items-center text-large-regular p-4 h-full w-full"
+            style={{
+              backgroundColor: "var(--carbon, #0D0D0D)",
+              borderTop: "1px solid var(--gold-border, rgba(201,169,110,0.2))",
+            }}
             data-testid="mobile-actions"
           >
             <div className="flex items-center gap-x-2">
-              <span data-testid="mobile-title">{product.title}</span>
-              <span>—</span>
+              <span data-testid="mobile-title" style={{ color: "var(--ivory, #F5F0E8)" }}>{product.title}</span>
+              <span style={{ color: "var(--ivory-muted, #7A6A5A)" }}>—</span>
               {selectedPrice ? (
-                <div className="flex items-end gap-x-2 text-ui-fg-base">
+                <div className="flex items-end gap-x-2" style={{ color: "var(--gold, #C9A96E)" }}>
                   {selectedPrice.price_type === "sale" && (
                     <p>
                       <span className="line-through text-small-regular">
@@ -90,6 +94,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                       "text-ui-fg-interactive":
                         selectedPrice.price_type === "sale",
                     })}
+                    style={{ color: "var(--gold, #C9A96E)" }}
                   >
                     {selectedPrice.calculated_price}
                   </span>
@@ -111,7 +116,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                   <span>
                     {variant
                       ? Object.values(options).join(" / ")
-                      : "Select Options"}
+                      : "الخيارات"}
                   </span>
                   <ChevronDown />
                 </div>
@@ -124,10 +129,10 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                 data-testid="mobile-cart-button"
               >
                 {!variant
-                  ? "Select variant"
+                  ? "اختر المقاس"
                   : !inStock
-                  ? "Out of stock"
-                  : "Add to cart"}
+                  ? "نفد المخزون"
+                  : "أضف للسلة"}
               </Button>
             </div>
           </div>
@@ -144,7 +149,7 @@ const MobileActions: React.FC<MobileActionsProps> = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-gray-700 bg-opacity-75 backdrop-blur-sm" />
+            <div className="fixed inset-0 backdrop-blur-sm" style={{ backgroundColor: "rgba(6,6,6,0.85)" }} />
           </Transition.Child>
 
           <div className="fixed bottom-0 inset-x-0">
@@ -165,13 +170,18 @@ const MobileActions: React.FC<MobileActionsProps> = ({
                   <div className="w-full flex justify-end pr-6">
                     <button
                       onClick={close}
-                      className="bg-white w-12 h-12 rounded-full text-ui-fg-base flex justify-center items-center"
+                      className="w-12 h-12 rounded-full flex justify-center items-center"
+                      style={{
+                        backgroundColor: "var(--carbon, #0D0D0D)",
+                        border: "1px solid var(--gold-border, rgba(201,169,110,0.3))",
+                        color: "var(--gold, #C9A96E)",
+                      }}
                       data-testid="close-modal-button"
                     >
                       <X />
                     </button>
                   </div>
-                  <div className="bg-white px-6 py-12">
+                  <div className="px-6 py-12" style={{ backgroundColor: "var(--carbon, #0D0D0D)" }}>
                     {(product.variants?.length ?? 0) > 1 && (
                       <div className="flex flex-col gap-y-6">
                         {(product.options || []).map((option) => {
