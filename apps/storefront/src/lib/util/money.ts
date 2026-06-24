@@ -1,4 +1,5 @@
 import { isEmpty } from "./isEmpty"
+import { noDivisionCurrencies } from "@lib/constants"
 
 type ConvertToLocaleParams = {
   amount: number
@@ -17,8 +18,13 @@ export const convertToLocale = ({
 }: ConvertToLocaleParams) => {
   if (!currency_code || isEmpty(currency_code)) return amount.toString()
 
-  // Default to no decimals for whole-number amounts — avoids "EGP 149.00"
-  const isWholeNumber = amount % 1 === 0
+  // Medusa stores amounts in the smallest currency unit (piasters/cents).
+  // Zero-decimal currencies (JPY, KRW…) must not be divided.
+  const factor = noDivisionCurrencies.includes(currency_code.toLowerCase()) ? 1 : 100
+  const displayAmount = amount / factor
+
+  // No trailing .00 for whole numbers (e.g. EGP 149, not EGP 149.00)
+  const isWholeNumber = displayAmount % 1 === 0
   const minFrac = minimumFractionDigits ?? (isWholeNumber ? 0 : 2)
   const maxFrac = maximumFractionDigits ?? (isWholeNumber ? 0 : 2)
 
@@ -27,5 +33,5 @@ export const convertToLocale = ({
     currency: currency_code,
     minimumFractionDigits: minFrac,
     maximumFractionDigits: maxFrac,
-  }).format(amount)
+  }).format(displayAmount)
 }
