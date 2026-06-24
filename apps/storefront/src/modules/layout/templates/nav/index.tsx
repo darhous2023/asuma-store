@@ -39,7 +39,7 @@ export default async function Nav() {
 
           {/* Right — search + lang + account + cart */}
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
-            <SearchModal locale={currentLocale} countryCode="eg" />
+            <SearchModal locale={null} countryCode="eg" />
             <div className="hidden small:flex items-center gap-x-6 h-full">
               <LocalizedClientLink
                 className="text-ivory-dim hover:text-gold transition-colors duration-200 text-sm tracking-wide"
