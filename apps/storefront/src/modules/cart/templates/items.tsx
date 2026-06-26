@@ -14,19 +14,27 @@ const ItemsTemplate = ({ cart }: ItemsTemplateProps) => {
   return (
     <div>
       <div className="pb-3 flex items-center">
-        <Heading className="text-[2rem] leading-[2.75rem]">Cart</Heading>
+        <Heading
+          className="text-[2rem] leading-[2.75rem] font-display font-light italic uppercase"
+          style={{ color: "var(--ivory)", letterSpacing: "0.15em" }}
+        >
+          المنتجات
+        </Heading>
       </div>
       <Table>
         <Table.Header className="border-t-0">
-          <Table.Row className="text-ui-fg-subtle txt-medium-plus">
-            <Table.HeaderCell className="!pl-0">Item</Table.HeaderCell>
+          <Table.Row
+            className="txt-medium-plus"
+            style={{ color: "var(--ivory-muted)" }}
+          >
+            <Table.HeaderCell className="!pl-0">المنتج</Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>Quantity</Table.HeaderCell>
+            <Table.HeaderCell>الكمية</Table.HeaderCell>
             <Table.HeaderCell className="hidden small:table-cell">
-              Price
+              السعر
             </Table.HeaderCell>
             <Table.HeaderCell className="!pr-0 text-right">
-              Total
+              الإجمالي
             </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
