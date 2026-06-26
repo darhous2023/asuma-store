@@ -8,6 +8,14 @@ import PaginatedProducts from "@modules/store/templates/paginated-products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { HttpTypes } from "@medusajs/types"
 
+function collectCategoryIds(cat: HttpTypes.StoreProductCategory): string[] {
+  const ids = [cat.id]
+  for (const child of cat.category_children ?? []) {
+    ids.push(...collectCategoryIds(child))
+  }
+  return ids
+}
+
 export default function CategoryTemplate({
   category,
   sortBy,
@@ -23,6 +31,8 @@ export default function CategoryTemplate({
   const sort = sortBy || "created_at"
 
   if (!category || !countryCode) notFound()
+
+  const categoryIds = collectCategoryIds(category)
 
   const parents: HttpTypes.StoreProductCategory[] = []
   const getParents = (cat: HttpTypes.StoreProductCategory) => {
@@ -97,7 +107,7 @@ export default function CategoryTemplate({
         <PaginatedProducts
           sortBy={sort}
           page={pageNumber}
-          categoryId={category.id}
+          categoryIds={categoryIds}
           countryCode={countryCode}
         />
       </Suspense>
