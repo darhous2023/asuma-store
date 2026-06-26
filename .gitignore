@@ -62,3 +62,10 @@ Thumbs.db
 # Agent Skills (local tooling)
 .agents/
 skills-lock.json
+
+# Catalog runtime files (generated, not committed)
+.runtime/
+upload_progress.json
+upload_errors.json
+upload_*.json
+backups/
