@@ -40,10 +40,15 @@ export default async function Home(props: {
     (allCategories ?? []).map((c) => [c.handle, c])
   )
 
-  const rails = HOME_CATEGORY_RAILS.map((rail) => {
+  type Rail = (typeof HOME_CATEGORY_RAILS)[number] & {
+    category: NonNullable<ReturnType<typeof categoryMap.get>>
+  }
+
+  const rails = HOME_CATEGORY_RAILS.reduce<Rail[]>((acc, rail) => {
     const cat = categoryMap.get(CATEGORY_HANDLES[rail.handle])
-    return cat ? { ...rail, category: cat } : null
-  }).filter(Boolean) as Array<typeof HOME_CATEGORY_RAILS[number] & { category: (typeof allCategories)[number] }>
+    if (cat) acc.push({ ...rail, category: cat })
+    return acc
+  }, [])
 
   return (
     <>
