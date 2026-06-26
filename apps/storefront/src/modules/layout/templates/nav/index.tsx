@@ -26,7 +26,7 @@ export default async function Nav() {
           {/* Left — hamburger menu */}
           <div className="flex-1 basis-0 h-full flex items-center">
             <div className="h-full">
-              <SideMenu regions={regions} locales={null} currentLocale={null} />
+              <SideMenu regions={regions} />
             </div>
           </div>
 
